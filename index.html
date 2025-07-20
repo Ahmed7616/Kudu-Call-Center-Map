@@ -93,62 +93,63 @@
   <div id="map"></div>
 
   <script>
-    let map;
-    let infoWindow;
-    const polygons = [];
-    let activeIndex = null;
-
-    const branches = [
-      {
-        name: "KR-01",
-        address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
-        phone: "0551234567",
-        center: { lat: 24.6850636, lng: 46.6778853 },
-        coords: [
-          { lat: 24.6860636, lng: 46.6768853 },
-          { lat: 24.6840636, lng: 46.6768853 },
-          { lat: 24.6840636, lng: 46.6788853 },
-          { lat: 24.6860636, lng: 46.6788853 }
-        ],
-        color: "#FF0000"
-      },
-      {
-        name: "KR-03",
-        address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
-        phone: "0567654321",
-        center: { lat: 24.6936477, lng: 46.7323124 },
-        coords: [
-          { lat: 24.6946477, lng: 46.7313124 },
-          { lat: 24.6926477, lng: 46.7313124 },
-          { lat: 24.6926477, lng: 46.7333124 },
-          { lat: 24.6946477, lng: 46.7333124 }
-        ],
-        color: "#0000FF"
-      },
-      {
-        name: "KR-05",
-        address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
-        phone: "0578901234",
-        center: { lat: 24.7299943, lng: 46.7848146 },
-        coords: [
-          { lat: 24.7309943, lng: 46.7838146 },
-          { lat: 24.7289943, lng: 46.7838146 },
-          { lat: 24.7289943, lng: 46.7858146 },
-          { lat: 24.7309943, lng: 46.7858146 }
-        ],
-        color: "#00AA00"
-      }
-    ];
-
+    // دالة initMap يجب أن تكون معرفة في النطاق العام
     function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
+      window.map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: { lat: 24.7136, lng: 46.6753 }
       });
 
-      infoWindow = new google.maps.InfoWindow();
+      window.infoWindow = new google.maps.InfoWindow();
 
-      branches.forEach((branch, index) => {
+      window.polygons = [];
+
+      window.branches = [
+        {
+          name: "KR-01",
+          address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
+          phone: "0551234567",
+          center: { lat: 24.6850636, lng: 46.6778853 },
+          coords: [
+            { lat: 24.6860636, lng: 46.6768853 },
+            { lat: 24.6840636, lng: 46.6768853 },
+            { lat: 24.6840636, lng: 46.6788853 },
+            { lat: 24.6860636, lng: 46.6788853 }
+          ],
+          color: "#FF0000"
+        },
+        {
+          name: "KR-03",
+          address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
+          phone: "0567654321",
+          center: { lat: 24.6936477, lng: 46.7323124 },
+          coords: [
+            { lat: 24.6946477, lng: 46.7313124 },
+            { lat: 24.6926477, lng: 46.7313124 },
+            { lat: 24.6926477, lng: 46.7333124 },
+            { lat: 24.6946477, lng: 46.7333124 }
+          ],
+          color: "#0000FF"
+        },
+        {
+          name: "KR-05",
+          address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
+          phone: "0578901234",
+          center: { lat: 24.7299943, lng: 46.7848146 },
+          coords: [
+            { lat: 24.7309943, lng: 46.7838146 },
+            { lat: 24.7289943, lng: 46.7838146 },
+            { lat: 24.7289943, lng: 46.7858146 },
+            { lat: 24.7309943, lng: 46.7858146 }
+          ],
+          color: "#00AA00"
+        }
+      ];
+
+      window.activeIndex = null;
+
+      // إنشاء مضلعات ونشرها على الخريطة
+      window.branches.forEach((branch, index) => {
         const polygon = new google.maps.Polygon({
           paths: branch.coords,
           strokeColor: branch.color,
@@ -156,14 +157,14 @@
           strokeWeight: 2,
           fillColor: branch.color,
           fillOpacity: 0.35,
-          map: map,
+          map: window.map,
         });
 
         polygon.addListener('click', () => {
           showBranchInfo(index);
         });
 
-        polygons.push(polygon);
+        window.polygons.push(polygon);
       });
 
       buildSidebar();
@@ -171,13 +172,14 @@
       setupReset();
     }
 
+    // بناء القائمة الجانبية للفروع
     function buildSidebar(filteredIndexes = null) {
       const list = document.getElementById("branchList");
       list.innerHTML = '';
 
       const toShow = filteredIndexes !== null
-        ? filteredIndexes.map(i => branches[i])
-        : branches;
+        ? filteredIndexes.map(i => window.branches[i])
+        : window.branches;
 
       toShow.forEach((branch, idx) => {
         const actualIndex = filteredIndexes ? filteredIndexes[idx] : idx;
@@ -187,18 +189,19 @@
         li.addEventListener("click", () => {
           showBranchInfo(actualIndex);
         });
-        if (actualIndex === activeIndex) {
+        if (actualIndex === window.activeIndex) {
           li.classList.add("active");
         }
         list.appendChild(li);
       });
     }
 
+    // عرض معلومات الفرع عند النقر على القائمة أو المضلع
     function showBranchInfo(index) {
-      activeIndex = index;
-      const branch = branches[index];
+      window.activeIndex = index;
+      const branch = window.branches[index];
 
-      map.fitBounds(getPolygonBounds(polygons[index]));
+      window.map.fitBounds(getPolygonBounds(window.polygons[index]));
 
       const content = `
         <div>
@@ -208,13 +211,14 @@
         </div>
       `;
 
-      infoWindow.setContent(content);
-      infoWindow.setPosition(branch.center);
-      infoWindow.open(map);
+      window.infoWindow.setContent(content);
+      window.infoWindow.setPosition(branch.center);
+      window.infoWindow.open(window.map);
 
       setActiveBranch(index);
     }
 
+    // تمييز الفرع النشط في القائمة
     function setActiveBranch(index) {
       const items = document.querySelectorAll("#branchList li");
       items.forEach((item, i) => {
@@ -222,6 +226,7 @@
       });
     }
 
+    // حساب حدود المضلعات لتكبير الخريطة عليها
     function getPolygonBounds(polygon) {
       const bounds = new google.maps.LatLngBounds();
       polygon.getPath().forEach(latlng => {
@@ -230,6 +235,7 @@
       return bounds;
     }
 
+    // إعداد البحث في القائمة
     function setupSearch() {
       const searchInput = document.getElementById("searchBox");
       searchInput.addEventListener("input", () => {
@@ -239,7 +245,7 @@
           return;
         }
         const filteredIndexes = [];
-        branches.forEach((branch, i) => {
+        window.branches.forEach((branch, i) => {
           if (branch.name.toLowerCase().includes(term)) {
             filteredIndexes.push(i);
           }
@@ -248,12 +254,13 @@
       });
     }
 
+    // زر إعادة الخريطة للحالة الافتراضية
     function setupReset() {
       document.getElementById("resetBtn").addEventListener("click", () => {
-        activeIndex = null;
-        map.setZoom(12);
-        map.setCenter({ lat: 24.7136, lng: 46.6753 });
-        infoWindow.close();
+        window.activeIndex = null;
+        window.map.setZoom(12);
+        window.map.setCenter({ lat: 24.7136, lng: 46.6753 });
+        window.infoWindow.close();
         buildSidebar();
         document.getElementById("searchBox").value = '';
       });
