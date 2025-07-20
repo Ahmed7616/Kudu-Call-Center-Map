@@ -75,6 +75,7 @@
     }
     #map {
       flex: 1;
+      direction: ltr;
     }
   </style>
 </head>
@@ -99,41 +100,41 @@
       {
         name: "KR-01",
         address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
-        Workinghours: "05:00 AM - 04:00 AM‏",
+        phone: "0551234567",
         coords: [
-          { lat: 24.6850636‏, lng: 46.6778853‏ },
           { lat: 24.6850636, lng: 46.6778853 },
-          { lat: 24.6850636, lng: 46.6778853 },
-          { lat: 24.6850636, lng: 46.6778853 },
+          { lat: 24.6860636, lng: 46.6779853 },
+          { lat: 24.6860636, lng: 46.6789853 },
+          { lat: 24.6850636, lng: 46.6788853 }
         ],
         color: "#FF0000",
-        center: { lat: 24.6850636‏, lng: 46.6778853 }
+        center: { lat: 24.6850636, lng: 46.6778853 }
       },
       {
         name: "KR-03",
-        address: "Gas Station, St, Opposite Sahl, Ar Rabwah, Al Ihsa, Riyadh",
+        address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
         phone: "0567654321",
         coords: [
-          { lat: 24.6936477‏, lng: 46.73231244‏ },
-          { lat: 24.6936477‏, lng: 46.73231244‏ },
-          { lat: 24.6936477‏, lng: 46.73231244‏ },
-          { lat: 24.6936477‏, lng: 46.73231244‏ },
+          { lat: 24.6936477, lng: 46.7323124 },
+          { lat: 24.6946477, lng: 46.7324124 },
+          { lat: 24.6946477, lng: 46.7334124 },
+          { lat: 24.6936477, lng: 46.7333124 }
         ],
         color: "#0000FF",
-        center: { lat: 24.6936477‏, lng: 46.73231244 }
+        center: { lat: 24.6936477, lng: 46.7323124 }
       },
       {
-        name: "KR-05‏",
-        address: "Near Victoria Hospital, Khurais Branch Road, Al Rawdah, Al Thubat St Off, Riyadh",
+        name: "KR-05",
+        address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
         phone: "0578901234",
         coords: [
-          { lat: 24.72999439‏, lng: 46.7848146‏ },
-          { lat: 24.72999439‏, lng: 46.7848146‏ },
-          { lat: 24.72999439‏, lng: 46.7848146‏ },
-          { lat: 24.72999439‏, lng: 46.7848146‏ },
+          { lat: 24.7299943, lng: 46.7848146 },
+          { lat: 24.7309943, lng: 46.7849146 },
+          { lat: 24.7309943, lng: 46.7859146 },
+          { lat: 24.7299943, lng: 46.7858146 }
         ],
         color: "#00AA00",
-        center: { lat: 24.72999439‏, lng: 46.7848146 }
+        center: { lat: 24.7299943, lng: 46.7848146 }
       }
     ];
 
@@ -202,7 +203,7 @@
         <div>
           <h3>${branch.name}</h3>
           <p><strong>العنوان:</strong> ${branch.address}</p>
-          <p><strong>الهاتف:</strong> ${branch.phone}</p>
+          ${branch.phone ? `<p><strong>الهاتف:</strong> ${branch.phone}</p>` : ""}
         </div>
       `;
 
@@ -214,10 +215,9 @@
     }
 
     function setActiveBranch(index) {
-  const items = document.querySelectorAll("#branchList li");
-  items.forEach((item, i) => {
-    item.classList.toggle("active", i === index);
-    
+      const items = document.querySelectorAll("#branchList li");
+      items.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
       });
     }
 
