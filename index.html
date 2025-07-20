@@ -102,39 +102,39 @@
         address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
         phone: "0551234567",
         coords: [
-          { lat: 24.6850636, lng: 46.6778853 },
-          { lat: 24.6860636, lng: 46.6779853 },
-          { lat: 24.6860636, lng: 46.6789853 },
-          { lat: 24.6850636, lng: 46.6788853 }
+          { lat: 24.6840, lng: 46.6755 },
+          { lat: 24.6880, lng: 46.6755 },
+          { lat: 24.6880, lng: 46.6805 },
+          { lat: 24.6840, lng: 46.6805 }
         ],
         color: "#FF0000",
-        center: { lat: 24.6850636, lng: 46.6778853 }
+        center: { lat: 24.686, lng: 46.678 }
       },
       {
         name: "KR-03",
         address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
         phone: "0567654321",
         coords: [
-          { lat: 24.6936477, lng: 46.7323124 },
-          { lat: 24.6946477, lng: 46.7324124 },
-          { lat: 24.6946477, lng: 46.7334124 },
-          { lat: 24.6936477, lng: 46.7333124 }
+          { lat: 24.6900, lng: 46.7300 },
+          { lat: 24.6950, lng: 46.7300 },
+          { lat: 24.6950, lng: 46.7350 },
+          { lat: 24.6900, lng: 46.7350 }
         ],
         color: "#0000FF",
-        center: { lat: 24.6936477, lng: 46.7323124 }
+        center: { lat: 24.6925, lng: 46.7325 }
       },
       {
         name: "KR-05",
         address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
         phone: "0578901234",
         coords: [
-          { lat: 24.7299943, lng: 46.7848146 },
-          { lat: 24.7309943, lng: 46.7849146 },
-          { lat: 24.7309943, lng: 46.7859146 },
-          { lat: 24.7299943, lng: 46.7858146 }
+          { lat: 24.7280, lng: 46.7830 },
+          { lat: 24.7330, lng: 46.7830 },
+          { lat: 24.7330, lng: 46.7880 },
+          { lat: 24.7280, lng: 46.7880 }
         ],
         color: "#00AA00",
-        center: { lat: 24.7299943, lng: 46.7848146 }
+        center: { lat: 24.7305, lng: 46.7855 }
       }
     ];
 
@@ -142,7 +142,7 @@
 
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 6,
+        zoom: 12,
         center: { lat: 24.7136, lng: 46.6753 }
       });
 
@@ -250,7 +250,7 @@
     function setupReset() {
       document.getElementById("resetBtn").addEventListener("click", () => {
         activeIndex = null;
-        map.setZoom(6);
+        map.setZoom(12);
         map.setCenter({ lat: 24.7136, lng: 46.6753 });
         infoWindow.close();
         buildSidebar();
