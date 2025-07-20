@@ -92,14 +92,11 @@
 
   <div id="map"></div>
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
-
   <script>
     let map;
     let infoWindow;
     const polygons = [];
 
-    // بيانات الفروع مع النطاقات (مربعات صغيرة حول النقاط المركزية)
     const branches = [
       {
         name: "KR-01",
@@ -263,6 +260,8 @@
       });
     }
   </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
 
 </body>
 </html>
