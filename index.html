@@ -3,26 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kudu Call Center Map‏</title>
+  <title>Kudu Call Center Map</title>
   <style>
     body, html {
-      margin: 0; padding: 0; height: 100%;
+      margin: 0;
+      padding: 0;
+      height: 100%;
       font-family: Arial, sans-serif;
       direction: rtl;
       display: flex;
-      flex-direction: row;
-      height: 100vh;
+      flex-direction: row-reverse;
       overflow: hidden;
     }
     #sidebar {
       width: 320px;
-      background: #f5f5f5;
+      background: #f9f9f9;
       border-left: 1px solid #ddd;
       overflow-y: auto;
       padding: 15px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
+      z-index: 2;
     }
     #sidebar h2 {
       margin-top: 0;
@@ -49,8 +51,9 @@
       padding: 10px 15px;
       cursor: pointer;
       border-radius: 5px;
+      border-right: 8px solid transparent;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, border-color 0.3s;
     }
     #branchList li:hover {
       background-color: #e0e0e0;
@@ -74,23 +77,24 @@
       background-color: #1976d2;
     }
     #map {
-      flex: 1;
+      flex-grow: 1;
+      height: 100%;
       direction: ltr;
     }
   </style>
 </head>
 <body>
 
-  <div id="map"></div>
-
   <div id="sidebar">
-    <h2>Kudu Call Center Map</h2>
+    <h2>خريطة فروع كودو</h2>
     <input type="text" id="searchBox" placeholder="ابحث عن فرع..." />
     <ul id="branchList"></ul>
-    <button id="resetBtn">إعادة للخريطة الرئيسية</button>
+    <button id="resetBtn">إعادة تعيين الخريطة</button>
   </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
+  <div id="map"></div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
 
   <script>
     let map;
@@ -183,6 +187,7 @@
         const actualIndex = filteredIndexes ? filteredIndexes[idx] : idx;
         const li = document.createElement("li");
         li.textContent = branch.name;
+        li.style.borderRightColor = branch.color;
         li.addEventListener("click", () => {
           showBranchInfo(actualIndex);
         });
