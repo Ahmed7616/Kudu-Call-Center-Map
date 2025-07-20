@@ -199,8 +199,10 @@
       activeIndex = index;
       const branch = branches[index];
 
+      // تكبير الخريطة للنطاق المحدد
       map.fitBounds(getPolygonBounds(polygons[index]));
 
+      // محتوى النافذة
       const content = `
         <div>
           <h3>${branch.name}</h3>
@@ -210,7 +212,8 @@
       `;
 
       infoWindow.setContent(content);
-      infoWindow.setPosition(new google.maps.LatLng(branch.center.lat, branch.center.lng));
+      // تحديد موقع النافذة على نقطة المركز للفرع
+      infoWindow.setPosition(branch.center);
       infoWindow.open(map);
 
       setActiveBranch(index);
