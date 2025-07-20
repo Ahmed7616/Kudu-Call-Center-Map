@@ -92,68 +92,145 @@
 
   <div id="map"></div>
 
-  <!-- تحميل Google Maps API مع المفتاح والدالة callback -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
-
   <script>
-    let map;
-    let infoWindow;
-    const polygons = [];
-
-    // بيانات الفروع مع النطاقات (مربع صغير حول المركز)
-    const branches = [
-      {
-        name: "KR-01",
-        address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
-        phone: "0551234567",
-        center: { lat: 24.6850636, lng: 46.6778853 },
-        coords: [
-          { lat: 24.6860636, lng: 46.6768853 },
-          { lat: 24.6840636, lng: 46.6768853 },
-          { lat: 24.6840636, lng: 46.6788853 },
-          { lat: 24.6860636, lng: 46.6788853 }
-        ],
-        color: "#FF0000"
-      },
-      {
-        name: "KR-03",
-        address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
-        phone: "0567654321",
-        center: { lat: 24.6936477, lng: 46.7323124 },
-        coords: [
-          { lat: 24.6946477, lng: 46.7313124 },
-          { lat: 24.6926477, lng: 46.7313124 },
-          { lat: 24.6926477, lng: 46.7333124 },
-          { lat: 24.6946477, lng: 46.7333124 }
-        ],
-        color: "#0000FF"
-      },
-      {
-        name: "KR-05",
-        address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
-        phone: "0578901234",
-        center: { lat: 24.7299943, lng: 46.7848146 },
-        coords: [
-          { lat: 24.7309943, lng: 46.7838146 },
-          { lat: 24.7289943, lng: 46.7838146 },
-          { lat: 24.7289943, lng: 46.7858146 },
-          { lat: 24.7309943, lng: 46.7858146 }
-        ],
-        color: "#00AA00"
-      }
-    ];
-
-    let activeIndex = null;
-
-    // هذه الدالة يتم استدعاؤها تلقائياً بعد تحميل مكتبة جوجل مابز (callback)
+    // لازم تكون دالة عادية ومعلنة بهذا الشكل لتكون متاحة للعالم الخارجي
     function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
+      const branches = [
+        {
+          name: "KR-01",
+          address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
+          phone: "0551234567",
+          center: { lat: 24.6850636, lng: 46.6778853 },
+          coords: [
+            { lat: 24.6860636, lng: 46.6768853 },
+            { lat: 24.6840636, lng: 46.6768853 },
+            { lat: 24.6840636, lng: 46.6788853 },
+            { lat: 24.6860636, lng: 46.6788853 }
+          ],
+          color: "#FF0000"
+        },
+        {
+          name: "KR-03",
+          address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
+          phone: "0567654321",
+          center: { lat: 24.6936477, lng: 46.7323124 },
+          coords: [
+            { lat: 24.6946477, lng: 46.7313124 },
+            { lat: 24.6926477, lng: 46.7313124 },
+            { lat: 24.6926477, lng: 46.7333124 },
+            { lat: 24.6946477, lng: 46.7333124 }
+          ],
+          color: "#0000FF"
+        },
+        {
+          name: "KR-05",
+          address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
+          phone: "0578901234",
+          center: { lat: 24.7299943, lng: 46.7848146 },
+          coords: [
+            { lat: 24.7309943, lng: 46.7838146 },
+            { lat: 24.7289943, lng: 46.7838146 },
+            { lat: 24.7289943, lng: 46.7858146 },
+            { lat: 24.7309943, lng: 46.7858146 }
+          ],
+          color: "#00AA00"
+        }
+      ];
+
+      let map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
         center: { lat: 24.7136, lng: 46.6753 }
       });
 
-      infoWindow = new google.maps.InfoWindow();
+      let infoWindow = new google.maps.InfoWindow();
+      const polygons = [];
+      let activeIndex = null;
 
+      function buildSidebar(filteredIndexes = null) {
+        const list = document.getElementById("branchList");
+        list.innerHTML = '';
+
+        const toShow = filteredIndexes !== null 
+          ? filteredIndexes.map(i => branches[i]) 
+          : branches;
+
+        toShow.forEach((branch, idx) => {
+          const actualIndex = filteredIndexes ? filteredIndexes[idx] : idx;
+          const li = document.createElement("li");
+          li.textContent = branch.name;
+          li.style.borderRightColor = branch.color;
+          li.addEventListener("click", () => {
+            showBranchInfo(actualIndex);
+          });
+          if (actualIndex === activeIndex) {
+            li.classList.add("active");
+          }
+          list.appendChild(li);
+        });
+      }
+
+      function showBranchInfo(index) {
+        activeIndex = index;
+        const branch = branches[index];
+        map.fitBounds(getPolygonBounds(polygons[index]));
+        const content = `
+          <div>
+            <h3>${branch.name}</h3>
+            <p><strong>العنوان:</strong> ${branch.address}</p>
+            <p><strong>الهاتف:</strong> ${branch.phone}</p>
+          </div>
+        `;
+        infoWindow.setContent(content);
+        infoWindow.setPosition(branch.center);
+        infoWindow.open(map);
+        setActiveBranch(index);
+      }
+
+      function setActiveBranch(index) {
+        const items = document.querySelectorAll("#branchList li");
+        items.forEach((item, i) => {
+          item.classList.toggle("active", i === index);
+        });
+      }
+
+      function getPolygonBounds(polygon) {
+        const bounds = new google.maps.LatLngBounds();
+        polygon.getPath().forEach(latlng => {
+          bounds.extend(latlng);
+        });
+        return bounds;
+      }
+
+      function setupSearch() {
+        const searchInput = document.getElementById("searchBox");
+        searchInput.addEventListener("input", () => {
+          const term = searchInput.value.trim().toLowerCase();
+          if (!term) {
+            buildSidebar();
+            return;
+          }
+          const filteredIndexes = [];
+          branches.forEach((branch, i) => {
+            if (branch.name.toLowerCase().includes(term)) {
+              filteredIndexes.push(i);
+            }
+          });
+          buildSidebar(filteredIndexes);
+        });
+      }
+
+      function setupReset() {
+        document.getElementById("resetBtn").addEventListener("click", () => {
+          activeIndex = null;
+          map.setZoom(12);
+          map.setCenter({ lat: 24.7136, lng: 46.6753 });
+          infoWindow.close();
+          buildSidebar();
+          document.getElementById("searchBox").value = '';
+        });
+      }
+
+      // إنشاء البوليجونات وربطهم مع الخريطة والحدث
       branches.forEach((branch, index) => {
         const polygon = new google.maps.Polygon({
           paths: branch.coords,
@@ -164,12 +241,9 @@
           fillOpacity: 0.35,
           map: map,
         });
-
-        // حدث النقر على المربع
         polygon.addListener('click', () => {
           showBranchInfo(index);
         });
-
         polygons.push(polygon);
       });
 
@@ -177,102 +251,9 @@
       setupSearch();
       setupReset();
     }
-
-    // بناء القائمة الجانبية (مع خيار البحث)
-    function buildSidebar(filteredIndexes = null) {
-      const list = document.getElementById("branchList");
-      list.innerHTML = '';
-
-      const toShow = filteredIndexes !== null
-        ? filteredIndexes.map(i => branches[i])
-        : branches;
-
-      toShow.forEach((branch, idx) => {
-        const actualIndex = filteredIndexes ? filteredIndexes[idx] : idx;
-        const li = document.createElement("li");
-        li.textContent = branch.name;
-        li.style.borderRightColor = branch.color;
-        li.addEventListener("click", () => {
-          showBranchInfo(actualIndex);
-        });
-        if (actualIndex === activeIndex) {
-          li.classList.add("active");
-        }
-        list.appendChild(li);
-      });
-    }
-
-    // عرض معلومات الفرع مع تحريك الخريطة على موقعه
-    function showBranchInfo(index) {
-      activeIndex = index;
-      const branch = branches[index];
-
-      // تكبير الخريطة لتشمل حدود المضلع الخاص بالفرع
-      map.fitBounds(getPolygonBounds(polygons[index]));
-
-      const content = `
-        <div>
-          <h3>${branch.name}</h3>
-          <p><strong>العنوان:</strong> ${branch.address}</p>
-          <p><strong>الهاتف:</strong> ${branch.phone}</p>
-        </div>
-      `;
-
-      infoWindow.setContent(content);
-      infoWindow.setPosition(branch.center);
-      infoWindow.open(map);
-
-      setActiveBranch(index);
-    }
-
-    // تمييز الفرع المختار في القائمة الجانبية
-    function setActiveBranch(index) {
-      const items = document.querySelectorAll("#branchList li");
-      items.forEach((item, i) => {
-        item.classList.toggle("active", i === index);
-      });
-    }
-
-    // حساب حدود المضلع لرسم الإطار
-    function getPolygonBounds(polygon) {
-      const bounds = new google.maps.LatLngBounds();
-      polygon.getPath().forEach(latlng => {
-        bounds.extend(latlng);
-      });
-      return bounds;
-    }
-
-    // تفعيل البحث داخل قائمة الفروع
-    function setupSearch() {
-      const searchInput = document.getElementById("searchBox");
-      searchInput.addEventListener("input", () => {
-        const term = searchInput.value.trim().toLowerCase();
-        if (!term) {
-          buildSidebar();
-          return;
-        }
-        const filteredIndexes = [];
-        branches.forEach((branch, i) => {
-          if (branch.name.toLowerCase().includes(term)) {
-            filteredIndexes.push(i);
-          }
-        });
-        buildSidebar(filteredIndexes);
-      });
-    }
-
-    // زر إعادة تعيين الخريطة إلى الوضع الرئيسي
-    function setupReset() {
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        activeIndex = null;
-        map.setZoom(12);
-        map.setCenter({ lat: 24.7136, lng: 46.6753 });
-        infoWindow.close();
-        buildSidebar();
-        document.getElementById("searchBox").value = '';
-      });
-    }
   </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
 
 </body>
 </html>
