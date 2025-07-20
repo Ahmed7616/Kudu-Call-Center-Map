@@ -92,11 +92,15 @@
 
   <div id="map"></div>
 
+  <!-- تحميل Google Maps API مع المفتاح والدالة callback -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
+
   <script>
     let map;
     let infoWindow;
     const polygons = [];
 
+    // بيانات الفروع مع النطاقات (مربع صغير حول المركز)
     const branches = [
       {
         name: "KR-01",
@@ -141,6 +145,7 @@
 
     let activeIndex = null;
 
+    // هذه الدالة يتم استدعاؤها تلقائياً بعد تحميل مكتبة جوجل مابز (callback)
     function initMap() {
       map = new google.maps.Map(document.getElementById("map"), {
         zoom: 12,
@@ -160,6 +165,7 @@
           map: map,
         });
 
+        // حدث النقر على المربع
         polygon.addListener('click', () => {
           showBranchInfo(index);
         });
@@ -172,12 +178,13 @@
       setupReset();
     }
 
+    // بناء القائمة الجانبية (مع خيار البحث)
     function buildSidebar(filteredIndexes = null) {
       const list = document.getElementById("branchList");
       list.innerHTML = '';
 
-      const toShow = filteredIndexes !== null 
-        ? filteredIndexes.map(i => branches[i]) 
+      const toShow = filteredIndexes !== null
+        ? filteredIndexes.map(i => branches[i])
         : branches;
 
       toShow.forEach((branch, idx) => {
@@ -195,14 +202,14 @@
       });
     }
 
+    // عرض معلومات الفرع مع تحريك الخريطة على موقعه
     function showBranchInfo(index) {
       activeIndex = index;
       const branch = branches[index];
 
-      // تكبير الخريطة للنطاق المحدد
+      // تكبير الخريطة لتشمل حدود المضلع الخاص بالفرع
       map.fitBounds(getPolygonBounds(polygons[index]));
 
-      // محتوى النافذة
       const content = `
         <div>
           <h3>${branch.name}</h3>
@@ -212,13 +219,13 @@
       `;
 
       infoWindow.setContent(content);
-      // تحديد موقع النافذة على نقطة المركز للفرع
       infoWindow.setPosition(branch.center);
       infoWindow.open(map);
 
       setActiveBranch(index);
     }
 
+    // تمييز الفرع المختار في القائمة الجانبية
     function setActiveBranch(index) {
       const items = document.querySelectorAll("#branchList li");
       items.forEach((item, i) => {
@@ -226,6 +233,7 @@
       });
     }
 
+    // حساب حدود المضلع لرسم الإطار
     function getPolygonBounds(polygon) {
       const bounds = new google.maps.LatLngBounds();
       polygon.getPath().forEach(latlng => {
@@ -234,6 +242,7 @@
       return bounds;
     }
 
+    // تفعيل البحث داخل قائمة الفروع
     function setupSearch() {
       const searchInput = document.getElementById("searchBox");
       searchInput.addEventListener("input", () => {
@@ -252,6 +261,7 @@
       });
     }
 
+    // زر إعادة تعيين الخريطة إلى الوضع الرئيسي
     function setupReset() {
       document.getElementById("resetBtn").addEventListener("click", () => {
         activeIndex = null;
@@ -263,8 +273,6 @@
       });
     }
   </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
 
 </body>
 </html>
