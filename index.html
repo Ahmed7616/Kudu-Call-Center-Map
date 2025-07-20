@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kudu Call Center Map‏</title>
+  <title>Kudu Call Center Map</title>
   <style>
     body, html {
       margin: 0; padding: 0; height: 100%;
@@ -17,15 +17,16 @@
       width: 320px;
       background: #f9f9f9;
       border-left: 1px solid #ddd;
+      overflow-y: auto;
       padding: 15px;
       box-sizing: border-box;
-      overflow-y: auto;
       display: flex;
       flex-direction: column;
       z-index: 2;
     }
     #sidebar h2 {
-      margin: 0 0 10px 0;
+      margin-top: 0;
+      margin-bottom: 10px;
       text-align: center;
     }
     #searchBox {
@@ -59,7 +60,6 @@
       background-color: #2196f3;
       color: white;
       font-weight: bold;
-      border-right-color: #1976d2 !important;
     }
     #resetBtn {
       padding: 10px;
@@ -76,7 +76,7 @@
     }
     #map {
       flex-grow: 1;
-      height: 100vh;
+      height: 100%;
       direction: ltr;
     }
   </style>
@@ -87,7 +87,7 @@
     <h2>Kudu Call Center Map‏</h2>
     <input type="text" id="searchBox" placeholder="Search" />
     <ul id="branchList"></ul>
-    <button id="resetBtn">Reset the map</button>
+    <button id="resetBtn">Reset to main map</button>
   </div>
 
   <div id="map"></div>
@@ -98,45 +98,47 @@
     let map;
     let infoWindow;
     const polygons = [];
+
+    // بيانات الفروع مع النطاقات (بعمل مربع صغير حول النقطة المركزية)
     const branches = [
       {
         name: "KR-01",
         address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
         phone: "0551234567",
+        center: { lat: 24.6850636, lng: 46.6778853 },
         coords: [
-          { lat: 24.6840, lng: 46.6755 },
-          { lat: 24.6880, lng: 46.6755 },
-          { lat: 24.6880, lng: 46.6805 },
-          { lat: 24.6840, lng: 46.6805 }
+          { lat: 24.6860636, lng: 46.6768853 },
+          { lat: 24.6840636, lng: 46.6768853 },
+          { lat: 24.6840636, lng: 46.6788853 },
+          { lat: 24.6860636, lng: 46.6788853 }
         ],
-        color: "#FF0000",
-        center: { lat: 24.686, lng: 46.678 }
+        color: "#FF0000"
       },
       {
         name: "KR-03",
         address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
         phone: "0567654321",
+        center: { lat: 24.6936477, lng: 46.7323124 },
         coords: [
-          { lat: 24.6900, lng: 46.7300 },
-          { lat: 24.6950, lng: 46.7300 },
-          { lat: 24.6950, lng: 46.7350 },
-          { lat: 24.6900, lng: 46.7350 }
+          { lat: 24.6946477, lng: 46.7313124 },
+          { lat: 24.6926477, lng: 46.7313124 },
+          { lat: 24.6926477, lng: 46.7333124 },
+          { lat: 24.6946477, lng: 46.7333124 }
         ],
-        color: "#0000FF",
-        center: { lat: 24.6925, lng: 46.7325 }
+        color: "#0000FF"
       },
       {
         name: "KR-05",
         address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
         phone: "0578901234",
+        center: { lat: 24.7299943, lng: 46.7848146 },
         coords: [
-          { lat: 24.7280, lng: 46.7830 },
-          { lat: 24.7330, lng: 46.7830 },
-          { lat: 24.7330, lng: 46.7880 },
-          { lat: 24.7280, lng: 46.7880 }
+          { lat: 24.7309943, lng: 46.7838146 },
+          { lat: 24.7289943, lng: 46.7838146 },
+          { lat: 24.7289943, lng: 46.7858146 },
+          { lat: 24.7309943, lng: 46.7858146 }
         ],
-        color: "#00AA00",
-        center: { lat: 24.7305, lng: 46.7855 }
+        color: "#00AA00"
       }
     ];
 
@@ -205,8 +207,8 @@
       const content = `
         <div>
           <h3>${branch.name}</h3>
-          <p><strong>address:</strong> ${branch.address}</p>
-          ${branch.phone ? `<p><strong>الهاتف:</strong> ${branch.phone}</p>` : ""}
+          <p><strong>العنوان:</strong> ${branch.address}</p>
+          <p><strong>الهاتف:</strong> ${branch.phone}</p>
         </div>
       `;
 
