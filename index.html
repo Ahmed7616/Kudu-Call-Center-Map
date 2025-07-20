@@ -96,6 +96,7 @@
     let map;
     let infoWindow;
     const polygons = [];
+    let activeIndex = null;
 
     const branches = [
       {
@@ -192,8 +193,6 @@
         list.appendChild(li);
       });
     }
-
-    let activeIndex = null;
 
     function showBranchInfo(index) {
       activeIndex = index;
