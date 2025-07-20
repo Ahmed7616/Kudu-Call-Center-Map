@@ -99,7 +99,7 @@
     let infoWindow;
     const polygons = [];
 
-    // بيانات الفروع مع النطاقات (بعمل مربع صغير حول النقطة المركزية)
+    // بيانات الفروع مع النطاقات (مربعات صغيرة حول النقاط المركزية)
     const branches = [
       {
         name: "KR-01",
@@ -213,7 +213,7 @@
       `;
 
       infoWindow.setContent(content);
-      infoWindow.setPosition(branch.center);
+      infoWindow.setPosition(new google.maps.LatLng(branch.center.lat, branch.center.lng));
       infoWindow.open(map);
 
       setActiveBranch(index);
