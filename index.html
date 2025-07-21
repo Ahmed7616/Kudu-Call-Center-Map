@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>خريطة فروع الخفيف</title>
+  <title>kudu call center map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -41,7 +41,7 @@
 <body>
 
 <div class="search-box">
-  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
+  <input type="text" id="search" placeholder="Search" onkeyup="filterBranches()" />
   <div class="filter-buttons">
     <button onclick="filterByStatus('All')" id="btnAll" class="active">الكل</button>
     <button onclick="filterByStatus('Open')" id="btnOpen">مفتوح</button>
@@ -58,7 +58,7 @@
     {
       name: { en: "AK-01", ar: "AK-01" },
       status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "Yes", ar: "نعم" },
+      delivery: { en: "No", ar: "لا" },
       firstOrder: "05:00 AM",
       lastOrder: "04:00 AM",
       hours: {
@@ -75,6 +75,27 @@
       lat: 24.69381487,
       lng: 46.7322647,
       brand: "Al Khafeef"
+    },
+    {
+      name: { en: "KR-01", ar: "KR-01" },
+      status: { en: "Open", ar: "مفتوح" },
+      delivery: { en: "Yes", ar: "نعم" },
+      firstOrder: "05:00 AM",
+      lastOrder: "04:00 AM",
+      hours: {
+        السبت: "05:00 AM - 04:00 AM",
+        الأحد: "05:00 AM - 04:00 AM",
+        الإثنين: "05:00 AM - 04:00 AM",
+        الثلاثاء: "05:00 AM - 04:00 AM",
+        الأربعاء: "05:00 AM - 04:00 AM",
+        الخميس: "05:00 AM - 04:00 AM",
+        الجمعة: "05:00 AM - 04:00 AM"
+      },
+      remarks: "",
+      link: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
+      lat: 24.6850636,
+      lng: 46.6778853,
+      brand: "Kudu"
     },
     {
       name: { en: "AK-02", ar: "AK-02" },
