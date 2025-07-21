@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>خريطة فروع Kudu</title>
+  <title>kudu call center map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -13,12 +13,14 @@
       position: absolute; top: 10px; right: 10px; z-index: 1100;
       background: white; padding: 10px; border-radius: 5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      width: 260px;
+      width: 300px;
+    }
+    .filter-section {
+      margin-top: 8px;
     }
     .filter-buttons {
-      margin-top: 8px;
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 4px;
     }
     .filter-buttons button {
@@ -36,17 +38,50 @@
       background-color: #4CAF50;
       color: white;
     }
+    select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
 
 <div class="search-box">
   <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
-  <div class="filter-buttons">
-    <button onclick="filterByStatus('All')" id="btnAll" class="active">الكل</button>
-    <button onclick="filterByStatus('Open')" id="btnOpen">مفتوح</button>
-    <button onclick="filterByStatus('Temporarily Closed')" id="btnTempClosed">مغلق مؤقتاً</button>
-    <button onclick="filterByStatus('Permanently Closed')" id="btnPermClosed">مغلق نهائياً</button>
+  <div class="filter-section">
+    <label><b>فلترة حسب الحالة:</b></label>
+    <div class="filter-buttons">
+      <button onclick="filterByStatus('All')" id="btnAll" class="active">الكل</button>
+      <button onclick="filterByStatus('Open')" id="btnOpen">مفتوح</button>
+      <button onclick="filterByStatus('Temporarily Closed')" id="btnTempClosed">مغلق مؤقتاً</button>
+      <button onclick="filterByStatus('Permanently Closed')" id="btnPermClosed">مغلق نهائياً</button>
+    </div>
+  </div>
+  <div class="filter-section">
+    <label for="deliveryFilter"><b>فلترة حسب خدمة التوصيل:</b></label>
+    <select id="deliveryFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Yes">يوجد توصيل</option>
+      <option value="No">بدون توصيل</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="brandFilter"><b>فلترة حسب العلامة التجارية:</b></label>
+    <select id="brandFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Kudu">Kudu</option>
+      <option value="Al Khafeef">Al Khafeef</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="newBranches"><b>فلترة حسب الفروع الجديدة:</b></label>
+    <select id="newBranches" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Yes">فروع جديدة</option>
+    </select>
   </div>
 </div>
 
@@ -54,30 +89,8 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  const branches = [
-    { name: {en: "KR-01", ar: "KR-01"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6", lat: 24.6850636, lng: 46.6778853 },
-    { name: {en: "KR-02", ar: "KR-02"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9", lat: 24.70202977, lng: 46.69658292 },
-    { name: {en: "KR-03", ar: "KR-03"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/Re3Yi1neHt1RCkbd7", lat: 24.6936477, lng: 46.73231244 },
-    { name: {en: "KR-04", ar: "KR-04"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", lat: 24.73312631, lng: 46.67811156 },
-    { name: {en: "KR-05", ar: "KR-05"}, status: {en: "Temporarily Closed", ar: "مغلق مؤقتاً"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", lat: 24.72999439, lng: 46.7848146 },
-    { name: {en: "KR-06", ar: "KR-06"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", lat: 24.59377644, lng: 46.63322058 },
-    { name: {en: "KR-07", ar: "KR-07"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", lat: 24.66269858, lng: 46.70104818 },
-    { name: {en: "KR-08", ar: "KR-08"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", lat: 24.69634564, lng: 46.75150478 },
-    { name: {en: "KR-09", ar: "KR-09"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", lat: 24.74319138, lng: 46.80881829 },
-    { name: {en: "KR-10", ar: "KR-10"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", lat: 24.72398203, lng: 46.6538245 }
-  ];
-
-  function fillHours(defaultValue) {
-    return {
-      "السبت": defaultValue,
-      "الأحد": defaultValue,
-      "الإثنين": defaultValue,
-      "الثلاثاء": defaultValue,
-      "الأربعاء": defaultValue,
-      "الخميس": defaultValue,
-      "الجمعة": defaultValue
-    };
-  }
+  // Placeholder for branches array - this must be filled with all branches including the new ones
+  const branches = [...];
 
   const map = L.map('map').setView([24.7, 46.7], 11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -103,7 +116,8 @@
       fillOpacity: 0.8
     }).addTo(map);
 
-    const hoursHTML = Object.entries(branch.hours).map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
+    const hoursHTML = Object.entries(branch.hours)
+      .map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
 
     const popupContent = `
       <b>${branch.name.ar}</b><br>
@@ -124,35 +138,39 @@
   let currentStatusFilter = 'All';
 
   function filterByStatus(status) {
-    map.closePopup(); // يغلق أي popup مفتوح
     currentStatusFilter = status;
-
     document.querySelectorAll('.filter-buttons button').forEach(btn => btn.classList.remove('active'));
-    if (status === "All") document.getElementById('btnAll').classList.add('active');
-    else if (status === "Open") document.getElementById('btnOpen').classList.add('active');
-    else if (status === "Temporarily Closed") document.getElementById('btnTempClosed').classList.add('active');
-    else if (status === "Permanently Closed") document.getElementById('btnPermClosed').classList.add('active');
-
+    document.getElementById(`btn${status.replace(" ", "")}`).classList.add('active');
     filterBranches();
   }
 
   function filterBranches() {
     const term = document.getElementById("search").value.trim().toLowerCase();
+    const deliveryFilter = document.getElementById("deliveryFilter").value;
+    const brandFilter = document.getElementById("brandFilter").value;
+    const newBranchFilter = document.getElementById("newBranches").value;
+
     const visibleLatLngs = [];
 
     markers.forEach(obj => {
       const b = obj.data;
       const text = `${b.name.ar} ${b.name.en} ${b.status.ar} ${b.status.en} ${b.delivery.ar} ${b.remarks}`.toLowerCase();
+
       const matchesStatus = (currentStatusFilter === 'All' || b.status.en === currentStatusFilter);
       const matchesSearch = text.includes(term);
+      const matchesDelivery = (deliveryFilter === 'All' || b.delivery.en === deliveryFilter);
+      const matchesBrand = (brandFilter === 'All' || b.brand === brandFilter);
+      const matchesNew = (newBranchFilter === 'All' || (newBranchFilter === 'Yes' && b.isNew));
 
-      if (matchesStatus && matchesSearch) {
+      const visible = matchesStatus && matchesSearch && matchesDelivery && matchesBrand && matchesNew;
+
+      obj.marker.closePopup();
+      if (visible) {
         obj.marker.addTo(map);
         visibleLatLngs.push([b.lat, b.lng]);
       } else {
         map.removeLayer(obj.marker);
       }
-      obj.marker.closePopup();
     });
 
     if (visibleLatLngs.length > 0) {
