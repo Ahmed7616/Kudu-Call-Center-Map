@@ -8,12 +8,22 @@
   <style>
     body, html { margin: 0; padding: 0; height: 100%; font-family: Arial; direction: rtl; }
     #map { width: 100%; height: 100vh; }
-    .leaflet-tooltip { font-weight: bold; background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #aaa; }
+    .leaflet-tooltip.branch-label {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: #1E90FF;
+      font-weight: bold;
+      font-size: 14px;
+      padding: 0;
+      margin-bottom: 8px;
+      pointer-events: none; /* لا تؤثر على النقر */
+    }
     .search-box {
       position: absolute; top: 10px; right: 10px; z-index: 1100;
       background: white; padding: 10px; border-radius: 5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      width: 320px;
+      width: 300px;
     }
     .filter-section { margin-top: 8px; }
     .filter-buttons { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -45,7 +55,6 @@
 
 <div class="search-box">
   <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
-  
   <div class="filter-section">
     <label><b>فلترة حسب الحالة:</b></label>
     <div class="filter-buttons">
@@ -55,7 +64,6 @@
       <button onclick="filterByStatus('Permanently Closed')" id="btnPermClosed">مغلق نهائياً</button>
     </div>
   </div>
-  
   <div class="filter-section">
     <label for="deliveryFilter"><b>فلترة حسب خدمة التوصيل:</b></label>
     <select id="deliveryFilter" onchange="filterBranches()">
@@ -64,7 +72,6 @@
       <option value="No">بدون توصيل</option>
     </select>
   </div>
-  
   <div class="filter-section">
     <label for="brandFilter"><b>فلترة حسب العلامة التجارية:</b></label>
     <select id="brandFilter" onchange="filterBranches()">
@@ -74,28 +81,11 @@
       <option value="Franchise">Franchise</option>
     </select>
   </div>
-  
   <div class="filter-section">
     <label for="newBranches"><b>فلترة حسب الفروع الجديدة:</b></label>
     <select id="newBranches" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Yes">فروع جديدة</option>
-    </select>
-  </div>
-  
-  <div class="filter-section">
-    <label for="mallBranches"><b>فلترة حسب فروع المول:</b></label>
-    <select id="mallBranches" onchange="filterBranches()">
-      <option value="All">الكل</option>
-      <option value="Yes">فروع المول فقط</option>
-    </select>
-  </div>
-  
-  <div class="filter-section">
-    <label for="disconnectedBranches"><b>فلترة حسب الفروع غير المتصلة:</b></label>
-    <select id="disconnectedBranches" onchange="filterBranches()">
-      <option value="All">الكل</option>
-      <option value="Yes">غير متصلة فقط</option>
     </select>
   </div>
 </div>
@@ -105,23 +95,24 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const branches = [
-  { name: "KR-01", status: "Open", delivery: "Yes", brand: "Kudu", isNew: false, isMall: false, connected: true, lat: 24.6850636, lng: 46.6778853 },
-  { name: "KR-02", status: "Permanently Closed", delivery: "No", brand: "Kudu", isNew: false, isMall: false, connected: true, lat: 24.70202977, lng: 46.69658292 },
-  { name: "KR-03", status: "Temporarily Closed", delivery: "Yes", brand: "Kudu", isNew: false, isMall: false, connected: true, lat: 24.6936477, lng: 46.73231244 },
-  { name: "KR-04", status: "Permanently Closed", delivery: "No", brand: "Kudu", isNew: false, isMall: false, connected: true, lat: 24.73312631, lng: 46.67811156 },
-  { name: "KR-05", status: "Open", delivery: "No", brand: "Kudu", isNew: false, isMall: false, connected: true, lat: 24.72999439, lng: 46.7848146 },
-  { name: "AK-01", status: "Open", delivery: "No", brand: "Al Khafeef", isNew: false, isMall: false, connected: true, lat: 24.69381487, lng: 46.7322647 },
-  { name: "AK-02", status: "Open", delivery: "No", brand: "Al Khafeef", isNew: false, isMall: false, connected: true, lat: 24.70608257, lng: 46.83593183 },
-  { name: "AK-04", status: "Open", delivery: "No", brand: "Al Khafeef", isNew: false, isMall: false, connected: true, lat: 24.72404375, lng: 46.67470605 },
-  { name: "AK-06", status: "Open", delivery: "No", brand: "Al Khafeef", isNew: false, isMall: false, connected: true, lat: 24.66276614, lng: 46.70097824 },
-  { name: "KF-01", status: "Open", delivery: "Yes", brand: "Franchise", isNew: false, isMall: false, connected: true, lat: 24.57775533, lng: 46.5803146 },
-  { name: "KF-05", status: "Open", delivery: "Yes", brand: "Franchise", isNew: false, isMall: false, connected: true, lat: 24.59976269, lng: 46.74606857 },
-  { name: "KF-06", status: "Open", delivery: "Yes", brand: "Franchise", isNew: false, isMall: false, connected: true, lat: 24.76040671, lng: 46.81272199 },
-  { name: "KF-07", status: "Open", delivery: "Yes", brand: "Franchise", isNew: false, isMall: false, connected: true, lat: 30.9748409, lng: 41.01180804 },
-  
-  { name: "KR-120", status: "New Store", delivery: "No", brand: "Kudu", isNew: true, isMall: false, connected: true, lat: 24.55469633, lng: 46.4912223 },
-  { name: "KW-08", status: "Not connected", delivery: "No", brand: "Kudu", isNew: false, isMall: false, connected: false, lat: 24.47165771, lng: 39.61227692 },
-  { name: "KR-14", status: "Open", delivery: "No", brand: "Kudu", isNew: false, isMall: true, connected: true, lat: 24.70595164, lng: 46.6794972 }
+  { name: "KR-01", status: "Open", delivery: "Yes", brand: "Kudu", lat: 24.6850636, lng: 46.6778853, newBranch: false },
+  { name: "KR-02", status: "Permanently Closed", delivery: "No", brand: "Kudu", lat: 24.70202977, lng: 46.69658292, newBranch: false },
+  { name: "KR-03", status: "Temporarily Closed", delivery: "Yes", brand: "Kudu", lat: 24.6936477, lng: 46.73231244, newBranch: false },
+  { name: "KR-04", status: "Permanently Closed", delivery: "No", brand: "Kudu", lat: 24.73312631, lng: 46.67811156, newBranch: false },
+  { name: "KR-05", status: "Open", delivery: "No", brand: "Kudu", lat: 24.72999439, lng: 46.7848146, newBranch: false },
+  { name: "AK-01", status: "Open", delivery: "No", brand: "Al Khafeef", lat: 24.69381487, lng: 46.7322647, newBranch: false },
+  { name: "AK-02", status: "Open", delivery: "No", brand: "Al Khafeef", lat: 24.70608257, lng: 46.83593183, newBranch: false },
+  { name: "AK-04", status: "Open", delivery: "No", brand: "Al Khafeef", lat: 24.72404375, lng: 46.67470605, newBranch: false },
+  { name: "AK-06", status: "Open", delivery: "No", brand: "Al Khafeef", lat: 24.66276614, lng: 46.70097824, newBranch: false },
+  { name: "KF-01", status: "Open", delivery: "Yes", brand: "Franchise", lat: 24.57775533, lng: 46.5803146, newBranch: false },
+  { name: "KF-05", status: "Open", delivery: "Yes", brand: "Franchise", lat: 24.59976269, lng: 46.74606857, newBranch: false },
+  { name: "KF-06", status: "Open", delivery: "Yes", brand: "Franchise", lat: 24.76040671, lng: 46.81272199, newBranch: false },
+  { name: "KF-07", status: "Open", delivery: "Yes", brand: "Franchise", lat: 30.9748409, lng: 41.01180804, newBranch: false },
+
+  // الفروع الجديدة (مثال)
+  { name: "KR-120", status: "New Store", delivery: "No", brand: "Kudu", lat: 24.55469633, lng: 46.4912223, newBranch: true },
+  { name: "KW-08", status: "Not connected", delivery: "No", brand: "Kudu", lat: 24.47165771, lng: 39.61227692, newBranch: false },
+  { name: "KR-14", status: "Open", delivery: "No", brand: "Kudu", lat: 24.70595164, lng: 46.6794972, newBranch: false }
 ];
 
 const map = L.map('map').setView([24.7136, 46.6753], 11);
@@ -135,7 +126,12 @@ function showBranches(filtered) {
   markers = [];
   filtered.forEach(branch => {
     const marker = L.marker([branch.lat, branch.lng]).addTo(map)
-      .bindTooltip(`<span style="color:#1E90FF; font-weight:bold;">${branch.name}</span>`, { permanent: false });
+      .bindTooltip(branch.name, { 
+        permanent: true, 
+        direction: 'top', 
+        offset: [0, -10], 
+        className: 'branch-label' 
+      });
     markers.push(marker);
   });
 }
@@ -153,18 +149,15 @@ function filterBranches() {
   const delivery = document.getElementById("deliveryFilter").value;
   const brand = document.getElementById("brandFilter").value;
   const newOnly = document.getElementById("newBranches").value;
-  const mallOnly = document.getElementById("mallBranches").value;
-  const disconnectedOnly = document.getElementById("disconnectedBranches").value;
 
-  let filtered = branches.filter(b =>
-    b.name.toLowerCase().includes(search) &&
-    (currentStatus === "All" || b.status === currentStatus) &&
-    (delivery === "All" || b.delivery === delivery) &&
-    (brand === "All" || b.brand === brand) &&
-    (newOnly === "All" || (newOnly === "Yes" && b.isNew)) &&
-    (mallOnly === "All" || (mallOnly === "Yes" && b.isMall)) &&
-    (disconnectedOnly === "All" || (disconnectedOnly === "Yes" && !b.connected))
-  );
+  const filtered = branches.filter(b => {
+    const matchesSearch = b.name.toLowerCase().includes(search);
+    const matchesStatus = currentStatus === "All" || b.status === currentStatus;
+    const matchesDelivery = delivery === "All" || b.delivery === delivery;
+    const matchesBrand = brand === "All" || b.brand === brand;
+    const matchesNew = newOnly === "All" || (newOnly === "Yes" && b.newBranch);
+    return matchesSearch && matchesStatus && matchesDelivery && matchesBrand && matchesNew;
+  });
 
   showBranches(filtered);
 }
