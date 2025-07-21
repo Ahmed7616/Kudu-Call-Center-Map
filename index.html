@@ -2,137 +2,131 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>Kudu Call Center Map  </title>
+  <title>خريطة فروع Kudu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      direction: rtl;
-      font-family: Arial;
-    }
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
-    .leaflet-tooltip {
-      font-weight: bold;
-      color: #000;
-      background-color: #fff;
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid #aaa;
-    }
+    body, html { margin: 0; padding: 0; height: 100%; font-family: Arial; direction: rtl; }
+    #map { width: 100%; height: 100vh; }
+    .leaflet-tooltip { font-weight: bold; background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #aaa; }
     .search-box {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
-      background: white;
-      padding: 8px;
-      border-radius: 5px;
+      position: absolute; top: 10px; right: 10px; z-index: 1000;
+      background: white; padding: 10px; border-radius: 5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
-  <div class="search-box">
-    <input type="text" id="search" placeholder="search..." onkeyup="searchBranch()" />
-  </div>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    var branches = [
-      {
-        name: "KF-01",
-        lat: 24.57775533,
-        lng: 46.5803146,
-        status: "Temporarily Closed",
-        delivery: "Yes",
-        firstOrder: "6:00 AM",
-        lastOrder: "2:45 AM",
-        hours: {
-          Saturday: "05:00 AM - 04:00 AM",
-          Sunday: "05:00 AM - 04:00 AM",
-          Monday: "05:00 AM - 04:00 AM",
-          Tuesday: "05:00 AM - 04:00 AM",
-          Wednesday: "05:00 AM - 04:00 AM",
-          Thursday: "05:00 AM - 04:00 AM",
-          Friday: "05:00 AM - 04:00 AM"
-        },
-        remarks: "",
-        link: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9"
-      },
-      {
-        name: "KF-05",
-        lat: 24.59976269,
-        lng: 46.74606857,
-        status: "Open",
-        delivery: "Yes",
-        firstOrder: "6:00 AM",
-        lastOrder: "2:45 AM",
-        hours: {
-          Saturday:  "05:00 AM - 04:00 AM",
-          Sunday:    "05:00 AM - 04:00 AM",
-          Monday:    "05:00 AM - 04:00 AM",
-          Tuesday:   "05:00 AM - 04:00 AM",
-          Wednesday: "05:00 AM - 04:00 AM",
-          Thursday:  "05:00 AM - 04:00 AM",
-          Friday:    "05:00 AM - 04:00 AM"
-        },
-        remarks: "",
-        link: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A"
-      }
-    ];
+<div class="search-box">
+  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="searchBranch()" />
+</div>
 
-    var map = L.map('map').setView([24.59, 46.65], 11);
+<div id="map"></div>
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap',
-    }).addTo(map);
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const branches = [
+    {{
+      name: {{ en: "KF-01", ar: "KF-01" }},
+      status: {{ en: "Temporarily Closed", ar: "مغلق مؤقتًا" }},
+      delivery: {{ en: "Yes", ar: "نعم" }},
+      firstOrder: "6:00 AM",
+      lastOrder: "2:45 AM",
+      hours: {{
+        Saturday: "05:00 AM - 04:00 AM",
+        Sunday: "05:00 AM - 04:00 AM",
+        Monday: "05:00 AM - 04:00 AM",
+        Tuesday: "05:00 AM - 04:00 AM",
+        Wednesday: "05:00 AM - 04:00 AM",
+        Thursday: "05:00 AM - 04:00 AM",
+        Friday: "05:00 AM - 04:00 AM"
+      }},
+      remarks: "",
+      link: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9",
+      lat: 24.57775533,
+      lng: 46.5803146,
+      brand: "Kudu"
+    }},
+    {{
+      name: {{ en: "KF-05", ar: "KF-05" }},
+      status: {{ en: "Open", ar: "مفتوح" }},
+      delivery: {{ en: "Yes", ar: "نعم" }},
+      firstOrder: "6:00 AM",
+      lastOrder: "2:45 AM",
+      hours: {{
+        Saturday: "05:00 AM - 04:00 AM",
+        Sunday: "05:00 AM - 04:00 AM",
+        Monday: "05:00 AM - 04:00 AM",
+        Tuesday: "05:00 AM - 04:00 AM",
+        Wednesday: "05:00 AM - 04:00 AM",
+        Thursday: "05:00 AM - 04:00 AM",
+        Friday: "05:00 AM - 04:00 AM"
+      }},
+      remarks: "فرع نشط",
+      link: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A",
+      lat: 24.59976269,
+      lng: 46.74606857,
+      brand: "Kudu"
+    }}
+  ];
 
-    var markers = [];
+  const map = L.map('map').setView([24.7, 46.7], 11);
 
-    branches.forEach(branch => {
-      var marker = L.marker([branch.lat, branch.lng]).addTo(map);
-      marker.bindTooltip(branch.name, { permanent: true, direction: "right" }).openTooltip();
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {{
+    attribution: '© OpenStreetMap'
+  }}).addTo(map);
 
-      var hoursHTML = Object.entries(branch.hours).map(([day, hours]) => {
-        return `<b>${day}:</b> ${hours}`;
-      }).join('<br>');
+  const markers = [];
 
-      marker.bindPopup(`
-        <b>${branch.name}</b><br>
-        Status: ${branch.status}<br>
-        Delivery: ${branch.delivery}<br>
-        First Order: ${branch.firstOrder}<br>
-        Last Order: ${branch.lastOrder}<br>
-        <hr>
-        <b>Working Hours</b><br>
-        ${hoursHTML}<br>
-        <hr>
-        ${branch.remarks ? `<b>remarks:</b> ${branch.remarks}<br><hr>` : ''}
-        <a href="${branch.link}" target="_blank">Show on map</a>
-      `);
+  function getColorByStatus(status) {{
+    switch (status.en) {{
+      case "Open": return "green";
+      case "Temporarily Closed": return "orange";
+      case "Permanently Closed": return "red";
+      default: return "gray";
+    }}
+  }}
 
-      markers.push({ marker, name: branch.name });
-    });
+  branches.forEach(branch => {{
+    const icon = L.circleMarker([branch.lat, branch.lng], {{
+      radius: 8,
+      color: getColorByStatus(branch.status),
+      fillColor: getColorByStatus(branch.status),
+      fillOpacity: 0.8
+    }}).addTo(map);
 
-    function searchBranch() {
-      var term = document.getElementById("search").value.trim().toUpperCase();
-      markers.forEach(obj => {
-        if (obj.name.toUpperCase().includes(term)) {
-          map.setView(obj.marker.getLatLng(), 13);
-          obj.marker.openPopup();
-        }
-      });
-    }
-  </script>
+    const hoursHTML = Object.entries(branch.hours)
+      .map(([day, val]) => `<b>${{day}}:</b> ${{val}}`).join("<br>");
+
+    const popupContent = `
+      <b>${{branch.name.ar}}</b><br>
+      الحالة: ${{branch.status.ar}}<br>
+      التوصيل: ${{branch.delivery.ar}}<br>
+      من ${{branch.firstOrder}} إلى ${{branch.lastOrder}}<br>
+      <hr><b>ساعات العمل:</b><br>${{hoursHTML}}
+      ${{branch.remarks ? `<hr><b>ملاحظات:</b> ${{branch.remarks}}` : ""}}
+      <hr><a href="${{branch.link}}" target="_blank">عرض على الخريطة</a>
+    `;
+
+    icon.bindPopup(popupContent);
+    icon.bindTooltip(branch.name.ar, {{ permanent: true, direction: "right" }});
+
+    markers.push({{ marker: icon, data: branch }});
+  }});
+
+  function searchBranch() {{
+    const term = document.getElementById("search").value.trim().toLowerCase();
+    markers.forEach(obj => {{
+      const b = obj.data;
+      const text = `${{b.name.ar}} ${{b.name.en}} ${{b.status.ar}} ${{b.status.en}} ${{b.delivery.ar}} ${{b.remarks}}`.toLowerCase();
+      if (text.includes(term)) {{
+        map.setView([b.lat, b.lng], 14);
+        obj.marker.openPopup();
+      }}
+    }});
+  }}
+</script>
+
 </body>
 </html>
