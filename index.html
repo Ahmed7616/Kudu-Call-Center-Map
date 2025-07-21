@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8" />
-<title>خريطة فروع كودو</title>
+<title>خريطة فروع كودو مع مواعيد</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
@@ -98,7 +98,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // بيانات الفروع
   const stores = [
     {
       "Store Name": "KR-01",
@@ -109,7 +108,16 @@
       Remarks: "",
       Latitude: 24.6850636,
       Longitude: 46.6778853,
-      "Link Location": "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6"
+      "Link Location": "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "6:00 AM",
+      LastOrder: "1:45 AM"
     },
     {
       "Store Name": "KR-02",
@@ -120,7 +128,16 @@
       Remarks: "",
       Latitude: 24.70202977,
       Longitude: 46.69658292,
-      "Link Location": "https://maps.app.goo.gl/khRU8GrtAtrFUchh9"
+      "Link Location": "https://maps.app.goo.gl/khRU8GrtAtrFUchh9",
+      Saturday: "-",
+      Sunday: "-",
+      Monday: "-",
+      Tuesday: "-",
+      Wednesday: "-",
+      Thursday: "-",
+      Friday: "-",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KR-120",
@@ -131,7 +148,16 @@
       Remarks: "",
       Latitude: 24.55469633,
       Longitude: 46.4912223,
-      "Link Location": "https://maps.app.goo.gl/St92FyS7G1nTf2b3A"
+      "Link Location": "https://maps.app.goo.gl/St92FyS7G1nTf2b3A",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KS-17",
@@ -142,7 +168,16 @@
       Remarks: "",
       Latitude: 18.32404254,
       Longitude: 42.69488444,
-      "Link Location": "https://maps.app.goo.gl/TnwQ2M4xFcxhPn8MA"
+      "Link Location": "https://maps.app.goo.gl/TnwQ2M4xFcxhPn8MA",
+      Saturday: "-",
+      Sunday: "-",
+      Monday: "-",
+      Tuesday: "-",
+      Wednesday: "-",
+      Thursday: "-",
+      Friday: "-",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KS-25",
@@ -153,7 +188,16 @@
       Remarks: "",
       Latitude: 19.88339777,
       Longitude: 41.56790125,
-      "Link Location": "https://maps.app.goo.gl/hZuivSCB2Ke6FYLb8"
+      "Link Location": "https://maps.app.goo.gl/hZuivSCB2Ke6FYLb8",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KE-30",
@@ -164,7 +208,16 @@
       Remarks: "",
       Latitude: 26.32372362,
       Longitude: 50.16481656,
-      "Link Location": "https://maps.app.goo.gl/igzF1DhAe2Kye3h77"
+      "Link Location": "https://maps.app.goo.gl/igzF1DhAe2Kye3h77",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "AK-06",
@@ -175,7 +228,16 @@
       Remarks: "",
       Latitude: 24.66276614,
       Longitude: 46.70097824,
-      "Link Location": "https://maps.app.goo.gl/BJcqEbhFgF2VWxaa8"
+      "Link Location": "https://maps.app.goo.gl/BJcqEbhFgF2VWxaa8",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KR-22",
@@ -186,7 +248,16 @@
       Remarks: "Pickup only - Mall",
       Latitude: 24.69006909,
       Longitude: 46.68657897,
-      "Link Location": "https://maps.app.goo.gl/J9nUXamE7EoTvazD7"
+      "Link Location": "https://maps.app.goo.gl/J9nUXamE7EoTvazD7",
+      Saturday: "08:30 AM - 09:30 PM",
+      Sunday: "08:30 AM - 09:30 PM",
+      Monday: "08:30 AM - 09:30 PM",
+      Tuesday: "08:30 AM - 09:30 PM",
+      Wednesday: "08:30 AM - 09:30 PM",
+      Thursday: "08:30 AM - 09:30 PM",
+      Friday: "01:00 PM - 09:30 PM",
+      FirstOrder: "",
+      LastOrder: ""
     },
     {
       "Store Name": "KR-16",
@@ -197,7 +268,16 @@
       Remarks: "",
       Latitude: 24.76021044,
       Longitude: 46.67369502,
-      "Link Location": "https://maps.app.goo.gl/NfteRPsuDkQK1oab8"
+      "Link Location": "https://maps.app.goo.gl/NfteRPsuDkQK1oab8",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "6:00 AM",
+      LastOrder: "1:45 AM"
     },
     {
       "Store Name": "KF-01",
@@ -208,7 +288,16 @@
       Remarks: "",
       Latitude: 24.57775533,
       Longitude: 46.5803146,
-      "Link Location": "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9"
+      "Link Location": "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "6:00 AM",
+      LastOrder: "2:45 AM"
     },
     {
       "Store Name": "KF-05",
@@ -219,7 +308,16 @@
       Remarks: "",
       Latitude: 24.59976269,
       Longitude: 46.74606857,
-      "Link Location": "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A"
+      "Link Location": "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "6:00 AM",
+      LastOrder: "2:45 AM"
     },
     {
       "Store Name": "KF-06",
@@ -230,7 +328,16 @@
       Remarks: "",
       Latitude: 24.76040671,
       Longitude: 46.81272199,
-      "Link Location": "https://maps.app.goo.gl/1NnAawxGw9bTnsj37"
+      "Link Location": "https://maps.app.goo.gl/1NnAawxGw9bTnsj37",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "6:00 AM",
+      LastOrder: "2:45 AM"
     },
     {
       "Store Name": "KF-07",
@@ -241,35 +348,44 @@
       Remarks: "",
       Latitude: 30.9748409,
       Longitude: 41.01180804,
-      "Link Location": "https://maps.app.goo.gl/iF7eDXcAZBDxdcoQ7"
+      "Link Location": "https://maps.app.goo.gl/iF7eDXcAZBDxdcoQ7",
+      Saturday: "06:00 AM - 04:00 AM",
+      Sunday: "06:00 AM - 04:00 AM",
+      Monday: "06:00 AM - 04:00 AM",
+      Tuesday: "06:00 AM - 04:00 AM",
+      Wednesday: "06:00 AM - 04:00 AM",
+      Thursday: "06:00 AM - 04:00 AM",
+      Friday: "06:00 AM - 04:00 AM",
+      FirstOrder: "7:00 AM",
+      LastOrder: "2:45 AM"
     },
     {
       "Store Name": "AK-52",
       Status: "New Store",
       Delivery: "",
-      Brand: "",
+      Brand: "Al Khafeef",
       "Delivery Service": "",
       Remarks: "",
       Latitude: 24.83625174,
       Longitude: 46.68316666,
-      "Link Location": "https://maps.app.goo.gl/z883L5pTnL2Lp7MSA"
+      "Link Location": "https://maps.app.goo.gl/z883L5pTnL2Lp7MSA",
+      Saturday: "05:00 AM - 04:00 AM",
+      Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM",
+      Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM",
+      Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM",
+      FirstOrder: "",
+      LastOrder: ""
     }
   ];
 
   const brandColors = {
-    Kudu: "#003366",
+    "Kudu": "#0033cc",
     "Al Khafeef": "#FFD700",
-    Franchise: "#ADD8E6",
+    "Franchise": "#28a745",
     "": "#808080"
-  };
-
-  const statusColors = {
-    Open: "#4CAF50",
-    "Permanently Closed": "#FF0000",
-    "New Store": "#0000FF",
-    "Not connected": "#FFA500",
-    Replaced: "#800080",
-    "Temporarily Closed": "#A9A9A9"
   };
 
   let map = L.map("map").setView([24.7, 46.7], 6);
@@ -283,81 +399,6 @@
 
   function createMarker(store) {
     let color = brandColors[store.Brand] || "#808080";
-    let statusColor = statusColors[store.Status] || "#000000";
 
-    // تلوين الماركر بتداخل بين لون العلامة التجارية ولون الحالة (تدرج تقريبي)
     let iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="30" viewBox="0 0 24 30">
-      <path fill="${statusColor}" d="M12 0C7.031 0 3 4.031 3 9c0 7.5 9 21 9 21s9-13.5 9-21c0-4.969-4.031-9-9-9z"/>
-      <circle fill="${color}" cx="12" cy="9" r="5"/>
-    </svg>`;
-
-    let icon = L.divIcon({
-      html: iconHtml,
-      className: "",
-      iconSize: [24, 30],
-      iconAnchor: [12, 30],
-      popupAnchor: [0, -30],
-      tooltipAnchor: [12, -15],
-    });
-
-    let marker = L.marker([store.Latitude, store.Longitude], { icon: icon });
-
-    let popupContent = `
-      <b>${store["Store Name"]}</b><br/>
-      الحالة: ${store.Status}<br/>
-      التوصيل: ${store.Delivery || "غير محدد"}<br/>
-      العلامة التجارية: ${store.Brand || "غير محدد"}<br/>
-      مزود التوصيل: ${store["Delivery Service"] || "غير محدد"}<br/>
-      ملاحظات: ${store.Remarks || "لا توجد"}<br/>
-      <a href="${store["Link Location"]}" target="_blank">رابط الموقع على الخريطة</a>
-    `;
-
-    marker.bindPopup(popupContent);
-    marker.bindTooltip(store["Store Name"], { permanent: true, direction: "top" });
-
-    return marker;
-  }
-
-  function addMarkers(filteredStores) {
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-
-    filteredStores.forEach(store => {
-      let marker = createMarker(store);
-      marker.addTo(map);
-      markers.push(marker);
-    });
-  }
-
-  function filterBranches() {
-    const searchText = document.getElementById("search").value.trim().toLowerCase();
-    const statusFilter = document.getElementById("statusFilter").value;
-    const deliveryFilter = document.getElementById("deliveryFilter").value;
-    const brandFilter = document.getElementById("brandFilter").value;
-    const deliveryServiceFilter = document.getElementById("deliveryServiceFilter").value;
-    const remarksFilter = document.getElementById("remarksFilter").value;
-
-    let filtered = stores.filter(store => {
-      if (searchText && !store["Store Name"].toLowerCase().includes(searchText)) return false;
-      if (statusFilter !== "All" && store.Status !== statusFilter) return false;
-      if (deliveryFilter !== "All" && store.Delivery !== deliveryFilter) return false;
-      if (brandFilter !== "All" && store.Brand !== brandFilter) return false;
-      if (deliveryServiceFilter !== "All" && store["Delivery Service"] !== deliveryServiceFilter) return false;
-      if (remarksFilter !== "All" && store.Remarks !== remarksFilter) return false;
-      return true;
-    });
-
-    addMarkers(filtered);
-
-    if (filtered.length > 0) {
-      let group = new L.featureGroup(markers);
-      map.fitBounds(group.getBounds().pad(0.1));
-    }
-  }
-
-  // أول تحميل
-  filterBranches();
-
-</script>
-</body>
-</html>
+      <path fill="${color}" d="M12 0C7.031 0 3 4.031 3 9c0 7.5 9 21 9 21s9-13.5 
