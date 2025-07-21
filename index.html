@@ -1,36 +1,113 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" >
 <head>
-<meta charset="UTF-8" />
-<title>خريطة فروع كودو مع المواعيد</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
-<style>
-  body, html {
-    margin: 0; padding: 0; height: 100%; font-family: Arial, sans-serif; direction: rtl;
-  }
-  #map {
-    height: 100vh; width: 100%;
-  }
-  .leaflet-tooltip {
-    font-weight: bold;
-    background: transparent !important;
-    color: black !important;
-    border: none !important;
-    box-shadow: none !important;
-    font-size: 13px;
-    padding: 0;
-    white-space: nowrap;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>خريطة فروع كودو مع الفلاتر والمواعيد</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; font-family: Arial, sans-serif; direction: rtl;
+    }
+    #map {
+      height: 100vh; width: 100%;
+    }
+    .leaflet-tooltip {
+      font-weight: bold;
+      background: white !important;
+      color: black !important;
+      border: 1px solid #aaa !important;
+      border-radius: 3px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      font-size: 13px;
+      padding: 3px 6px;
+      white-space: nowrap;
+    }
+    .search-box {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1100;
+      background: white;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      width: 320px;
+      max-height: 95vh;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+    .filter-section {
+      margin-top: 8px;
+    }
+    .filter-section label {
+      font-weight: bold;
+    }
+    .filter-section select {
+      width: 100%;
+      margin-top: 4px;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
+<div class="search-box">
+  <input
+    type="text"
+    id="search"
+    placeholder="ابحث عن فرع..."
+    onkeyup="filterBranches()"
+    style="width:100%;padding:6px;border-radius:4px;border:1px solid #ccc;font-size:14px;"
+  />
+  <div class="filter-section">
+    <label for="statusFilter">حالة الفروع:</label>
+    <select id="statusFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Open">مفتوح</option>
+      <option value="Permanently Closed">مغلق نهائيًا</option>
+      <option value="New Store">فرع جديد</option>
+      <option value="Not connected">غير متصل</option>
+      <option value="Replaced">تم الاستبدال</option>
+      <option value="Temporarily Closed">مغلق مؤقتًا</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="deliveryFilter">خدمة التوصيل:</label>
+    <select id="deliveryFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Yes">يوجد</option>
+      <option value="No">لا يوجد</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="brandFilter">العلامة التجارية:</label>
+    <select id="brandFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Kudu">Kudu</option>
+      <option value="Al Khafeef">Al Khafeef</option>
+      <option value="Franchise">Franchise</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="deliveryServiceFilter">مزود التوصيل:</label>
+    <select id="deliveryServiceFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Holouly service">Holouly service</option>
+    </select>
+  </div>
+</div>
+
 <div id="map"></div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+  // بيانات الفروع كما زودتني بها
   const stores = [
     {
       name: "KR-01",
@@ -348,54 +425,18 @@
     "Franchise": "#28a745"
   };
 
-  const map = L.map('map').setView([24.7, 46.7], 6);
+  // إنشاء الخريطة
+  const map = L.map("map").setView([24.7, 46.7], 6);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   }).addTo(map);
 
-  stores.forEach(store => {
+  let markers = [];
+
+  function createMarker(store) {
     const color = brandColors[store.brand] || "#555";
 
     const markerIcon = L.divIcon({
-      html: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="30" viewBox="0 0 24 30">
-        <path fill="${color}" stroke="#333" stroke-width="1" d="M12 0C7.031 0 3 4.031 3 9c0 7.5 9 21 9 21s9-13.5 9-21c0-4.969-4.031-9-9-9z"/>
-        <circle fill="white" cx="12" cy="9" r="4"/></svg>`,
-      className: '',
-      iconSize: [24, 30],
-      iconAnchor: [12, 30],
-      popupAnchor: [0, -30]
-    });
-
-    const marker = L.marker([store.lat, store.lon], { icon: markerIcon }).addTo(map);
-
-    const scheduleText = `
-      السبت: ${store.schedule.Saturday}<br/>
-      الأحد: ${store.schedule.Sunday}<br/>
-      الإثنين: ${store.schedule.Monday}<br/>
-      الثلاثاء: ${store.schedule.Tuesday}<br/>
-      الأربعاء: ${store.schedule.Wednesday}<br/>
-      الخميس: ${store.schedule.Thursday}<br/>
-      الجمعة: ${store.schedule.Friday}
-    `;
-
-    const popupContent = `
-      <b>${store.name}</b><br/>
-      الحالة: ${store.status}<br/>
-      التوصيل: ${store.delivery}<br/>
-      العلامة التجارية: ${store.brand}<br/>
-      مزود التوصيل: ${store.deliveryService || "-"}<br/>
-      أول طلب: ${store.firstOrder || "-"}<br/>
-      آخر طلب: ${store.lastOrder || "-"}<br/>
-      <b>مواعيد العمل:</b><br/>
-      ${scheduleText}
-      ${store.remarks ? `<br/><b>ملاحظات:</b> ${store.remarks}` : ""}
-      <br/><a href="${store.link}" target="_blank">رابط الموقع</a>
-    `;
-
-    marker.bindPopup(popupContent);
-  });
-</script>
-</body>
-</html>
+      html: `<svg xmlns
