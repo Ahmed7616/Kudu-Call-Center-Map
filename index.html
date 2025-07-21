@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>kudu call center map</title>
+  <title>خريطة فروع Kudu</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -55,220 +55,31 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   const branches = [
-    {
-      name: { en: "KR-01", ar: "KR-01" },
-      status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "Yes", ar: "نعم" },
-      firstOrder: "6:00 AM",
-      lastOrder: "1:45 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
-      lat: 24.6850636,
-      lng: 46.6778853,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-02", ar: "KR-02" },
-      status: { en: "Permanently Closed", ar: "مغلق نهائياً" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "-",
-      lastOrder: "-",
-      hours: {
-        السبت: "-",
-        الأحد: "-",
-        الإثنين: "-",
-        الثلاثاء: "-",
-        الأربعاء: "-",
-        الخميس: "-",
-        الجمعة: "-"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9",
-      lat: 24.70202977,
-      lng: 46.69658292,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-03", ar: "KR-03" },
-      status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "Yes", ar: "نعم" },
-      firstOrder: "6:00 AM",
-      lastOrder: "1:45 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/Re3Yi1neHt1RCkbd7",
-      lat: 24.6936477,
-      lng: 46.73231244,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-04", ar: "KR-04" },
-      status: { en: "Permanently Closed", ar: "مغلق نهائياً" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "-",
-      lastOrder: "-",
-      hours: {
-        السبت: "-",
-        الأحد: "-",
-        الإثنين: "-",
-        الثلاثاء: "-",
-        الأربعاء: "-",
-        الخميس: "-",
-        الجمعة: "-"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8",
-      lat: 24.73312631,
-      lng: 46.67811156,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-05", ar: "KR-05" },
-      status: { en: "Temporarily Closed", ar: "مغلق مؤقتاً" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "05:00 AM",
-      lastOrder: "04:00 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5",
-      lat: 24.72999439,
-      lng: 46.7848146,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-06", ar: "KR-06" },
-      status: { en: "Permanently Closed", ar: "مغلق نهائياً" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "-",
-      lastOrder: "-",
-      hours: {
-        السبت: "-",
-        الأحد: "-",
-        الإثنين: "-",
-        الثلاثاء: "-",
-        الأربعاء: "-",
-        الخميس: "-",
-        الجمعة: "-"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8",
-      lat: 24.59377644,
-      lng: 46.63322058,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-07", ar: "KR-07" },
-      status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "05:00 AM",
-      lastOrder: "04:00 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8",
-      lat: 24.66269858,
-      lng: 46.70104818,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-08", ar: "KR-08" },
-      status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "05:00 AM",
-      lastOrder: "04:00 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA",
-      lat: 24.69634564,
-      lng: 46.75150478,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-09", ar: "KR-09" },
-      status: { en: "Open", ar: "مفتوح" },
-      delivery: { en: "Yes", ar: "نعم" },
-      firstOrder: "6:00 AM",
-      lastOrder: "1:45 AM",
-      hours: {
-        السبت: "05:00 AM - 04:00 AM",
-        الأحد: "05:00 AM - 04:00 AM",
-        الإثنين: "05:00 AM - 04:00 AM",
-        الثلاثاء: "05:00 AM - 04:00 AM",
-        الأربعاء: "05:00 AM - 04:00 AM",
-        الخميس: "05:00 AM - 04:00 AM",
-        الجمعة: "05:00 AM - 04:00 AM"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6",
-      lat: 24.74319138,
-      lng: 46.80881829,
-      brand: "Kudu"
-    },
-    {
-      name: { en: "KR-10", ar: "KR-10" },
-      status: { en: "Permanently Closed", ar: "مغلق نهائياً" },
-      delivery: { en: "No", ar: "لا" },
-      firstOrder: "-",
-      lastOrder: "-",
-      hours: {
-        السبت: "-",
-        الأحد: "-",
-        الإثنين: "-",
-        الثلاثاء: "-",
-        الأربعاء: "-",
-        الخميس: "-",
-        الجمعة: "-"
-      },
-      remarks: "",
-      link: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8",
-      lat: 24.72398203,
-      lng: 46.6538245,
-      brand: "Kudu"
-    }
+    { name: {en: "KR-01", ar: "KR-01"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6", lat: 24.6850636, lng: 46.6778853 },
+    { name: {en: "KR-02", ar: "KR-02"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9", lat: 24.70202977, lng: 46.69658292 },
+    { name: {en: "KR-03", ar: "KR-03"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/Re3Yi1neHt1RCkbd7", lat: 24.6936477, lng: 46.73231244 },
+    { name: {en: "KR-04", ar: "KR-04"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", lat: 24.73312631, lng: 46.67811156 },
+    { name: {en: "KR-05", ar: "KR-05"}, status: {en: "Temporarily Closed", ar: "مغلق مؤقتاً"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", lat: 24.72999439, lng: 46.7848146 },
+    { name: {en: "KR-06", ar: "KR-06"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", lat: 24.59377644, lng: 46.63322058 },
+    { name: {en: "KR-07", ar: "KR-07"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", lat: 24.66269858, lng: 46.70104818 },
+    { name: {en: "KR-08", ar: "KR-08"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", lat: 24.69634564, lng: 46.75150478 },
+    { name: {en: "KR-09", ar: "KR-09"}, status: {en: "Open", ar: "مفتوح"}, delivery: {en: "Yes", ar: "نعم"}, firstOrder: "6:00 AM", lastOrder: "1:45 AM", hours: fillHours("05:00 AM - 04:00 AM"), remarks: "", link: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", lat: 24.74319138, lng: 46.80881829 },
+    { name: {en: "KR-10", ar: "KR-10"}, status: {en: "Permanently Closed", ar: "مغلق نهائيًا"}, delivery: {en: "No", ar: "لا"}, firstOrder: "-", lastOrder: "-", hours: fillHours("-"), remarks: "", link: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", lat: 24.72398203, lng: 46.6538245 }
   ];
 
-  const map = L.map('map').setView([24.7, 46.7], 11);
+  function fillHours(defaultValue) {
+    return {
+      "السبت": defaultValue,
+      "الأحد": defaultValue,
+      "الإثنين": defaultValue,
+      "الثلاثاء": defaultValue,
+      "الأربعاء": defaultValue,
+      "الخميس": defaultValue,
+      "الجمعة": defaultValue
+    };
+  }
 
+  const map = L.map('map').setView([24.7, 46.7], 11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
   }).addTo(map);
@@ -292,8 +103,7 @@
       fillOpacity: 0.8
     }).addTo(map);
 
-    const hoursHTML = Object.entries(branch.hours)
-      .map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
+    const hoursHTML = Object.entries(branch.hours).map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
 
     const popupContent = `
       <b>${branch.name.ar}</b><br>
@@ -314,12 +124,15 @@
   let currentStatusFilter = 'All';
 
   function filterByStatus(status) {
+    map.closePopup(); // يغلق أي popup مفتوح
     currentStatusFilter = status;
+
     document.querySelectorAll('.filter-buttons button').forEach(btn => btn.classList.remove('active'));
     if (status === "All") document.getElementById('btnAll').classList.add('active');
     else if (status === "Open") document.getElementById('btnOpen').classList.add('active');
     else if (status === "Temporarily Closed") document.getElementById('btnTempClosed').classList.add('active');
     else if (status === "Permanently Closed") document.getElementById('btnPermClosed').classList.add('active');
+
     filterBranches();
   }
 
@@ -345,12 +158,6 @@
     if (visibleLatLngs.length > 0) {
       const bounds = L.latLngBounds(visibleLatLngs);
       map.fitBounds(bounds.pad(0.3));
-      for (const obj of markers) {
-        if (map.hasLayer(obj.marker)) {
-          obj.marker.openPopup();
-          break;
-        }
-      }
     }
   }
 
