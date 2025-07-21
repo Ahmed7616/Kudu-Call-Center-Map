@@ -10,16 +10,44 @@
     #map { width: 100%; height: 100vh; }
     .leaflet-tooltip { font-weight: bold; background: #fff; padding: 2px 6px; border-radius: 4px; border: 1px solid #aaa; }
     .search-box {
-      position: absolute; top: 10px; right: 10px; z-index: 1000;
+      position: absolute; top: 10px; right: 10px; z-index: 1100;
       background: white; padding: 10px; border-radius: 5px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      width: 260px;
+    }
+    .filter-buttons {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .filter-buttons button {
+      flex: 1;
+      padding: 6px 8px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background-color: #4CAF50;
+      color: white;
     }
   </style>
 </head>
 <body>
 
 <div class="search-box">
-  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="searchBranch()" />
+  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
+  <div class="filter-buttons">
+    <button onclick="filterByStatus('All')" id="btnAll" class="active">الكل</button>
+    <button onclick="filterByStatus('Open')" id="btnOpen">مفتوح</button>
+    <button onclick="filterByStatus('Temporarily Closed')" id="btnTempClosed">مغلق مؤقتاً</button>
+    <button onclick="filterByStatus('Permanently Closed')" id="btnPermClosed">مغلق نهائياً</button>
+  </div>
 </div>
 
 <div id="map"></div>
@@ -34,13 +62,13 @@
       firstOrder: "05:00 AM",
       lastOrder: "04:00 AM",
       hours: {
-        Saturday: "05:00 AM - 04:00 AM",
-        Sunday: "05:00 AM - 04:00 AM",
-        Monday: "05:00 AM - 04:00 AM",
-        Tuesday: "05:00 AM - 04:00 AM",
-        Wednesday: "05:00 AM - 04:00 AM",
-        Thursday: "05:00 AM - 04:00 AM",
-        Friday: "05:00 AM - 04:00 AM"
+        السبت: "05:00 AM - 04:00 AM",
+        الأحد: "05:00 AM - 04:00 AM",
+        الإثنين: "05:00 AM - 04:00 AM",
+        الثلاثاء: "05:00 AM - 04:00 AM",
+        الأربعاء: "05:00 AM - 04:00 AM",
+        الخميس: "05:00 AM - 04:00 AM",
+        الجمعة: "05:00 AM - 04:00 AM"
       },
       remarks: "",
       link: "https://maps.app.goo.gl/LHVWhsfyVEchRgwU8",
@@ -55,18 +83,40 @@
       firstOrder: "05:00 AM",
       lastOrder: "04:00 AM",
       hours: {
-        Saturday: "05:00 AM - 04:00 AM",
-        Sunday: "05:00 AM - 04:00 AM",
-        Monday: "05:00 AM - 04:00 AM",
-        Tuesday: "05:00 AM - 04:00 AM",
-        Wednesday: "05:00 AM - 04:00 AM",
-        Thursday: "05:00 AM - 04:00 AM",
-        Friday: "05:00 AM - 04:00 AM"
+        السبت: "05:00 AM - 04:00 AM",
+        الأحد: "05:00 AM - 04:00 AM",
+        الإثنين: "05:00 AM - 04:00 AM",
+        الثلاثاء: "05:00 AM - 04:00 AM",
+        الأربعاء: "05:00 AM - 04:00 AM",
+        الخميس: "05:00 AM - 04:00 AM",
+        الجمعة: "05:00 AM - 04:00 AM"
       },
       remarks: "",
       link: "https://maps.app.goo.gl/ABvoJUax48RF1TN47",
       lat: 24.70608257,
       lng: 46.83593183,
+      brand: "Al Khafeef"
+    },
+    // مثال على فرع مغلق مؤقتاً
+    {
+      name: { en: "AK-03", ar: "AK-03" },
+      status: { en: "Temporarily Closed", ar: "مغلق مؤقتاً" },
+      delivery: { en: "No", ar: "لا" },
+      firstOrder: "-",
+      lastOrder: "-",
+      hours: {
+        السبت: "-",
+        الأحد: "-",
+        الإثنين: "-",
+        الثلاثاء: "-",
+        الأربعاء: "-",
+        الخميس: "-",
+        الجمعة: "-"
+      },
+      remarks: "مغلق للصيانة",
+      link: "https://maps.app.goo.gl/example3",
+      lat: 24.720000,
+      lng: 46.760000,
       brand: "Al Khafeef"
     }
   ];
@@ -80,7 +130,7 @@
   const markers = [];
 
   function getColorByStatus(status) {
-    switch (status.en) {
+    switch (status) {
       case "Open": return "green";
       case "Temporarily Closed": return "orange";
       case "Permanently Closed": return "red";
@@ -88,11 +138,12 @@
     }
   }
 
+  // إنشاء العلامات
   branches.forEach(branch => {
     const icon = L.circleMarker([branch.lat, branch.lng], {
       radius: 8,
-      color: getColorByStatus(branch.status),
-      fillColor: getColorByStatus(branch.status),
+      color: getColorByStatus(branch.status.en),
+      fillColor: getColorByStatus(branch.status.en),
       fillOpacity: 0.8
     }).addTo(map);
 
@@ -115,17 +166,68 @@
     markers.push({ marker: icon, data: branch });
   });
 
-  function searchBranch() {
+  let currentStatusFilter = 'All';
+
+  // دالة لتحديث التصفية حسب الحالة
+  function filterByStatus(status) {
+    currentStatusFilter = status;
+    // تحديث أزرار التصفية
+    document.querySelectorAll('.filter-buttons button').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    if (status === "All") {
+      document.getElementById('btnAll').classList.add('active');
+    } else if (status === "Open") {
+      document.getElementById('btnOpen').classList.add('active');
+    } else if (status === "Temporarily Closed") {
+      document.getElementById('btnTempClosed').classList.add('active');
+    } else if (status === "Permanently Closed") {
+      document.getElementById('btnPermClosed').classList.add('active');
+    }
+
+    filterBranches();
+  }
+
+  // دالة البحث والتصفية معاً
+  function filterBranches() {
     const term = document.getElementById("search").value.trim().toLowerCase();
+
+    // لتخزين مواقع الفروع المرئية لضبط نطاق الخريطة
+    const visibleLatLngs = [];
+
     markers.forEach(obj => {
       const b = obj.data;
       const text = `${b.name.ar} ${b.name.en} ${b.status.ar} ${b.status.en} ${b.delivery.ar} ${b.remarks}`.toLowerCase();
-      if (text.includes(term)) {
-        map.setView([b.lat, b.lng], 14);
-        obj.marker.openPopup();
+
+      const matchesStatus = (currentStatusFilter === 'All' || b.status.en === currentStatusFilter);
+      const matchesSearch = text.includes(term);
+
+      if (matchesStatus && matchesSearch) {
+        obj.marker.addTo(map);
+        visibleLatLngs.push([b.lat, b.lng]);
+      } else {
+        map.removeLayer(obj.marker);
       }
+      obj.marker.closePopup();
     });
+
+    // ضبط عرض الخريطة ليشمل كل الفروع الظاهرة
+    if (visibleLatLngs.length > 0) {
+      const bounds = L.latLngBounds(visibleLatLngs);
+      map.fitBounds(bounds.pad(0.3));
+      // افتح أول نافذة منبثقة فقط لتجربة أفضل
+      markers.forEach(obj => {
+        if (map.hasLayer(obj.marker) && !obj.marker.getPopup().isOpen()) {
+          obj.marker.openPopup();
+          return;
+        }
+      });
+    }
   }
+
+  // تهيئة العرض عند تحميل الصفحة
+  filterBranches();
+
 </script>
 
 </body>
