@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>خريطة فروع Kudu</title>
+  <title>خريطة فروع الخفيف</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -27,13 +27,13 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   const branches = [
-    {{
-      name: {{ en: "KF-01", ar: "KF-01" }},
-      status: {{ en: "Temporarily Closed", ar: "مغلق مؤقتًا" }},
-      delivery: {{ en: "Yes", ar: "نعم" }},
-      firstOrder: "6:00 AM",
-      lastOrder: "2:45 AM",
-      hours: {{
+    {
+      name: { en: "AK-01", ar: "AK-01" },
+      status: { en: "Open", ar: "مفتوح" },
+      delivery: { en: "Yes", ar: "نعم" },
+      firstOrder: "05:00 AM",
+      lastOrder: "04:00 AM",
+      hours: {
         Saturday: "05:00 AM - 04:00 AM",
         Sunday: "05:00 AM - 04:00 AM",
         Monday: "05:00 AM - 04:00 AM",
@@ -41,20 +41,20 @@
         Wednesday: "05:00 AM - 04:00 AM",
         Thursday: "05:00 AM - 04:00 AM",
         Friday: "05:00 AM - 04:00 AM"
-      }},
+      },
       remarks: "",
-      link: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9",
-      lat: 24.57775533,
-      lng: 46.5803146,
-      brand: "Kudu"
-    }},
-    {{
-      name: {{ en: "KF-05", ar: "KF-05" }},
-      status: {{ en: "Open", ar: "مفتوح" }},
-      delivery: {{ en: "Yes", ar: "نعم" }},
-      firstOrder: "6:00 AM",
-      lastOrder: "2:45 AM",
-      hours: {{
+      link: "https://maps.app.goo.gl/LHVWhsfyVEchRgwU8",
+      lat: 24.69381487,
+      lng: 46.7322647,
+      brand: "Al Khafeef"
+    },
+    {
+      name: { en: "AK-02", ar: "AK-02" },
+      status: { en: "Open", ar: "مفتوح" },
+      delivery: { en: "Yes", ar: "نعم" },
+      firstOrder: "05:00 AM",
+      lastOrder: "04:00 AM",
+      hours: {
         Saturday: "05:00 AM - 04:00 AM",
         Sunday: "05:00 AM - 04:00 AM",
         Monday: "05:00 AM - 04:00 AM",
@@ -62,70 +62,70 @@
         Wednesday: "05:00 AM - 04:00 AM",
         Thursday: "05:00 AM - 04:00 AM",
         Friday: "05:00 AM - 04:00 AM"
-      }},
-      remarks: "فرع نشط",
-      link: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A",
-      lat: 24.59976269,
-      lng: 46.74606857,
-      brand: "Kudu"
-    }}
+      },
+      remarks: "",
+      link: "https://maps.app.goo.gl/ABvoJUax48RF1TN47",
+      lat: 24.70608257,
+      lng: 46.83593183,
+      brand: "Al Khafeef"
+    }
   ];
 
   const map = L.map('map').setView([24.7, 46.7], 11);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {{
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
-  }}).addTo(map);
+  }).addTo(map);
 
   const markers = [];
 
-  function getColorByStatus(status) {{
-    switch (status.en) {{
+  function getColorByStatus(status) {
+    switch (status.en) {
       case "Open": return "green";
       case "Temporarily Closed": return "orange";
       case "Permanently Closed": return "red";
       default: return "gray";
-    }}
-  }}
+    }
+  }
 
-  branches.forEach(branch => {{
-    const icon = L.circleMarker([branch.lat, branch.lng], {{
+  branches.forEach(branch => {
+    const icon = L.circleMarker([branch.lat, branch.lng], {
       radius: 8,
       color: getColorByStatus(branch.status),
       fillColor: getColorByStatus(branch.status),
       fillOpacity: 0.8
-    }}).addTo(map);
+    }).addTo(map);
 
     const hoursHTML = Object.entries(branch.hours)
-      .map(([day, val]) => `<b>${{day}}:</b> ${{val}}`).join("<br>");
+      .map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
 
     const popupContent = `
-      <b>${{branch.name.ar}}</b><br>
-      الحالة: ${{branch.status.ar}}<br>
-      التوصيل: ${{branch.delivery.ar}}<br>
-      من ${{branch.firstOrder}} إلى ${{branch.lastOrder}}<br>
-      <hr><b>ساعات العمل:</b><br>${{hoursHTML}}
-      ${{branch.remarks ? `<hr><b>ملاحظات:</b> ${{branch.remarks}}` : ""}}
-      <hr><a href="${{branch.link}}" target="_blank">عرض على الخريطة</a>
+      <b>${branch.name.ar}</b><br>
+      الحالة: ${branch.status.ar}<br>
+      التوصيل: ${branch.delivery.ar}<br>
+      من ${branch.firstOrder} إلى ${branch.lastOrder}<br>
+      <hr><b>ساعات العمل:</b><br>${hoursHTML}
+      ${branch.remarks ? `<hr><b>ملاحظات:</b> ${branch.remarks}` : ""}
+      <hr><a href="${branch.link}" target="_blank">عرض على الخريطة</a>
     `;
 
     icon.bindPopup(popupContent);
-    icon.bindTooltip(branch.name.ar, {{ permanent: true, direction: "right" }});
+    icon.bindTooltip(branch.name.ar, { permanent: true, direction: "right" });
 
-    markers.push({{ marker: icon, data: branch }});
-  }});
+    markers.push({ marker: icon, data: branch });
+  });
 
-  function searchBranch() {{
+  function searchBranch() {
     const term = document.getElementById("search").value.trim().toLowerCase();
-    markers.forEach(obj => {{
+    markers.forEach(obj => {
       const b = obj.data;
-      const text = `${{b.name.ar}} ${{b.name.en}} ${{b.status.ar}} ${{b.status.en}} ${{b.delivery.ar}} ${{b.remarks}}`.toLowerCase();
-      if (text.includes(term)) {{
+      const text = `${b.name.ar} ${b.name.en} ${b.status.ar} ${b.status.en} ${b.delivery.ar} ${b.remarks}`.toLowerCase();
+      if (text.includes(term)) {
         map.setView([b.lat, b.lng], 14);
         obj.marker.openPopup();
-      }}
-    }});
-  }}
+      }
+    });
+  }
 </script>
 
 </body>
