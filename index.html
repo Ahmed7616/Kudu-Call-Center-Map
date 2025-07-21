@@ -15,14 +15,8 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       width: 300px;
     }
-    .filter-section {
-      margin-top: 8px;
-    }
-    .filter-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
+    .filter-section { margin-top: 8px; }
+    .filter-buttons { display: flex; flex-wrap: wrap; gap: 4px; }
     .filter-buttons button {
       flex: 1;
       padding: 6px 8px;
@@ -56,8 +50,8 @@
     <div class="filter-buttons">
       <button onclick="filterByStatus('All')" id="btnAll" class="active">الكل</button>
       <button onclick="filterByStatus('Open')" id="btnOpen">مفتوح</button>
-      <button onclick="filterByStatus('Temporarily Closed')" id="btnTempClosed">مغلق مؤقتاً</button>
-      <button onclick="filterByStatus('Permanently Closed')" id="btnPermClosed">مغلق نهائياً</button>
+      <button onclick="filterByStatus('TemporarilyClosed')" id="btnTempClosed">مغلق مؤقتاً</button>
+      <button onclick="filterByStatus('PermanentlyClosed')" id="btnPermClosed">مغلق نهائياً</button>
     </div>
   </div>
   <div class="filter-section">
@@ -89,8 +83,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Placeholder for branches array - this must be filled with all branches including the new ones
-  const branches = [...];
+  const branches = []; // يجب تعبئة بيانات الفروع هنا بشكل صحيح
 
   const map = L.map('map').setView([24.7, 46.7], 11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -102,45 +95,54 @@
   function getColorByStatus(status) {
     switch (status) {
       case "Open": return "green";
-      case "Temporarily Closed": return "orange";
-      case "Permanently Closed": return "red";
+      case "TemporarilyClosed": return "orange";
+      case "PermanentlyClosed": return "red";
       default: return "gray";
     }
   }
 
-  branches.forEach(branch => {
-    const icon = L.circleMarker([branch.lat, branch.lng], {
-      radius: 8,
-      color: getColorByStatus(branch.status.en),
-      fillColor: getColorByStatus(branch.status.en),
-      fillOpacity: 0.8
-    }).addTo(map);
+  function clearMarkers() {
+    markers.forEach(obj => {
+      map.removeLayer(obj.marker);
+    });
+  }
 
-    const hoursHTML = Object.entries(branch.hours)
-      .map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
+  function createMarkers() {
+    clearMarkers();
+    branches.forEach(branch => {
+      const icon = L.circleMarker([branch.lat, branch.lng], {
+        radius: 8,
+        color: getColorByStatus(branch.status.en.replace(/\s/g, '')),
+        fillColor: getColorByStatus(branch.status.en.replace(/\s/g, '')),
+        fillOpacity: 0.8
+      }).addTo(map);
 
-    const popupContent = `
-      <b>${branch.name.ar}</b><br>
-      الحالة: ${branch.status.ar}<br>
-      التوصيل: ${branch.delivery.ar}<br>
-      من ${branch.firstOrder} إلى ${branch.lastOrder}<br>
-      <hr><b>ساعات العمل:</b><br>${hoursHTML}
-      ${branch.remarks ? `<hr><b>ملاحظات:</b> ${branch.remarks}` : ""}
-      <hr><a href="${branch.link}" target="_blank">عرض على الخريطة</a>
-    `;
+      const hoursHTML = Object.entries(branch.hours)
+        .map(([day, val]) => `<b>${day}:</b> ${val}`).join("<br>");
 
-    icon.bindPopup(popupContent);
-    icon.bindTooltip(branch.name.ar, { permanent: true, direction: "right" });
+      const popupContent = `
+        <b>${branch.name.ar}</b><br>
+        الحالة: ${branch.status.ar}<br>
+        التوصيل: ${branch.delivery.ar}<br>
+        من ${branch.firstOrder} إلى ${branch.lastOrder}<br>
+        <hr><b>ساعات العمل:</b><br>${hoursHTML}
+        ${branch.remarks ? `<hr><b>ملاحظات:</b> ${branch.remarks}` : ""}
+        <hr><a href="${branch.link}" target="_blank">عرض على الخريطة</a>
+      `;
 
-    markers.push({ marker: icon, data: branch });
-  });
+      icon.bindPopup(popupContent);
+      icon.bindTooltip(branch.name.ar, { permanent: true, direction: "right" });
+
+      markers.push({ marker: icon, data: branch });
+    });
+  }
 
   let currentStatusFilter = 'All';
 
   function filterByStatus(status) {
     currentStatusFilter = status;
     document.querySelectorAll('.filter-buttons button').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn${status.replace(" ", "")}`).classList.add('active');
+    document.getElementById(`btn${status}`).classList.add('active');
     filterBranches();
   }
 
@@ -155,8 +157,9 @@
     markers.forEach(obj => {
       const b = obj.data;
       const text = `${b.name.ar} ${b.name.en} ${b.status.ar} ${b.status.en} ${b.delivery.ar} ${b.remarks}`.toLowerCase();
+      const statusKey = b.status.en.replace(/\s/g, '');
 
-      const matchesStatus = (currentStatusFilter === 'All' || b.status.en === currentStatusFilter);
+      const matchesStatus = (currentStatusFilter === 'All' || statusKey === currentStatusFilter);
       const matchesSearch = text.includes(term);
       const matchesDelivery = (deliveryFilter === 'All' || b.delivery.en === deliveryFilter);
       const matchesBrand = (brandFilter === 'All' || b.brand === brandFilter);
@@ -179,6 +182,7 @@
     }
   }
 
+  createMarkers();
   filterBranches();
 </script>
 
