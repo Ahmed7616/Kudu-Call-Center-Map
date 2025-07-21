@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>خريطة فروع كودو</title>
+  <title>Kudu Call Center Map  </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link
     rel="stylesheet"
@@ -42,7 +42,7 @@
 </head>
 <body>
   <div class="search-box">
-    <input type="text" id="search" placeholder="ابحث عن الفرع..." onkeyup="searchBranch()" />
+    <input type="text" id="search" placeholder="search..." onkeyup="searchBranch()" />
   </div>
   <div id="map"></div>
 
@@ -78,13 +78,13 @@
         firstOrder: "6:00 AM",
         lastOrder: "2:45 AM",
         hours: {
-          Saturday: "05:00 AM - 04:00 AM",
-          Sunday: "05:00 AM - 04:00 AM",
-          Monday: "05:00 AM - 04:00 AM",
-          Tuesday: "05:00 AM - 04:00 AM",
+          Saturday:  "05:00 AM - 04:00 AM",
+          Sunday:    "05:00 AM - 04:00 AM",
+          Monday:    "05:00 AM - 04:00 AM",
+          Tuesday:   "05:00 AM - 04:00 AM",
           Wednesday: "05:00 AM - 04:00 AM",
-          Thursday: "05:00 AM - 04:00 AM",
-          Friday: "05:00 AM - 04:00 AM"
+          Thursday:  "05:00 AM - 04:00 AM",
+          Friday:    "05:00 AM - 04:00 AM"
         },
         remarks: "",
         link: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A"
@@ -109,16 +109,16 @@
 
       marker.bindPopup(`
         <b>${branch.name}</b><br>
-        الحالة: ${branch.status}<br>
-        توصيل: ${branch.delivery}<br>
-        أول طلب: ${branch.firstOrder}<br>
-        آخر طلب: ${branch.lastOrder}<br>
+        Status: ${branch.status}<br>
+        Delivery: ${branch.delivery}<br>
+        First Order: ${branch.firstOrder}<br>
+        Last Order: ${branch.lastOrder}<br>
         <hr>
-        <b>مواعيد العمل:</b><br>
+        <b>Working Hours</b><br>
         ${hoursHTML}<br>
         <hr>
-        ${branch.remarks ? `<b>ملاحظات:</b> ${branch.remarks}<br><hr>` : ''}
-        <a href="${branch.link}" target="_blank">عرض على الخريطة</a>
+        ${branch.remarks ? `<b>remarks:</b> ${branch.remarks}<br><hr>` : ''}
+        <a href="${branch.link}" target="_blank">Show on map</a>
       `);
 
       markers.push({ marker, name: branch.name });
