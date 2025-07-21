@@ -2,272 +2,137 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kudu Call Center Map</title>
+  <title>خريطة فروع كودو</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <style>
     body, html {
-      margin: 0; padding: 0; height: 100%;
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      display: flex;
-      flex-direction: row-reverse;
-      overflow: hidden;
-    }
-    #sidebar {
-      width: 320px;
-      background: #f9f9f9;
-      border-left: 1px solid #ddd;
-      overflow-y: auto;
-      padding: 15px;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      z-index: 2;
-    }
-    #sidebar h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-    #searchBox {
-      padding: 8px;
-      font-size: 16px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
-    #branchList {
-      list-style: none;
-      padding: 0;
       margin: 0;
-      flex-grow: 1;
-      overflow-y: auto;
-    }
-    #branchList li {
-      background: #fff;
-      margin-bottom: 8px;
-      padding: 10px 15px;
-      cursor: pointer;
-      border-radius: 5px;
-      border-right: 8px solid transparent;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      transition: background-color 0.3s, border-color 0.3s;
-    }
-    #branchList li:hover {
-      background-color: #e0e0e0;
-    }
-    #branchList li.active {
-      background-color: #2196f3;
-      color: white;
-      font-weight: bold;
-    }
-    #resetBtn {
-      padding: 10px;
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    #resetBtn:hover {
-      background-color: #1976d2;
+      padding: 0;
+      height: 100%;
+      direction: rtl;
+      font-family: Arial;
     }
     #map {
-      flex-grow: 1;
-      height: 100%;
-      direction: ltr;
+      width: 100%;
+      height: 100vh;
+    }
+    .leaflet-tooltip {
+      font-weight: bold;
+      color: #000;
+      background-color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid #aaa;
+    }
+    .search-box {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      background: white;
+      padding: 8px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
   </style>
 </head>
 <body>
-
-  <div id="sidebar">
-    <h2>Kudu Call Center Map‏</h2>
-    <input type="text" id="searchBox" placeholder="Search" />
-    <ul id="branchList"></ul>
-    <button id="resetBtn">Reset to main map</button>
+  <div class="search-box">
+    <input type="text" id="search" placeholder="ابحث عن الفرع..." onkeyup="searchBranch()" />
   </div>
-
   <div id="map"></div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    // دالة initMap يجب أن تكون معرفة في النطاق العام
-    function initMap() {
-      window.map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 12,
-        center: { lat: 24.7136, lng: 46.6753 }
-      });
-
-      window.infoWindow = new google.maps.InfoWindow();
-
-      window.polygons = [];
-
-      window.branches = [
-        {
-          name: "KR-01",
-          address: "Prince Sultan bin Abdulaziz Road, Al Olaya, Riyadh 12311",
-          phone: "0551234567",
-          center: { lat: 24.6850636, lng: 46.6778853 },
-          coords: [
-            { lat: 24.6860636, lng: 46.6768853 },
-            { lat: 24.6840636, lng: 46.6768853 },
-            { lat: 24.6840636, lng: 46.6788853 },
-            { lat: 24.6860636, lng: 46.6788853 }
-          ],
-          color: "#FF0000"
+    var branches = [
+      {
+        name: "KF-01",
+        lat: 24.57775533,
+        lng: 46.5803146,
+        status: "Temporarily Closed",
+        delivery: "Yes",
+        firstOrder: "6:00 AM",
+        lastOrder: "2:45 AM",
+        hours: {
+          Saturday: "05:00 AM - 04:00 AM",
+          Sunday: "05:00 AM - 04:00 AM",
+          Monday: "05:00 AM - 04:00 AM",
+          Tuesday: "05:00 AM - 04:00 AM",
+          Wednesday: "05:00 AM - 04:00 AM",
+          Thursday: "05:00 AM - 04:00 AM",
+          Friday: "05:00 AM - 04:00 AM"
         },
-        {
-          name: "KR-03",
-          address: "Gas Station, Opposite Sahl, Ar Rabwah, Riyadh",
-          phone: "0567654321",
-          center: { lat: 24.6936477, lng: 46.7323124 },
-          coords: [
-            { lat: 24.6946477, lng: 46.7313124 },
-            { lat: 24.6926477, lng: 46.7313124 },
-            { lat: 24.6926477, lng: 46.7333124 },
-            { lat: 24.6946477, lng: 46.7333124 }
-          ],
-          color: "#0000FF"
+        remarks: "",
+        link: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9"
+      },
+      {
+        name: "KF-05",
+        lat: 24.59976269,
+        lng: 46.74606857,
+        status: "Open",
+        delivery: "Yes",
+        firstOrder: "6:00 AM",
+        lastOrder: "2:45 AM",
+        hours: {
+          Saturday: "05:00 AM - 04:00 AM",
+          Sunday: "05:00 AM - 04:00 AM",
+          Monday: "05:00 AM - 04:00 AM",
+          Tuesday: "05:00 AM - 04:00 AM",
+          Wednesday: "05:00 AM - 04:00 AM",
+          Thursday: "05:00 AM - 04:00 AM",
+          Friday: "05:00 AM - 04:00 AM"
         },
-        {
-          name: "KR-05",
-          address: "Near Victoria Hospital, Khurais Branch Road, Riyadh",
-          phone: "0578901234",
-          center: { lat: 24.7299943, lng: 46.7848146 },
-          coords: [
-            { lat: 24.7309943, lng: 46.7838146 },
-            { lat: 24.7289943, lng: 46.7838146 },
-            { lat: 24.7289943, lng: 46.7858146 },
-            { lat: 24.7309943, lng: 46.7858146 }
-          ],
-          color: "#00AA00"
+        remarks: "",
+        link: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A"
+      }
+    ];
+
+    var map = L.map('map').setView([24.59, 46.65], 11);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+    }).addTo(map);
+
+    var markers = [];
+
+    branches.forEach(branch => {
+      var marker = L.marker([branch.lat, branch.lng]).addTo(map);
+      marker.bindTooltip(branch.name, { permanent: true, direction: "right" }).openTooltip();
+
+      var hoursHTML = Object.entries(branch.hours).map(([day, hours]) => {
+        return `<b>${day}:</b> ${hours}`;
+      }).join('<br>');
+
+      marker.bindPopup(`
+        <b>${branch.name}</b><br>
+        الحالة: ${branch.status}<br>
+        توصيل: ${branch.delivery}<br>
+        أول طلب: ${branch.firstOrder}<br>
+        آخر طلب: ${branch.lastOrder}<br>
+        <hr>
+        <b>مواعيد العمل:</b><br>
+        ${hoursHTML}<br>
+        <hr>
+        ${branch.remarks ? `<b>ملاحظات:</b> ${branch.remarks}<br><hr>` : ''}
+        <a href="${branch.link}" target="_blank">عرض على الخريطة</a>
+      `);
+
+      markers.push({ marker, name: branch.name });
+    });
+
+    function searchBranch() {
+      var term = document.getElementById("search").value.trim().toUpperCase();
+      markers.forEach(obj => {
+        if (obj.name.toUpperCase().includes(term)) {
+          map.setView(obj.marker.getLatLng(), 13);
+          obj.marker.openPopup();
         }
-      ];
-
-      window.activeIndex = null;
-
-      // إنشاء مضلعات ونشرها على الخريطة
-      window.branches.forEach((branch, index) => {
-        const polygon = new google.maps.Polygon({
-          paths: branch.coords,
-          strokeColor: branch.color,
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: branch.color,
-          fillOpacity: 0.35,
-          map: window.map,
-        });
-
-        polygon.addListener('click', () => {
-          showBranchInfo(index);
-        });
-
-        window.polygons.push(polygon);
-      });
-
-      buildSidebar();
-      setupSearch();
-      setupReset();
-    }
-
-    // بناء القائمة الجانبية للفروع
-    function buildSidebar(filteredIndexes = null) {
-      const list = document.getElementById("branchList");
-      list.innerHTML = '';
-
-      const toShow = filteredIndexes !== null
-        ? filteredIndexes.map(i => window.branches[i])
-        : window.branches;
-
-      toShow.forEach((branch, idx) => {
-        const actualIndex = filteredIndexes ? filteredIndexes[idx] : idx;
-        const li = document.createElement("li");
-        li.textContent = branch.name;
-        li.style.borderRightColor = branch.color;
-        li.addEventListener("click", () => {
-          showBranchInfo(actualIndex);
-        });
-        if (actualIndex === window.activeIndex) {
-          li.classList.add("active");
-        }
-        list.appendChild(li);
-      });
-    }
-
-    // عرض معلومات الفرع عند النقر على القائمة أو المضلع
-    function showBranchInfo(index) {
-      window.activeIndex = index;
-      const branch = window.branches[index];
-
-      window.map.fitBounds(getPolygonBounds(window.polygons[index]));
-
-      const content = `
-        <div>
-          <h3>${branch.name}</h3>
-          <p><strong>العنوان:</strong> ${branch.address}</p>
-          <p><strong>الهاتف:</strong> ${branch.phone}</p>
-        </div>
-      `;
-
-      window.infoWindow.setContent(content);
-      window.infoWindow.setPosition(branch.center);
-      window.infoWindow.open(window.map);
-
-      setActiveBranch(index);
-    }
-
-    // تمييز الفرع النشط في القائمة
-    function setActiveBranch(index) {
-      const items = document.querySelectorAll("#branchList li");
-      items.forEach((item, i) => {
-        item.classList.toggle("active", i === index);
-      });
-    }
-
-    // حساب حدود المضلعات لتكبير الخريطة عليها
-    function getPolygonBounds(polygon) {
-      const bounds = new google.maps.LatLngBounds();
-      polygon.getPath().forEach(latlng => {
-        bounds.extend(latlng);
-      });
-      return bounds;
-    }
-
-    // إعداد البحث في القائمة
-    function setupSearch() {
-      const searchInput = document.getElementById("searchBox");
-      searchInput.addEventListener("input", () => {
-        const term = searchInput.value.trim().toLowerCase();
-        if (!term) {
-          buildSidebar();
-          return;
-        }
-        const filteredIndexes = [];
-        window.branches.forEach((branch, i) => {
-          if (branch.name.toLowerCase().includes(term)) {
-            filteredIndexes.push(i);
-          }
-        });
-        buildSidebar(filteredIndexes);
-      });
-    }
-
-    // زر إعادة الخريطة للحالة الافتراضية
-    function setupReset() {
-      document.getElementById("resetBtn").addEventListener("click", () => {
-        window.activeIndex = null;
-        window.map.setZoom(12);
-        window.map.setCenter({ lat: 24.7136, lng: 46.6753 });
-        window.infoWindow.close();
-        buildSidebar();
-        document.getElementById("searchBox").value = '';
       });
     }
   </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAgW9hdAByOPEqjI7y8KtOkCeI8LoRRUc&callback=initMap" async defer></script>
-
 </body>
 </html>
