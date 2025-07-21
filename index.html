@@ -430,11 +430,15 @@
       }
     ];
 
-    // ألوان الماركر حسب العلامة التجارية
     const brandColors = {
       Kudu: "#003366", // أزرق غامق
-      "Al Khafeef": "#FFFF00", // أصفر
-      Franchise: "#ADD8E6", // لبني
+      "Al Khafeef": "#FFD700", // أصفر (ذهبي)
+      Franchise: "#ADD8E6", // لبني فاتح
+      "": "#808080" // رمادي افتراضي للغير معروف
     };
 
-    // ألوان مخصصة للماركر حسب حالة الفرع (تلوين خلفية الماركر)
+    const statusColors = {
+      Open: "#4CAF50", // أخضر
+      "Permanently Closed": "#FF0000", // أحمر
+      "New Store": "#0000FF", // أزرق
+      "Not connected": "#FFA500
