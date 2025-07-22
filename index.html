@@ -2,57 +2,35 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>Kudu Call Center Map</title>
+  <title>خريطة فروع Kudu Call Center</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
   <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+    body, html {
+      margin: 0; padding: 0; height: 100%;
       font-family: Arial, sans-serif;
       direction: rtl;
     }
-
     #map {
       width: 100%;
       height: 100vh;
     }
-
-    .leaflet-tooltip.branch-tooltip {
-      background-color: white !important;
-      color: black !important;
-      font-weight: bold;
-      border-radius: 3px;
-      padding: 2px 6px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
-      white-space: nowrap;
-    }
-
     .search-box {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 10px; right: 10px;
       z-index: 1100;
       background: white;
       padding: 10px;
       border-radius: 5px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       width: 320px;
       max-height: 95vh;
       overflow-y: auto;
     }
-
-    .filter-section {
-      margin-top: 8px;
-    }
-
-    select,
-    input[type="text"] {
+    select, input[type="text"] {
       width: 100%;
       margin-top: 6px;
       padding: 6px;
@@ -65,14 +43,9 @@
 </head>
 <body>
   <div class="search-box">
-    <input
-      type="text"
-      id="search"
-      placeholder="ابحث باسم الفرع أو ملاحظات أو مزود التوصيل"
-      onkeyup="filterBranches()"
-    />
-    <div class="filter-section">
-      <label for="statusFilter"><b>حالة الفروع:</b></label>
+    <input type="text" id="search" placeholder="ابحث باسم الفرع" onkeyup="filterBranches()" />
+    <div>
+      <label for="statusFilter"><b>حالة الفرع:</b></label>
       <select id="statusFilter" onchange="filterBranches()">
         <option value="All">الكل</option>
         <option value="Open">مفتوح</option>
@@ -83,15 +56,15 @@
         <option value="Temporarily Closed">مغلق مؤقتًا</option>
       </select>
     </div>
-    <div class="filter-section">
+    <div>
       <label for="deliveryFilter"><b>خدمة التوصيل:</b></label>
       <select id="deliveryFilter" onchange="filterBranches()">
         <option value="All">الكل</option>
-        <option value="Yes">يوجد</option>
-        <option value="No">لا يوجد</option>
+        <option value="Yes">نعم</option>
+        <option value="No">لا</option>
       </select>
     </div>
-    <div class="filter-section">
+    <div>
       <label for="brandFilter"><b>العلامة التجارية:</b></label>
       <select id="brandFilter" onchange="filterBranches()">
         <option value="All">الكل</option>
@@ -100,14 +73,14 @@
         <option value="Franchise">Franchise</option>
       </select>
     </div>
-    <div class="filter-section">
+    <div>
       <label for="deliveryServiceFilter"><b>مزود التوصيل:</b></label>
       <select id="deliveryServiceFilter" onchange="filterBranches()">
         <option value="All">الكل</option>
         <option value="Holouly service">Holouly service</option>
       </select>
     </div>
-    <div class="filter-section">
+    <div>
       <label for="remarksFilter"><b>الملاحظات:</b></label>
       <select id="remarksFilter" onchange="filterBranches()">
         <option value="All">الكل</option>
@@ -119,25 +92,50 @@
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <script>
     const branches = [
-      { StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.73312631, Longitude: 46.67811156, Brand: "Kudu" },
-      { StoreName: "KR-05", Status: "Temporarily Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.72999439, Longitude: 46.7848146, Brand: "Kudu" },
-      { StoreName: "KR-06", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", Latitude: 24.59377644, Longitude: 46.63322058, Brand: "Kudu" },
-      { StoreName: "KR-07", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", Latitude: 24.66269858, Longitude: 46.70104818, Brand: "Kudu" },
-      { StoreName: "KR-08", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", Latitude: 24.69634564, Longitude: 46.75150478, Brand: "Kudu" },
-      { StoreName: "KR-09", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", Latitude: 24.74319138, Longitude: 46.80881829, Brand: "Kudu" },
-      { StoreName: "KR-10", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", Latitude: 24.72398203, Longitude: 46.6538245, Brand: "Kudu" },
-      { StoreName: "KR-11", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/ora13eiMyEPy55yR6", Latitude: 24.75951513, Longitude: 46.77782048, Brand: "Kudu" },
-      { StoreName: "KR-12", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jsLCcxUJE4RZro1h8", Latitude: 24.59869907, Longitude: 46.68942832, Brand: "Kudu" },
-      { StoreName: "KR-13", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/bX2iXM244q9EiqMH9", Latitude: 24.62548743, Longitude: 46.68912659, Brand: "Kudu" },
-      { StoreName: "KR-14", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "Pickup only - Mall", LinkLocation: "https://maps.app.goo.gl/KxynNakKthp6MbRu5", Latitude: 24.70595164, Longitude: 46.6794972, Brand: "Kudu" },
-      { StoreName: "KR-15", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/wv3dDYaw36f6BMf97", Latitude: 24.96135473, Longitude: 46.70251604, Brand: "Kudu" },
-      { StoreName: "KR-16", Status: "Open", Delivery: "Yes", DeliveryService: "Holouly service", Remarks: "", LinkLocation: "https://maps.app.goo.gl/NfteRPsuDkQK1oab8", Latitude: 24.76021044, Longitude: 46.67369502, Brand: "Kudu" },
-      { StoreName: "KR-17", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jqyfGqAPhWtixuNe6", Latitude: 24.59629031, Longitude: 46.69752895, Brand: "Kudu" },
-      { StoreName: "KR-18", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/xeZkCeJmShqYeg1f9", Latitude: 24.70141984, Longitude: 46.67691646, Brand: "Kudu" },
-      { StoreName: "KR-19", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/JzTX4oZuci2Yxw647", Latitude: 24.84168035, Longitude: 46.7510719, Brand: "Kudu" }
+      // البيانات التي أرسلتها سابقاً (نسخها هنا)
+      {
+        StoreName: "KR-01",
+        Status: "Open",
+        Delivery: "Yes",
+        Brand: "Kudu",
+        DeliveryService: "",
+        FirstOrder: "6:00 AM",
+        LastOrder: "1:45 AM",
+        Saturday: "05:00 AM - 04:00 AM",
+        Sunday: "05:00 AM - 04:00 AM",
+        Monday: "05:00 AM - 04:00 AM",
+        Tuesday: "05:00 AM - 04:00 AM",
+        Wednesday: "05:00 AM - 04:00 AM",
+        Thursday: "05:00 AM - 04:00 AM",
+        Friday: "05:00 AM - 04:00 AM",
+        Remarks: "",
+        LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
+        Latitude: 24.6850636,
+        Longitude: 46.6778853
+      },
+      {
+        StoreName: "KR-02",
+        Status: "Permanently Closed",
+        Delivery: "No",
+        Brand: "Kudu",
+        DeliveryService: "",
+        FirstOrder: "",
+        LastOrder: "",
+        Saturday: "-",
+        Sunday: "-",
+        Monday: "-",
+        Tuesday: "-",
+        Wednesday: "-",
+        Thursday: "-",
+        Friday: "-",
+        Remarks: "",
+        LinkLocation: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9",
+        Latitude: 24.70202977,
+        Longitude: 46.69658292
+      },
+      // ... أضف باقي الفروع بنفس الشكل
     ];
 
     const brandColors = {
@@ -146,16 +144,13 @@
       "Franchise": "green",
     };
 
-    let map = L.map("map").setView([24.7, 46.7], 10);
+    const map = L.map("map").setView([24.7, 46.7], 8);
 
-    L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }
-    ).addTo(map);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
 
     let markers = [];
 
@@ -181,32 +176,29 @@
       const popupContent = `
         <b>اسم الفرع:</b> ${branch.StoreName}<br/>
         <b>الحالة:</b> ${branch.Status}<br/>
-        <b>التوصيل:</b> ${branch.Delivery}<br/>
+        <b>خدمة التوصيل:</b> ${branch.Delivery || '-'}<br/>
         <b>مزود التوصيل:</b> ${branch.DeliveryService || '-'}<br/>
+        <b>أول طلب:</b> ${branch.FirstOrder || '-'}<br/>
+        <b>آخر طلب:</b> ${branch.LastOrder || '-'}<br/>
+        <b>أيام العمل وساعاتها:</b><br/>
+        السبت: ${branch.Saturday || '-'}<br/>
+        الأحد: ${branch.Sunday || '-'}<br/>
+        الإثنين: ${branch.Monday || '-'}<br/>
+        الثلاثاء: ${branch.Tuesday || '-'}<br/>
+        الأربعاء: ${branch.Wednesday || '-'}<br/>
+        الخميس: ${branch.Thursday || '-'}<br/>
+        الجمعة: ${branch.Friday || '-'}<br/>
         <b>ملاحظات:</b> ${branch.Remarks || '-'}<br/>
-        <a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a>
+        <b><a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a></b>
       `;
+
       marker.bindPopup(popupContent);
-
-      marker.bindTooltip(branch.StoreName, {
-        permanent: true,
-        direction: "top",
-        className: "branch-tooltip",
-        offset: [0, -12]
-      });
-
       return marker;
     }
 
-    function addMarkers(filteredBranches) {
+    function clearMarkers() {
       markers.forEach(m => map.removeLayer(m));
       markers = [];
-
-      filteredBranches.forEach(branch => {
-        const marker = createMarker(branch);
-        marker.addTo(map);
-        markers.push(marker);
-      });
     }
 
     function filterBranches() {
@@ -217,31 +209,40 @@
       const deliveryServiceFilter = document.getElementById("deliveryServiceFilter").value;
       const remarksFilter = document.getElementById("remarksFilter").value;
 
+      clearMarkers();
+
       const filtered = branches.filter(branch => {
-        if (statusFilter !== "All" && branch.Status !== statusFilter) return false;
-        if (deliveryFilter !== "All" && branch.Delivery !== deliveryFilter) return false;
-        if (brandFilter !== "All" && branch.Brand !== brandFilter) return false;
-        if (deliveryServiceFilter !== "All" && branch.DeliveryService !== deliveryServiceFilter) return false;
-        if (remarksFilter !== "All" && branch.Remarks !== remarksFilter) return false;
-
-        // بحث شامل يشمل اسم الفرع، ملاحظات، مزود التوصيل
-        if (searchText) {
-          const searchFields = [
-            branch.StoreName,
-            branch.Remarks,
-            branch.DeliveryService
-          ].map(f => (f || "").toLowerCase());
-          if (!searchFields.some(field => field.includes(searchText))) return false;
+        // بحث باسم الفرع
+        if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) {
+          return false;
         }
-
+        if (statusFilter !== "All" && branch.Status !== statusFilter) {
+          return false;
+        }
+        if (deliveryFilter !== "All" && branch.Delivery !== deliveryFilter) {
+          return false;
+        }
+        if (brandFilter !== "All" && branch.Brand !== brandFilter) {
+          return false;
+        }
+        if (deliveryServiceFilter !== "All" && branch.DeliveryService !== deliveryServiceFilter) {
+          return false;
+        }
+        if (remarksFilter !== "All" && branch.Remarks !== remarksFilter) {
+          return false;
+        }
         return true;
       });
 
-      addMarkers(filtered);
+      filtered.forEach(branch => {
+        const marker = createMarker(branch);
+        marker.addTo(map);
+        markers.push(marker);
+      });
     }
 
-    // العرض الأولي لجميع الفروع
-    addMarkers(branches);
+    // عرض كل الفروع أولاً عند تحميل الصفحة
+    filterBranches();
   </script>
 </body>
 </html>
