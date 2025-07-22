@@ -5,140 +5,54 @@
   <title>Kudu Call Center Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial;
-    direction: rtl;
-    background-color: #e0f7fa; /* خلفية زرقاء سماوية */
-  }
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial;
+      direction: rtl;
+      background-color: #e0f7fa;
+    }
 
-  #map {
-    width: 100%;
-    height: 100vh;
-  }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
 
-  /* اسم الفرع في التولتيب الصغير أعلى العلامة */
-  .leaflet-tooltip {
-    font-weight: bold;
-    background: white !important; /* خلفية بيضاء */
-    color: black !important;
-    border: 1px solid #ccc !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    font-size: 10px; /* صغير */
-    padding: 2px 4px;
-    white-space: nowrap;
-    border-radius: 4px;
-  }
+    .leaflet-tooltip {
+      font-weight: bold;
+      background: white !important;
+      color: black !important;
+      border: 1px solid #ccc !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      font-size: 10px;
+      padding: 2px 4px;
+      white-space: nowrap;
+      border-radius: 4px;
+    }
 
-  /* مربع التفاصيل (Popup) */
-  .leaflet-popup-content-wrapper {
-  padding: 2px 4px !important;
-  max-width: 120px !important;
-  border-radius: 4px !important;
-}
+    .leaflet-popup-content {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-size: 9px !important;
+      font-weight: bold;
+      line-height: 1.4;
+      max-width: 160px !important;
+      white-space: normal !important;
+    }
 
-.leaflet-popup-content {
-  margin: 0 !important;
-  padding: 0 !important;
-  font-size: 9px !important;
-  font-weight: bold;
-  line-height: 1.1;
-  white-space: normal !important;
-}
+    .leaflet-popup-content-wrapper {
+      padding: 4px 6px !important;
+      border-radius: 4px !important;
+      max-width: 170px !important;
+    }
 
-.leaflet-popup-tip {
-  width: 6px;
-  height: 6px;
-}
-  .search-box {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1100;
-    background: #ADD8E6; /* أزرق فاتح */
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    width: 180px;
-    overflow-y: auto;
-    max-height: 95vh;
-    border: 1px solid rgba(0,0,0,0.1);
-  }
-
-  .search-box input[type="text"],
-  .search-box select {
-    width: 100%;
-    padding: 6px 8px;
-    font-size: 12px;
-    font-weight: bold;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #f0f8ff;
-    color: black;
-  }
-
-  .filter-section {
-    margin-top: 8px;
-  }
-
-  .filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  .filter-buttons button {
-    flex: 1;
-    padding: 6px 8px;
-    border: none;
-    background: #ADD8E6;
-    cursor: pointer;
-    border-radius: 4px;
-    font-weight: bold;
-    color: black;
-    transition: background-color 0.3s;
-    font-size: 12px;
-  }
-
-  .filter-buttons button.active,
-  .filter-buttons button:hover {
-    background-color: #87CEEB;
-    color: black;
-  }
-
-  select, input[type="text"] {
-    width: 100%;
-    margin-top: 6px;
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #f0f8ff;
-    font-size: 12px;
-    font-weight: bold;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 180px;
-    font-size: 10px;
-    font-weight: bold;
-  }
-
-  th, td {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-weight: bold;
-    font-size: 10px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-</style>
+    .leaflet-popup-tip {
+      width: 6px;
+      height: 6px;
+    }
+  </style>
 </head>
 <body>
 
