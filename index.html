@@ -60,14 +60,24 @@
   border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* تنزيل العناوين داخل الـ search-box */
-.search-box > label,
-.search-box > div.title,
-.search-box > h3,
-.search-box > p {
-  margin-bottom: 8px;   /* مسافة بين العنوان وخانة البحث/الفلتر */
+.search-box label {
+  display: block;
+  margin-bottom: 8px;
   font-weight: bold;
-  color: white;        /* لون العناوين أبيض */
+  color: white;
+}
+
+.search-box input[type="text"],
+.search-box select {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #FFD700; /* أصفر احترافي */
+  color: black;
 }
 
 .search-box input[type="text"],
