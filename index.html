@@ -52,8 +52,8 @@
     }
     table {
       border-collapse: collapse;
-      width: 200px;
-      font-size: 10px;
+      width: 180px;
+      font-size: 9px;
     }
     th, td {
       border: 1px solid #ddd;
@@ -118,7 +118,108 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// سيتم إدخال بيانات الفروع وكود الجافاسكريبت هنا لاحقًا بعد التأكيد
+  const map = L.map("map").setView([24.7, 46.7], 10);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  const branches = [
+    {
+      StoreName: "KR-01", Status: "Open", Delivery: "Yes", Brand: "Kudu", DeliveryService: "",
+      FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM",
+      Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
+      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM",
+      Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
+      Latitude: 24.6850636, Longitude: 46.6778853
+    },
+    {
+      StoreName: "KR-02", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
+      FirstOrder: "-", LastOrder: "-",
+      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-",
+      Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "",
+      LinkLocation: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9",
+      Latitude: 24.70202977, Longitude: 46.69658292
+    }
+  ];
+
+  let markers = [];
+
+  function createMarker(branch) {
+    const brandColors = {
+      "Kudu": "blue",
+      "Al Khafeef": "orange",
+      "Franchise": "green"
+    };
+    const color = brandColors[branch.Brand] || "gray";
+
+    const icon = L.divIcon({
+      html: `<div style="background-color:${color};width:16px;height:16px;border-radius:50%;border:2px solid white;"></div>`,
+      className: "",
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
+    });
+
+    const popupContent = `
+      <table>
+        <tr><th colspan="2">${branch.StoreName}</th></tr>
+        <tr><td>الحالة</td><td>${branch.Status}</td></tr>
+        <tr><td>التوصيل</td><td>${branch.Delivery}</td></tr>
+        <tr><td>الماركة</td><td>${branch.Brand}</td></tr>
+        <tr><td>المزود</td><td>${branch.DeliveryService || '-'}</td></tr>
+        <tr><td>أول طلب</td><td>${branch.FirstOrder || '-'}</td></tr>
+        <tr><td>آخر طلب</td><td>${branch.LastOrder || '-'}</td></tr>
+        <tr><td>السبت</td><td>${branch.Saturday}</td></tr>
+        <tr><td>الأحد</td><td>${branch.Sunday}</td></tr>
+        <tr><td>الاثنين</td><td>${branch.Monday}</td></tr>
+        <tr><td>الثلاثاء</td><td>${branch.Tuesday}</td></tr>
+        <tr><td>الأربعاء</td><td>${branch.Wednesday}</td></tr>
+        <tr><td>الخميس</td><td>${branch.Thursday}</td></tr>
+        <tr><td>الجمعة</td><td>${branch.Friday}</td></tr>
+        <tr><td>ملاحظات</td><td>${branch.Remarks || '-'}</td></tr>
+        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a></td></tr>
+      </table>
+    `;
+
+    const marker = L.marker([branch.Latitude, branch.Longitude], { icon });
+    marker.bindPopup(popupContent);
+    marker.bindTooltip(branch.StoreName, { permanent: true, direction: "top" });
+    return marker;
+  }
+
+  function addMarkers(filtered) {
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+    filtered.forEach(branch => {
+      const marker = createMarker(branch);
+      marker.addTo(map);
+      markers.push(marker);
+    });
+  }
+
+  function filterBranches() {
+    const searchText = document.getElementById("search").value.trim().toLowerCase();
+    const status = document.getElementById("statusFilter").value;
+    const delivery = document.getElementById("deliveryFilter").value;
+    const brand = document.getElementById("brandFilter").value;
+    const deliveryService = document.getElementById("deliveryServiceFilter").value;
+    const remarks = document.getElementById("remarksFilter").value;
+
+    const filtered = branches.filter(branch => {
+      if (status !== "All" && branch.Status !== status) return false;
+      if (delivery !== "All" && branch.Delivery !== delivery) return false;
+      if (brand !== "All" && branch.Brand !== brand) return false;
+      if (deliveryService !== "All" && branch.DeliveryService !== deliveryService) return false;
+      if (remarks !== "All" && branch.Remarks !== remarks) return false;
+      if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
+      return true;
+    });
+
+    addMarkers(filtered);
+  }
+
+  addMarkers(branches);
 </script>
 </body>
 </html>
