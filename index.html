@@ -76,6 +76,15 @@
 <div class="search-box">
   <input type="text" id="search" placeholder="Search" onkeyup="filterBranches()" />
   <div class="filter-section">
+    <label for="brandFilter"><b>Brand</b></label>
+    <select id="brandFilter" onchange="filterBranches()">
+      <option value="All">All</option>
+      <option value="Kudu">Kudu</option>
+      <option value="Al Khafeef">Al Khafeef</option>
+      <option value="Franchise">Franchise</option>
+    </select>
+  </div>
+  <div class="filter-section">
     <label for="statusFilter"><b>Branche status</b></label>
     <select id="statusFilter" onchange="filterBranches()">
       <option value="All">All</option>
@@ -85,15 +94,6 @@
       <option value="Unlinked">Unlinked</option>
       <option value="Permanently Closed">Permanently Closed</option>
       <option value="Temporarily Closed">Temporarily Closed</option>
-    </select>
-  </div>
-  <div class="filter-section">
-    <label for="brandFilter"><b>Brand</b></label>
-    <select id="brandFilter" onchange="filterBranches()">
-      <option value="All">All</option>
-      <option value="Kudu">Kudu</option>
-      <option value="Al Khafeef">Al Khafeef</option>
-      <option value="Franchise">Franchise</option>
     </select>
   </div>
   <div class="filter-section">
