@@ -2,300 +2,122 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>Kudu Call Center Map</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <title>kudu call center map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      direction: rtl;
-    }
-
-    #map {
-      width: 100%;
-      height: 100vh;
-    }
-
-    .leaflet-tooltip.branch-tooltip {
-      background-color: white !important;
-      color: black !important;
+    body, html { margin: 0; padding: 0; height: 100%; font-family: Arial; direction: rtl; }
+    #map { width: 100%; height: 100vh; }
+    .leaflet-tooltip {
       font-weight: bold;
-      border-radius: 3px;
-      padding: 2px 6px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+      background: transparent !important;
+      color: black !important;
+      border: none !important;
+      box-shadow: none !important;
+      font-size: 13px;
+      padding: 0;
       white-space: nowrap;
-      font-size: 12px;
     }
-
     .search-box {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 1100;
-      background: white;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      position: absolute; top: 10px; right: 10px; z-index: 1100;
+      background: white; padding: 10px; border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       width: 320px;
-      max-height: 95vh;
       overflow-y: auto;
+      max-height: 95vh;
     }
-
-    .filter-section {
-      margin-top: 8px;
+    .filter-section { margin-top: 8px; }
+    .filter-buttons { display: flex; flex-wrap: wrap; gap: 4px; }
+    .filter-buttons button {
+      flex: 1;
+      padding: 6px 8px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background-color 0.3s;
     }
-
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background-color: #4CAF50;
+      color: white;
+    }
     select {
       width: 100%;
       margin-top: 6px;
       padding: 6px;
       border-radius: 4px;
       border: 1px solid #ccc;
-      font-size: 14px;
     }
-
-    /* تصغير الجدول داخل البوب أب */
     table {
       border-collapse: collapse;
       width: 220px;
-      direction: rtl;
-      text-align: right;
       font-size: 10px;
     }
-    th,
-    td {
+    th, td {
       border: 1px solid #ddd;
-      padding: 2px 4px;
+      padding: 4px;
+      font-weight: bold;
     }
     th {
       background-color: #f2f2f2;
-      font-weight: 600;
-    }
-    h4 {
-      font-size: 12px;
-      margin-bottom: 4px;
-      margin-top: 0;
     }
   </style>
 </head>
 <body>
-  <div class="search-box">
-    <input
-      type="text"
-      id="search"
-      placeholder="Search"
-      onkeyup="filterBranches()"
-    />
-    <div class="filter-section">
-      <label for="statusFilter"><b>حالة الفروع:</b></label>
-      <select id="statusFilter" onchange="filterBranches()">
-        <option value="All">الكل</option>
-        <option value="Open">مفتوح</option>
-        <option value="Permanently Closed">مغلق نهائيًا</option>
-        <option value="New Store">فرع جديد</option>
-        <option value="Not connected">غير متصل</option>
-        <option value="Replaced">تم الاستبدال</option>
-        <option value="Temporarily Closed">مغلق مؤقتًا</option>
-      </select>
-    </div>
-    <div class="filter-section">
-      <label for="deliveryFilter"><b>خدمة التوصيل:</b></label>
-      <select id="deliveryFilter" onchange="filterBranches()">
-        <option value="All">الكل</option>
-        <option value="Yes">يوجد</option>
-        <option value="No">لا يوجد</option>
-      </select>
-    </div>
-    <div class="filter-section">
-      <label for="brandFilter"><b>العلامة التجارية:</b></label>
-      <select id="brandFilter" onchange="filterBranches()">
-        <option value="All">الكل</option>
-        <option value="Kudu">Kudu</option>
-        <option value="Al Khafeef">Al Khafeef</option>
-        <option value="Franchise">Franchise</option>
-      </select>
-    </div>
-    <div class="filter-section">
-      <label for="deliveryServiceFilter"><b>مزود التوصيل:</b></label>
-      <select id="deliveryServiceFilter" onchange="filterBranches()">
-        <option value="All">الكل</option>
-        <option value="Holouly service">Holouly service</option>
-      </select>
-    </div>
-    <div class="filter-section">
-      <label for="remarksFilter"><b>الملاحظات:</b></label>
-      <select id="remarksFilter" onchange="filterBranches()">
-        <option value="All">الكل</option>
-        <option value="Pickup only - Mall">Pickup only - Mall</option>
-      </select>
-    </div>
+
+<div class="search-box">
+  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
+  <div class="filter-section">
+    <label for="statusFilter"><b>حالة الفروع:</b></label>
+    <select id="statusFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Open">مفتوح</option>
+      <option value="Permanently Closed">مغلق نهائيًا</option>
+      <option value="New Store">فرع جديد</option>
+      <option value="Not connected">غير متصل</option>
+      <option value="Replaced">تم الاستبدال</option>
+      <option value="Temporarily Closed">مغلق مؤقتًا</option>
+    </select>
   </div>
+  <div class="filter-section">
+    <label for="deliveryFilter"><b>خدمة التوصيل:</b></label>
+    <select id="deliveryFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Yes">يوجد</option>
+      <option value="No">لا يوجد</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="brandFilter"><b>العلامة التجارية:</b></label>
+    <select id="brandFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Kudu">Kudu</option>
+      <option value="Al Khafeef">Al Khafeef</option>
+      <option value="Franchise">Franchise</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="deliveryServiceFilter"><b>مزود التوصيل:</b></label>
+    <select id="deliveryServiceFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Holouly service">Holouly service</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="remarksFilter"><b>الملاحظات:</b></label>
+    <select id="remarksFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Pickup only - Mall">Pickup only - Mall</option>
+    </select>
+  </div>
+</div>
 
-  <div id="map"></div>
+<div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-  <script>
-    const branches = [
-      {
-        StoreName: "KR-01",
-        Status: "Open",
-        Delivery: "Yes",
-        Brand: "Kudu",
-        DeliveryService: "",
-        FirstOrder: "6:00 AM",
-        LastOrder: "1:45 AM",
-        Saturday: "05:00 AM - 04:00 AM",
-        Sunday: "05:00 AM - 04:00 AM",
-        Monday: "05:00 AM - 04:00 AM",
-        Tuesday: "05:00 AM - 04:00 AM",
-        Wednesday: "05:00 AM - 04:00 AM",
-        Thursday: "05:00 AM - 04:00 AM",
-        Friday: "05:00 AM - 04:00 AM",
-        Remarks: "",
-        LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6",
-        Latitude: 24.6850636,
-        Longitude: 46.6778853,
-      },
-      {
-        StoreName: "KR-02",
-        Status: "Permanently Closed",
-        Delivery: "No",
-        Brand: "Kudu",
-        DeliveryService: "",
-        FirstOrder: "",
-        LastOrder: "",
-        Saturday: "-",
-        Sunday: "-",
-        Monday: "-",
-        Tuesday: "-",
-        Wednesday: "-",
-        Thursday: "-",
-        Friday: "-",
-        Remarks: "",
-        LinkLocation: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9",
-        Latitude: 24.70202977,
-        Longitude: 46.69658292,
-      },
-      // باقي البيانات كما هي ...
-    ];
-
-    const brandColors = {
-      "Kudu": "blue",
-      "Al Khafeef": "orange",
-      "Franchise": "green",
-    };
-
-    const map = L.map("map").setView([24.7, 46.7], 9);
-
-    L.tileLayer(
-      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      {
-        maxZoom: 19,
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }
-    ).addTo(map);
-
-    let markers = [];
-
-    function createMarker(branch) {
-      const color = brandColors[branch.Brand] || "gray";
-
-      // إضافة اسم الفرع كنص فوق العلامة (tooltip دائم)
-      const tooltip = L.tooltip({
-        permanent: true,
-        direction: "top",
-        className: "branch-tooltip",
-        offset: [0, -10],
-      }).setContent(branch.StoreName);
-
-      const marker = L.circleMarker([branch.Latitude, branch.Longitude], {
-        radius: 6,
-        fillColor: color,
-        color: "#000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8,
-      }).addTo(map);
-
-      marker.bindTooltip(tooltip).openTooltip();
-
-      // محتوى البوب أب - جدول مصغر
-      const popupContent = `
-        <h4>${branch.StoreName}</h4>
-        <table>
-          <tr><th>الحالة</th><td>${branch.Status}</td></tr>
-          <tr><th>التوصيل</th><td>${branch.Delivery}</td></tr>
-          <tr><th>العلامة التجارية</th><td>${branch.Brand}</td></tr>
-          <tr><th>مزود التوصيل</th><td>${branch.DeliveryService || "-"}</td></tr>
-          <tr><th>أول طلب</th><td>${branch.FirstOrder || "-"}</td></tr>
-          <tr><th>آخر طلب</th><td>${branch.LastOrder || "-"}</td></tr>
-          <tr><th>السبت</th><td>${branch.Saturday || "-"}</td></tr>
-          <tr><th>الأحد</th><td>${branch.Sunday || "-"}</td></tr>
-          <tr><th>الإثنين</th><td>${branch.Monday || "-"}</td></tr>
-          <tr><th>الثلاثاء</th><td>${branch.Tuesday || "-"}</td></tr>
-          <tr><th>الأربعاء</th><td>${branch.Wednesday || "-"}</td></tr>
-          <tr><th>الخميس</th><td>${branch.Thursday || "-"}</td></tr>
-          <tr><th>الجمعة</th><td>${branch.Friday || "-"}</td></tr>
-          <tr><th>ملاحظات</th><td>${branch.Remarks || "-"}</td></tr>
-          <tr><th>الموقع</th><td><a href="${branch.LinkLocation}" target="_blank">رابط الخريطة</a></td></tr>
-        </table>
-      `;
-
-      marker.bindPopup(popupContent);
-      return marker;
-    }
-
-    function addMarkers(branchesToAdd) {
-      clearMarkers();
-      branchesToAdd.forEach(branch => {
-        const marker = createMarker(branch);
-        markers.push(marker);
-      });
-    }
-
-    function clearMarkers() {
-      markers.forEach(marker => map.removeLayer(marker));
-      markers = [];
-    }
-
-    function filterBranches() {
-      const searchValue = document.getElementById("search").value.toLowerCase();
-      const statusValue = document.getElementById("statusFilter").value;
-      const deliveryValue = document.getElementById("deliveryFilter").value;
-      const brandValue = document.getElementById("brandFilter").value;
-      const deliveryServiceValue = document.getElementById("deliveryServiceFilter").value;
-      const remarksValue = document.getElementById("remarksFilter").value;
-
-      const filtered = branches.filter(branch => {
-        const matchSearch =
-          branch.StoreName.toLowerCase().includes(searchValue) ||
-          branch.Status.toLowerCase().includes(searchValue) ||
-          branch.Brand.toLowerCase().includes(searchValue);
-
-        const matchStatus = statusValue === "All" || branch.Status === statusValue;
-        const matchDelivery = deliveryValue === "All" || branch.Delivery === deliveryValue;
-        const matchBrand = brandValue === "All" || branch.Brand === brandValue;
-        const matchDeliveryService =
-          deliveryServiceValue === "All" || branch.DeliveryService === deliveryServiceValue;
-        const matchRemarks = remarksValue === "All" || branch.Remarks === remarksValue;
-
-        return matchSearch && matchStatus && matchDelivery && matchBrand && matchDeliveryService && matchRemarks;
-      });
-
-      addMarkers(filtered);
-    }
-
-    // بدءاً، عرض كل الفروع
-    addMarkers(branches);
-  </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="data.js"></script>
+<script src="main.js"></script>
 </body>
 </html>
