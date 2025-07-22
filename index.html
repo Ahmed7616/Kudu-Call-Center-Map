@@ -13,14 +13,16 @@
       margin: 0; padding: 0; height: 100%;
       font-family: Arial, sans-serif;
       direction: rtl;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
     #map {
       width: 100%;
-      height: 100vh;
+      height: 60vh;
     }
     .search-box {
-      position: absolute;
-      top: 10px; right: 10px;
+      position: relative;
       z-index: 1100;
       background: white;
       padding: 10px;
@@ -29,6 +31,7 @@
       width: 320px;
       max-height: 95vh;
       overflow-y: auto;
+      margin: 10px auto;
     }
     select, input[type="text"] {
       width: 100%;
@@ -38,6 +41,33 @@
       border: 1px solid #ccc;
       font-size: 14px;
       box-sizing: border-box;
+    }
+    table {
+      width: 95%;
+      margin: 10px auto 30px auto;
+      border-collapse: collapse;
+      direction: rtl;
+      font-size: 14px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      padding: 6px 10px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    /* Tooltip اسم الفرع على الخريطة يظهر بجانب النقطة */
+    .branch-tooltip {
+      background-color: white !important;
+      color: black !important;
+      font-weight: bold;
+      border-radius: 3px;
+      padding: 2px 6px;
+      box-shadow: 0 0 4px rgba(0,0,0,0.25);
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -91,10 +121,32 @@
 
   <div id="map"></div>
 
+  <table id="branchesTable" dir="rtl" lang="ar">
+    <thead>
+      <tr>
+        <th>اسم الفرع</th>
+        <th>الحالة</th>
+        <th>التوصيل</th>
+        <th>مزود التوصيل</th>
+        <th>أول طلب</th>
+        <th>آخر طلب</th>
+        <th>السبت</th>
+        <th>الأحد</th>
+        <th>الإثنين</th>
+        <th>الثلاثاء</th>
+        <th>الأربعاء</th>
+        <th>الخميس</th>
+        <th>الجمعة</th>
+        <th>ملاحظات</th>
+        <th>رابط الموقع</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const branches = [
-      // البيانات التي أرسلتها سابقاً (نسخها هنا)
       {
         StoreName: "KR-01",
         Status: "Open",
@@ -135,7 +187,7 @@
         Latitude: 24.70202977,
         Longitude: 46.69658292
       },
-      // ... أضف باقي الفروع بنفس الشكل
+      // أضف باقي الفروع هنا بنفس التنسيق
     ];
 
     const brandColors = {
@@ -193,12 +245,53 @@
       `;
 
       marker.bindPopup(popupContent);
+
+      // إضافة اسم الفرع بشكل دائم على الخريطة
+      marker.bindTooltip(branch.StoreName, {
+        permanent: true,
+        direction: "right",
+        className: "branch-tooltip",
+        offset: [15, 0]
+      });
+
       return marker;
     }
 
     function clearMarkers() {
       markers.forEach(m => map.removeLayer(m));
       markers = [];
+    }
+
+    function renderTable(filteredBranches) {
+      const tbody = document.querySelector("#branchesTable tbody");
+      tbody.innerHTML = "";
+
+      if (filteredBranches.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="15">لا توجد نتائج</td></tr>`;
+        return;
+      }
+
+      filteredBranches.forEach(branch => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${branch.StoreName}</td>
+          <td>${branch.Status}</td>
+          <td>${branch.Delivery || "-"}</td>
+          <td>${branch.DeliveryService || "-"}</td>
+          <td>${branch.FirstOrder || "-"}</td>
+          <td>${branch.LastOrder || "-"}</td>
+          <td>${branch.Saturday || "-"}</td>
+          <td>${branch.Sunday || "-"}</td>
+          <td>${branch.Monday || "-"}</td>
+          <td>${branch.Tuesday || "-"}</td>
+          <td>${branch.Wednesday || "-"}</td>
+          <td>${branch.Thursday || "-"}</td>
+          <td>${branch.Friday || "-"}</td>
+          <td>${branch.Remarks || "-"}</td>
+          <td><a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a></td>
+        `;
+        tbody.appendChild(row);
+      });
     }
 
     function filterBranches() {
@@ -212,7 +305,6 @@
       clearMarkers();
 
       const filtered = branches.filter(branch => {
-        // بحث باسم الفرع
         if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) {
           return false;
         }
@@ -239,9 +331,11 @@
         marker.addTo(map);
         markers.push(marker);
       });
+
+      renderTable(filtered);
     }
 
-    // عرض كل الفروع أولاً عند تحميل الصفحة
+    // تحميل الفروع كاملة عند فتح الصفحة
     filterBranches();
   </script>
 </body>
