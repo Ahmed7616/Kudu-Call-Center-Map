@@ -283,21 +283,21 @@
     const popupContent = `
       <table>
         <tr><th colspan="2">${branch.StoreName}</th></tr>
-        <tr><td>الحالة</td><td>${branch.Status}</td></tr>
-        <tr><td>التوصيل</td><td>${branch.Delivery}</td></tr>
-        <tr><td>الماركة</td><td>${branch.Brand}</td></tr>
-        <tr><td>المزود</td><td>${branch.DeliveryService || '-'}</td></tr>
-        <tr><td>أول طلب</td><td>${branch.FirstOrder || '-'}</td></tr>
-        <tr><td>آخر طلب</td><td>${branch.LastOrder || '-'}</td></tr>
-        <tr><td>السبت</td><td>${branch.Saturday}</td></tr>
-        <tr><td>الأحد</td><td>${branch.Sunday}</td></tr>
-        <tr><td>الاثنين</td><td>${branch.Monday}</td></tr>
-        <tr><td>الثلاثاء</td><td>${branch.Tuesday}</td></tr>
-        <tr><td>الأربعاء</td><td>${branch.Wednesday}</td></tr>
-        <tr><td>الخميس</td><td>${branch.Thursday}</td></tr>
-        <tr><td>الجمعة</td><td>${branch.Friday}</td></tr>
-        <tr><td>ملاحظات</td><td>${branch.Remarks || '-'}</td></tr>
-        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a></td></tr>
+        <tr><td>Status</td><td>${branch.Status}</td></tr>
+        <tr><td>Delivery</td><td>${branch.Delivery}</td></tr>
+        <tr><td>Brand</td><td>${branch.Brand}</td></tr>
+        <tr><td>provider</td><td>${branch.DeliveryService || '-'}</td></tr>
+        <tr><td>First Order</td><td>${branch.FirstOrder || '-'}</td></tr>
+        <tr><td>Last Order</td><td>${branch.LastOrder || '-'}</td></tr>
+        <tr><td>Saturday</td><td>${branch.Saturday}</td></tr>
+        <tr><td>Sunday</td><td>${branch.Sunday}</td></tr>
+        <tr><td>Tuesday</td><td>${branch.Monday}</td></tr>
+        <tr><td>Tuesday</td><td>${branch.Tuesday}</td></tr>
+        <tr><td>Wednesday</td><td>${branch.Wednesday}</td></tr>
+        <tr><td>Thursday</td><td>${branch.Thursday}</td></tr>
+        <tr><td>Friday</td><td>${branch.Friday}</td></tr>
+        <tr><td>Operating details</td><td>${branch.Operatingdetails || '-'}</td></tr>
+        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">Link Location</a></td></tr>
       </table>
     `;
 
