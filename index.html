@@ -349,25 +349,26 @@
     });
 
     const popupContent = `
-      <table>
-        <tr><th colspan="2">${branch.StoreName}</th></tr>
-        <tr><td>Status</td><td>${branch.Status}</td></tr>
-        <tr><td>Delivery</td><td>${branch.Delivery}</td></tr>
-        <tr><td>Brand</td><td>${branch.Brand}</td></tr>
-        <tr><td>Delivery provider</td><td>${branch.DeliveryService || '-'}</td></tr>
-        <tr><td>First Order</td><td>${branch.FirstOrder || '-'}</td></tr>
-        <tr><td>Last Order</td><td>${branch.LastOrder || '-'}</td></tr>
-        <tr><td>Saturday</td><td>${branch.Saturday}</td></tr>
-        <tr><td>Sunday</td><td>${branch.Sunday}</td></tr>
-        <tr><td>Tuesday</td><td>${branch.Monday}</td></tr>
-        <tr><td>Tuesday</td><td>${branch.Tuesday}</td></tr>
-        <tr><td>Wednesday</td><td>${branch.Wednesday}</td></tr>
-        <tr><td>Thursday</td><td>${branch.Thursday}</td></tr>
-        <tr><td>Friday</td><td>${branch.Friday}</td></tr>
-        <tr><td>Operating details</td><td>${branch.Operatingdetails || '-'}</td></tr>
-        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">Link Location</a></td></tr>
-      </table>
-    `;
+  <table style="direction: ltr;">
+    <tr><th colspan="2">${branch.StoreName}</th></tr>
+    <tr><td>Status</td><td>${branch.Status}</td></tr>
+    <tr><td>Delivery</td><td>${branch.Delivery}</td></tr>
+    <tr><td>Brand</td><td>${branch.Brand}</td></tr>
+    <tr><td>Delivery provider</td><td>${branch.DeliveryService || '-'}</td></tr>
+    <tr><td>First Order</td><td>${branch.FirstOrder || '-'}</td></tr>
+    <tr><td>Last Order</td><td>${branch.LastOrder || '-'}</td></tr>
+    <tr><td>Saturday</td><td>${branch.Saturday}</td></tr>
+    <tr><td>Sunday</td><td>${branch.Sunday}</td></tr>
+    <tr><td>Tuesday</td><td>${branch.Monday}</td></tr>
+    <tr><td>Tuesday</td><td>${branch.Tuesday}</td></tr>
+    <tr><td>Wednesday</td><td>${branch.Wednesday}</td></tr>
+    <tr><td>Thursday</td><td>${branch.Thursday}</td></tr>
+    <tr><td>Friday</td><td>${branch.Friday}</td></tr>
+    <tr><td>Operating details</td><td>${branch.Operatingdetails || '-'}</td></tr>
+    <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">Link Location</a></td></tr>
+  </table>
+`;
+
 
     const marker = L.marker([branch.Latitude, branch.Longitude], { icon });
     marker.bindPopup(popupContent);
