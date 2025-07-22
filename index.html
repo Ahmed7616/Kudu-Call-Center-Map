@@ -35,16 +35,23 @@
 
   /* مربع التفاصيل (Popup) */
   .leaflet-popup-content-wrapper {
-  padding: 4px 6px !important;
+  padding: 2px 4px !important;
+  max-width: 120px !important;
   border-radius: 4px !important;
-  max-width: 180px !important; /* تحديد عرض أقصى صغير */
 }
 
 .leaflet-popup-content {
   margin: 0 !important;
-  font-size: 10px !important;
+  padding: 0 !important;
+  font-size: 9px !important;
   font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.1;
+  white-space: normal !important;
+}
+
+.leaflet-popup-tip {
+  width: 6px;
+  height: 6px;
 }
   .search-box {
     position: absolute;
