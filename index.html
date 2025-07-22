@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" >
+<html lang="ar">
 <head>
   <meta charset="UTF-8" />
   <title>خريطة فروع كودو</title>
@@ -28,8 +28,8 @@
       color: black !important;
       font-weight: bold;
       border-radius: 3px;
-      padding: 2px 5px;
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
       white-space: nowrap;
     }
 
@@ -51,35 +51,13 @@
       margin-top: 8px;
     }
 
-    .filter-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
-    .filter-buttons button {
-      flex: 1;
-      padding: 6px 8px;
-      border: none;
-      background: #eee;
-      cursor: pointer;
-      border-radius: 4px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-
-    .filter-buttons button.active,
-    .filter-buttons button:hover {
-      background-color: #4caf50;
-      color: white;
-    }
-
     select {
       width: 100%;
       margin-top: 6px;
       padding: 6px;
       border-radius: 4px;
       border: 1px solid #ccc;
+      font-size: 14px;
     }
   </style>
 </head>
@@ -141,30 +119,30 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
+    // بيانات الفروع كاملة (يمكنك إضافة أو تعديل حسب الحاجة)
     const branches = [
-      { StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "", LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.73312631, Longitude: 46.67811156, Brand: "Kudu" },
-      { StoreName: "KR-05", Status: "Temporarily Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.72999439, Longitude: 46.7848146, Brand: "Kudu" },
-      { StoreName: "KR-06", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "", LinkLocation: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", Latitude: 24.59377644, Longitude: 46.63322058, Brand: "Kudu" },
-      { StoreName: "KR-07", Status: "Open", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", Latitude: 24.66269858, Longitude: 46.70104818, Brand: "Kudu" },
-      { StoreName: "KR-08", Status: "Open", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", Latitude: 24.69634564, Longitude: 46.75150478, Brand: "Kudu" },
-      { StoreName: "KR-09", Status: "Open", Delivery: "Yes", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", Latitude: 24.74319138, Longitude: 46.80881829, Brand: "Kudu" },
-      { StoreName: "KR-10", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "", LinkLocation: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", Latitude: 24.72398203, Longitude: 46.6538245, Brand: "Kudu" },
-      { StoreName: "KR-11", Status: "Open", Delivery: "Yes", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/ora13eiMyEPy55yR6", Latitude: 24.75951513, Longitude: 46.77782048, Brand: "Kudu" },
-      { StoreName: "KR-12", Status: "Open", Delivery: "Yes", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jsLCcxUJE4RZro1h8", Latitude: 24.59869907, Longitude: 46.68942832, Brand: "Kudu" },
-      { StoreName: "KR-13", Status: "Open", Delivery: "Yes", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/bX2iXM244q9EiqMH9", Latitude: 24.62548743, Longitude: 46.68912659, Brand: "Kudu" },
-      { StoreName: "KR-14", Status: "Open", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "Closed", Sunday: "07:15 AM - 06:45 PM", Monday: "07:15 AM - 06:45 PM", Tuesday: "07:15 AM - 06:45 PM", Wednesday: "07:15 AM - 06:45 PM", Thursday: "07:15 AM - 06:45 PM", Friday: "Closed", Remarks: "Pickup only - Mall", LinkLocation: "https://maps.app.goo.gl/KxynNakKthp6MbRu5", Latitude: 24.70595164, Longitude: 46.6794972, Brand: "Kudu" },
-      { StoreName: "KR-15", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "", LinkLocation: "https://maps.app.goo.gl/wv3dDYaw36f6BMf97", Latitude: 24.96135473, Longitude: 46.70251604, Brand: "Kudu" },
-      { StoreName: "KR-16", Status: "Open", Delivery: "Yes", DeliveryService: "Holouly service", FirstOrder: "6:00 AM", LastOrder: "1:45 AM", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/NfteRPsuDkQK1oab8", Latitude: 24.76021044, Longitude: 46.67369502, Brand: "Kudu" },
-      { StoreName: "KR-17", Status: "Open", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jqyfGqAPhWtixuNe6", Latitude: 24.59629031, Longitude: 46.69752895, Brand: "Kudu" },
-      { StoreName: "KR-18", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "", LinkLocation: "https://maps.app.goo.gl/xeZkCeJmShqYeg1f9", Latitude: 24.70141984, Longitude: 46.67691646, Brand: "Kudu" },
-      { StoreName: "KR-19", Status: "Open", Delivery: "No", DeliveryService: "", FirstOrder: "", LastOrder: "", Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM", Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "", LinkLocation: "https://maps.app.goo.gl/JzTX4oZuci2Yxw647", Latitude: 24.84168035, Longitude: 46.7510719, Brand: "Kudu" }
-      // ممكن تضيف باقي الفروع بنفس الطريقة هنا إذا أردت
+      { StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.73312631, Longitude: 46.67811156, Brand: "Kudu" },
+      { StoreName: "KR-05", Status: "Temporarily Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.72999439, Longitude: 46.7848146, Brand: "Kudu" },
+      { StoreName: "KR-06", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", Latitude: 24.59377644, Longitude: 46.63322058, Brand: "Kudu" },
+      { StoreName: "KR-07", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", Latitude: 24.66269858, Longitude: 46.70104818, Brand: "Kudu" },
+      { StoreName: "KR-08", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", Latitude: 24.69634564, Longitude: 46.75150478, Brand: "Kudu" },
+      { StoreName: "KR-09", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", Latitude: 24.74319138, Longitude: 46.80881829, Brand: "Kudu" },
+      { StoreName: "KR-10", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", Latitude: 24.72398203, Longitude: 46.6538245, Brand: "Kudu" },
+      { StoreName: "KR-11", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/ora13eiMyEPy55yR6", Latitude: 24.75951513, Longitude: 46.77782048, Brand: "Kudu" },
+      { StoreName: "KR-12", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jsLCcxUJE4RZro1h8", Latitude: 24.59869907, Longitude: 46.68942832, Brand: "Kudu" },
+      { StoreName: "KR-13", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/bX2iXM244q9EiqMH9", Latitude: 24.62548743, Longitude: 46.68912659, Brand: "Kudu" },
+      { StoreName: "KR-14", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "Pickup only - Mall", LinkLocation: "https://maps.app.goo.gl/KxynNakKthp6MbRu5", Latitude: 24.70595164, Longitude: 46.6794972, Brand: "Kudu" },
+      { StoreName: "KR-15", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/wv3dDYaw36f6BMf97", Latitude: 24.96135473, Longitude: 46.70251604, Brand: "Kudu" },
+      { StoreName: "KR-16", Status: "Open", Delivery: "Yes", DeliveryService: "Holouly service", Remarks: "", LinkLocation: "https://maps.app.goo.gl/NfteRPsuDkQK1oab8", Latitude: 24.76021044, Longitude: 46.67369502, Brand: "Kudu" },
+      { StoreName: "KR-17", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jqyfGqAPhWtixuNe6", Latitude: 24.59629031, Longitude: 46.69752895, Brand: "Kudu" },
+      { StoreName: "KR-18", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/xeZkCeJmShqYeg1f9", Latitude: 24.70141984, Longitude: 46.67691646, Brand: "Kudu" },
+      { StoreName: "KR-19", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/JzTX4oZuci2Yxw647", Latitude: 24.84168035, Longitude: 46.7510719, Brand: "Kudu" }
+      // يمكنك إضافة المزيد من الفروع هنا حسب حاجتك
     ];
 
-    // ألوان حسب البراند
     const brandColors = {
       "Kudu": "blue",
-      "Al Khafeef": "yellow",
+      "Al Khafeef": "orange",
       "Franchise": "green",
     };
 
@@ -181,23 +159,81 @@
 
     let markers = [];
 
-    function addMarkers(data) {
-      // إزالة كل العلامات القديمة
+    function createMarker(branch) {
+      const color = brandColors[branch.Brand] || "gray";
+
+      const icon = L.divIcon({
+        html: `<div style="
+          background-color:${color};
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          border: 2px solid white;
+          box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        "></div>`,
+        className: "",
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
+
+      const marker = L.marker([branch.Latitude, branch.Longitude], { icon: icon });
+
+      // إنشاء نافذة منبثقة (popup)
+      const popupContent = `
+        <b>اسم الفرع:</b> ${branch.StoreName}<br/>
+        <b>الحالة:</b> ${branch.Status}<br/>
+        <b>التوصيل:</b> ${branch.Delivery}<br/>
+        <b>مزود التوصيل:</b> ${branch.DeliveryService || '-'}<br/>
+        <b>ملاحظات:</b> ${branch.Remarks || '-'}<br/>
+        <a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a>
+      `;
+      marker.bindPopup(popupContent);
+
+      // إضافة Tooltip لإظهار الاسم دائمًا
+      marker.bindTooltip(branch.StoreName, {
+        permanent: true,
+        direction: "top",
+        className: "branch-tooltip",
+        offset: [0, -12]
+      });
+
+      return marker;
+    }
+
+    function addMarkers(filteredBranches) {
       markers.forEach((m) => map.removeLayer(m));
       markers = [];
 
-      data.forEach((branch) => {
-        let color = brandColors[branch.Brand] || "gray";
+      filteredBranches.forEach(branch => {
+        const marker = createMarker(branch);
+        marker.addTo(map);
+        markers.push(marker);
+      });
+    }
 
-        // أيقونة دائرية ملونة
-        let icon = L.divIcon({
-          html: `<div style="background-color:${color}; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;"></div>`,
-          className: "",
-          iconSize: [20, 20],
-          iconAnchor: [10, 10],
-          popupAnchor: [0, -10],
-        });
+    function filterBranches() {
+      const searchText = document.getElementById("search").value.trim().toLowerCase();
+      const statusFilter = document.getElementById("statusFilter").value;
+      const deliveryFilter = document.getElementById("deliveryFilter").value;
+      const brandFilter = document.getElementById("brandFilter").value;
+      const deliveryServiceFilter = document.getElementById("deliveryServiceFilter").value;
+      const remarksFilter = document.getElementById("remarksFilter").value;
 
-        let marker = L.marker([branch.Latitude, branch.Longitude], { icon: icon });
+      const filtered = branches.filter(branch => {
+        if (statusFilter !== "All" && branch.Status !== statusFilter) return false;
+        if (deliveryFilter !== "All" && branch.Delivery !== deliveryFilter) return false;
+        if (brandFilter !== "All" && branch.Brand !== brandFilter) return false;
+        if (deliveryServiceFilter !== "All" && branch.DeliveryService !== deliveryServiceFilter) return false;
+        if (remarksFilter !== "All" && branch.Remarks !== remarksFilter) return false;
+        if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
+        return true;
+      });
 
-        let popupContent =
+      addMarkers(filtered);
+    }
+
+    // العرض الأولي لجميع الفروع
+    addMarkers(branches);
+  </script>
+</body>
+</html>
