@@ -51,13 +51,15 @@
       margin-top: 8px;
     }
 
-    select {
+    select,
+    input[type="text"] {
       width: 100%;
       margin-top: 6px;
       padding: 6px;
       border-radius: 4px;
       border: 1px solid #ccc;
       font-size: 14px;
+      box-sizing: border-box;
     }
   </style>
 </head>
@@ -66,7 +68,7 @@
     <input
       type="text"
       id="search"
-      placeholder="Search"
+      placeholder="ابحث باسم الفرع أو ملاحظات أو مزود التوصيل"
       onkeyup="filterBranches()"
     />
     <div class="filter-section">
@@ -119,7 +121,6 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    // بيانات الفروع كاملة (يمكنك إضافة أو تعديل حسب الحاجة)
     const branches = [
       { StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.73312631, Longitude: 46.67811156, Brand: "Kudu" },
       { StoreName: "KR-05", Status: "Temporarily Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.72999439, Longitude: 46.7848146, Brand: "Kudu" },
@@ -137,10 +138,8 @@
       { StoreName: "KR-17", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/jqyfGqAPhWtixuNe6", Latitude: 24.59629031, Longitude: 46.69752895, Brand: "Kudu" },
       { StoreName: "KR-18", Status: "Permanently Closed", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/xeZkCeJmShqYeg1f9", Latitude: 24.70141984, Longitude: 46.67691646, Brand: "Kudu" },
       { StoreName: "KR-19", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/JzTX4oZuci2Yxw647", Latitude: 24.84168035, Longitude: 46.7510719, Brand: "Kudu" }
-      { StoreName: "AK-01", Status: "Open", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/LHVWhsfyVEchRgwU8", Latitude: 24.69381487, Longitude: 46.7322647, Brand: "Al Khafeef" },
-      { StoreName: "KF-01", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9", Latitude: 24.57775533, Longitude: 46.5803146, Brand: "Franchise" },
-
-      // يمكنك إضافة المزيد من الفروع هنا حسب حاجتك
+      { StoreName: "KF-01", Status: "Open", Delivery: "Yes", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9", Latitude: 24.57775533, Longitude: 46.5803146, Brand: "Franchise" }
+      { StoreName: "AK-52", Status: "New Store", Delivery: "No", DeliveryService: "", Remarks: "", LinkLocation: "https://maps.app.goo.gl/z883L5pTnL2Lp7MSA", Latitude: 24.83625174, Longitude: 46.68316666, Brand: "Al Khafeef" }
     ];
 
     const brandColors = {
@@ -181,7 +180,6 @@
 
       const marker = L.marker([branch.Latitude, branch.Longitude], { icon: icon });
 
-      // إنشاء نافذة منبثقة (popup)
       const popupContent = `
         <b>اسم الفرع:</b> ${branch.StoreName}<br/>
         <b>الحالة:</b> ${branch.Status}<br/>
@@ -192,7 +190,6 @@
       `;
       marker.bindPopup(popupContent);
 
-      // إضافة Tooltip لإظهار الاسم دائمًا
       marker.bindTooltip(branch.StoreName, {
         permanent: true,
         direction: "top",
@@ -204,7 +201,7 @@
     }
 
     function addMarkers(filteredBranches) {
-      markers.forEach((m) => map.removeLayer(m));
+      markers.forEach(m => map.removeLayer(m));
       markers = [];
 
       filteredBranches.forEach(branch => {
@@ -228,7 +225,17 @@
         if (brandFilter !== "All" && branch.Brand !== brandFilter) return false;
         if (deliveryServiceFilter !== "All" && branch.DeliveryService !== deliveryServiceFilter) return false;
         if (remarksFilter !== "All" && branch.Remarks !== remarksFilter) return false;
-        if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
+
+        // بحث شامل يشمل اسم الفرع، ملاحظات، مزود التوصيل
+        if (searchText) {
+          const searchFields = [
+            branch.StoreName,
+            branch.Remarks,
+            branch.DeliveryService
+          ].map(f => (f || "").toLowerCase());
+          if (!searchFields.some(field => field.includes(searchText))) return false;
+        }
+
         return true;
       });
 
