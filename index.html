@@ -78,20 +78,20 @@
     <label for="statusFilter"><b>Branches status</b></label>
     <select id="statusFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
-      <option value="Open">مفتوح</option>
-      <option value="Permanently Closed">مغلق نهائيًا</option>
-      <option value="New Store">فرع جديد</option>
-      <option value="Not connected">غير متصل</option>
-      <option value="Replaced">تم الاستبدال</option>
-      <option value="Temporarily Closed">مغلق مؤقتًا</option>
+      <option value="Open">Open</option>
+      <option value="New Store">New Store</option>
+      <option value="Replaced">Replaced</option>
+      <option value="Not connected">Not connected</option>
+      <option value="Permanently Closed">Permanently Closed</option>
+      <option value="Temporarily Closed">Temporarily Closed</option>
     </select>
   </div>
   <div class="filter-section">
     <label for="deliveryFilter"><b>Delivery service</b></label>
     <select id="deliveryFilter" onchange="filterBranches()">
-      <option value="All">الكل</option>
-      <option value="Yes">يوجد</option>
-      <option value="No">لا يوجد</option>
+      <option value="All">All</option>
+      <option value="Yes">Available</option>
+      <option value="No">Unavailable</option>
     </select>
   </div>
   <div class="filter-section">
@@ -111,7 +111,7 @@
     </select>
   </div>
   <div class="filter-section">
-    <label for="remarksFilter"><b>الملاحظات</b></label>
+    <label for="remarksFilter"><b>Remarks</b></label>
     <select id="remarksFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Pickup only - Mall">Pickup only - Mall</option>
@@ -119,10 +119,10 @@
   </div>
 </div>
 
-<!-- خريطة الفروع -->
+<!-- Branches map -->
 <div id="map"></div>
 
-<!-- سكربت الخريطة والفروع -->
+<!-- Map and branches script -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   const map = L.map("map").setView([24.7, 46.7], 11);
