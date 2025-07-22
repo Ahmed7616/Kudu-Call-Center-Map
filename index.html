@@ -112,8 +112,8 @@
     </select>
   </div>
   <div class="filter-section">
-    <label for="remarksFilter"><b>Remarks</b></label>
-    <select id="remarksFilter" onchange="filterBranches()">
+    <label for="OperatingdetailsFilter"><b>Operatingdetails</b></label>
+    <select id="OperatingdetailsFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Pickup only - Mall">Pickup only - Mall</option>
     </select>
@@ -323,14 +323,14 @@
     const delivery = document.getElementById("deliveryFilter").value;
     const brand = document.getElementById("brandFilter").value;
     const deliveryService = document.getElementById("deliveryServiceFilter").value;
-    const remarks = document.getElementById("remarksFilter").value;
+    const Operatingdetails = document.getElementById("OperatingdetailsFilter").value;
 
     const filtered = branches.filter(branch => {
       if (status !== "All" && branch.Status !== status) return false;
       if (delivery !== "All" && branch.Delivery !== delivery) return false;
       if (brand !== "All" && branch.Brand !== brand) return false;
       if (deliveryService !== "All" && branch.DeliveryService !== deliveryService) return false;
-      if (remarks !== "All" && branch.Remarks !== remarks) return false;
+      if (Operatingdetails !== "All" && branch.Operatingdetails !== Operatingdetails) return false;
       if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
       return true;
     });
