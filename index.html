@@ -71,11 +71,11 @@
 </head>
 <body>
 
-<!-- صندوق البحث والفلاتر -->
+<!-- Search box and filters -->
 <div class="search-box">
-  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
+  <input type="text" id="search" placeholder="Search" onkeyup="filterBranches()" />
   <div class="filter-section">
-    <label for="statusFilter"><b>حالة الفروع:</b></label>
+    <label for="statusFilter"><b>Branches status</b></label>
     <select id="statusFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Open">مفتوح</option>
@@ -87,7 +87,7 @@
     </select>
   </div>
   <div class="filter-section">
-    <label for="deliveryFilter"><b>خدمة التوصيل:</b></label>
+    <label for="deliveryFilter"><b>Delivery service</b></label>
     <select id="deliveryFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Yes">يوجد</option>
@@ -95,7 +95,7 @@
     </select>
   </div>
   <div class="filter-section">
-    <label for="brandFilter"><b>العلامة التجارية:</b></label>
+    <label for="brandFilter"><b>Brand</b></label>
     <select id="brandFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Kudu">Kudu</option>
@@ -104,14 +104,14 @@
     </select>
   </div>
   <div class="filter-section">
-    <label for="deliveryServiceFilter"><b>مزود التوصيل:</b></label>
+    <label for="deliveryServiceFilter"><b>Delivery provider</b></label>
     <select id="deliveryServiceFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Holouly service">Holouly service</option>
     </select>
   </div>
   <div class="filter-section">
-    <label for="remarksFilter"><b>الملاحظات:</b></label>
+    <label for="remarksFilter"><b>الملاحظات</b></label>
     <select id="remarksFilter" onchange="filterBranches()">
       <option value="All">الكل</option>
       <option value="Pickup only - Mall">Pickup only - Mall</option>
