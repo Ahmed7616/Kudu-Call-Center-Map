@@ -74,10 +74,10 @@
 
 <!-- Search box and filters -->
 <div class="search-box">
-  <input type="text" id="search" placeholder="Search" onkeyup="filterBranche()" />
+  <input type="text" id="search" placeholder="Search" onkeyup="filterBranches()" />
   <div class="filter-section">
-    <label for="statusFilter"><b>Branche status</b></label>
-    <select id="statusFilter" onchange="filterBranche()">
+    <label for="statusFilter"><b>Branches status</b></label>
+    <select id="statusFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Active">Active</option>
       <option value="New Branch">New Branch</option>
@@ -89,7 +89,7 @@
   </div>
   <div class="filter-section">
     <label for="deliveryFilter"><b>Delivery service</b></label>
-    <select id="deliveryFilter" onchange="filterBranche()">
+    <select id="deliveryFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Yes">Available</option>
       <option value="No">Unavailable</option>
@@ -97,7 +97,7 @@
   </div>
   <div class="filter-section">
     <label for="brandFilter"><b>Brand</b></label>
-    <select id="brandFilter" onchange="filterBranche()">
+    <select id="brandFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Kudu">Kudu</option>
       <option value="Al Khafeef">Al Khafeef</option>
@@ -106,24 +106,24 @@
   </div>
   <div class="filter-section">
     <label for="deliveryServiceFilter"><b>Delivery provider</b></label>
-    <select id="deliveryServiceFilter" onchange="filterBranche()">
+    <select id="deliveryServiceFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Holouly service">Holouly service</option>
     </select>
   </div>
   <div class="filter-section">
     <label for="OperatingdetailsFilter"><b>Operating details</b></label>
-    <select id="OperatingdetailsFilter" onchange="filterBranche()">
+    <select id="OperatingdetailsFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Pickup only - Mall">Pickup only - Mall</option>
     </select>
   </div>
 </div>
 
-<!-- Branche map -->
+<!-- Branches map -->
 <div id="map"></div>
 
-<!-- Map and branche script -->
+<!-- Map and Branches script -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   const map = L.map("map").setView([24.7, 46.7], 11);
@@ -132,7 +132,7 @@
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  const branche = [
+  const Branches = [
     {
       StoreName: "KR-01", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
@@ -317,7 +317,7 @@
     });
   }
 
-  function filterBranche() {
+  function filterBranches() {
     const searchText = document.getElementById("search").value.trim().toLowerCase();
     const status = document.getElementById("statusFilter").value;
     const delivery = document.getElementById("deliveryFilter").value;
@@ -325,7 +325,7 @@
     const deliveryService = document.getElementById("deliveryServiceFilter").value;
     const Operatingdetails = document.getElementById("OperatingdetailsFilter").value;
 
-    const filtered = Branche.filter(branch => {
+    const filtered = Branches.filter(branch => {
       if (status !== "All" && branch.Status !== status) return false;
       if (delivery !== "All" && branch.Delivery !== delivery) return false;
       if (brand !== "All" && branch.Brand !== brand) return false;
@@ -338,7 +338,7 @@
     addMarkers(filtered);
   }
 
-  addMarkers(Branche);
+  addMarkers(Branches);
 </script>
 
 </body>
