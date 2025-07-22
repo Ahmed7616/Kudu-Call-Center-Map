@@ -3,14 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <title>خريطة فروع كودو</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
   <style>
-    body, html {
-      margin: 0; padding: 0; height: 100%; font-family: Arial, sans-serif;
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: Arial, sans-serif;
     }
     #map {
       height: 100vh;
@@ -396,24 +398,17 @@
   const brandColors = {
     "Kudu": "blue",
     "Al Khafeef": "yellow",
-    "Franchise": "green"
+    "Franchise": "green",
   };
 
-  // Create map
   const map = L.map("map").setView([24.7, 46.7], 6);
 
-  // Add tile layer
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
+    attribution:
+      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
   let markers = [];
 
-  function addMarkers() {
-    markers.forEach(m => map.removeLayer(m));
-    markers = [];
-
-    const statusFilter = document.getElementById("statusFilter").value;
-    const deliveryFilter = document.getElementById("deliveryFilter").value;
-
-  
+  function createPopupContent(branch
