@@ -2,333 +2,140 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8" />
-  <title>Kudu Call Center Map</title>
+  <title>kudu call center map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial;
-    direction: rtl;
-    background-color: #e0f7fa; /* خلفية زرقاء سماوية */
-  }
-
-  #map {
-    width: 100%;
-    height: 100vh;
-  }
-
-  /* اسم الفرع في التولتيب الصغير أعلى العلامة */
-  .leaflet-tooltip {
-    font-weight: bold;
-    background: white !important; /* خلفية بيضاء */
-    color: black !important;
-    border: 1px solid #ccc !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    font-size: 10px; /* صغير */
-    padding: 2px 4px;
-    white-space: nowrap;
-    border-radius: 4px;
-  }
-
-  /* مربع التفاصيل (Popup) */
-  .leaflet-popup-content {
-    font-size: 10px !important; /* صغير */
-    font-weight: bold;
-    margin: 4px 0;
-  }
-
-  .leaflet-popup-content-wrapper {
-    padding: 6px 8px !important; /* تقليل حجم البوب أب */
-    border-radius: 6px;
-  }
-
-  .search-box {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1100;
-    background: #ADD8E6; /* أزرق فاتح */
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    width: 180px;
-    overflow-y: auto;
-    max-height: 95vh;
-    border: 1px solid rgba(0,0,0,0.1);
-  }
-
-  .search-box input[type="text"],
-  .search-box select {
-    width: 100%;
-    padding: 6px 8px;
-    font-size: 12px;
-    font-weight: bold;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    background-color: #f0f8ff;
-    color: black;
-  }
-
-  .filter-section {
-    margin-top: 8px;
-  }
-
-  .filter-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  .filter-buttons button {
-    flex: 1;
-    padding: 6px 8px;
-    border: none;
-    background: #ADD8E6;
-    cursor: pointer;
-    border-radius: 4px;
-    font-weight: bold;
-    color: black;
-    transition: background-color 0.3s;
-    font-size: 12px;
-  }
-
-  .filter-buttons button.active,
-  .filter-buttons button:hover {
-    background-color: #87CEEB;
-    color: black;
-  }
-
-  select, input[type="text"] {
-    width: 100%;
-    margin-top: 6px;
-    padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background-color: #f0f8ff;
-    font-size: 12px;
-    font-weight: bold;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 180px;
-    font-size: 10px;
-    font-weight: bold;
-  }
-
-  th, td {
-    border: 1px solid #ddd;
-    padding: 4px;
-    font-weight: bold;
-    font-size: 10px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-</style>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; font-family: Arial; direction: rtl; }
+    #map { width: 100%; height: 100vh; }
+    .leaflet-tooltip {
+      font-weight: bold;
+      background: transparent !important;
+      color: black !important;
+      border: none !important;
+      box-shadow: none !important;
+      font-size: 13px;
+      padding: 0;
+      white-space: nowrap;
+    }
+    .search-box {
+      position: absolute; top: 10px; right: 10px; z-index: 1100;
+      background: white; padding: 10px; border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      width: 320px;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+    .filter-section { margin-top: 8px; }
+    .filter-buttons { display: flex; flex-wrap: wrap; gap: 4px; }
+    .filter-buttons button {
+      flex: 1;
+      padding: 6px 8px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .filter-buttons button.active,
+    .filter-buttons button:hover {
+      background-color: #4CAF50;
+      color: white;
+    }
+    select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 6px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    table {
+      border-collapse: collapse;
+      width: 180px;
+      font-size: 9px;
+      font-weight: bold;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 4px;
+      font-weight: bold;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Search box and filters -->
 <div class="search-box">
-  <input type="text" id="search" placeholder="Search" onkeyup="filterBranches()" />
+  <input type="text" id="search" placeholder="ابحث عن فرع..." onkeyup="filterBranches()" />
   <div class="filter-section">
-    <label for="brandFilter"><b>Brand</b></label>
+    <label for="statusFilter"><b>حالة الفروع:</b></label>
+    <select id="statusFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Open">مفتوح</option>
+      <option value="Permanently Closed">مغلق نهائيًا</option>
+      <option value="New Store">فرع جديد</option>
+      <option value="Not connected">غير متصل</option>
+      <option value="Replaced">تم الاستبدال</option>
+      <option value="Temporarily Closed">مغلق مؤقتًا</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="deliveryFilter"><b>خدمة التوصيل:</b></label>
+    <select id="deliveryFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
+      <option value="Yes">يوجد</option>
+      <option value="No">لا يوجد</option>
+    </select>
+  </div>
+  <div class="filter-section">
+    <label for="brandFilter"><b>العلامة التجارية:</b></label>
     <select id="brandFilter" onchange="filterBranches()">
-      <option value="All">All</option>
+      <option value="All">الكل</option>
       <option value="Kudu">Kudu</option>
       <option value="Al Khafeef">Al Khafeef</option>
       <option value="Franchise">Franchise</option>
     </select>
   </div>
   <div class="filter-section">
-    <label for="statusFilter"><b>Branch status</b></label>
-    <select id="statusFilter" onchange="filterBranches()">
-      <option value="All">All</option>
-      <option value="Active">Active</option>
-      <option value="New">New</option>
-      <option value="Replaced">Replaced</option>
-      <option value="Unlinked">Unlinked</option>
-      <option value="Permanently Closed">Permanently Closed</option>
-      <option value="Temporarily Closed">Temporarily Closed</option>
-    </select>
-  </div>
-  <div class="filter-section">
-    <label for="deliveryFilter"><b>Delivery Service</b></label>
-    <select id="deliveryFilter" onchange="filterBranches()">
-      <option value="All">All</option>
-      <option value="Yes">Available</option>
-      <option value="No">Unavailable</option>
-    </select>
-  </div>
-  <div class="filter-section">
-    <label for="deliveryServiceFilter"><b>Delivery Provider</b></label>
+    <label for="deliveryServiceFilter"><b>مزود التوصيل:</b></label>
     <select id="deliveryServiceFilter" onchange="filterBranches()">
-      <option value="All">All</option>
-      <option value="Kudu">Kudu</option>
-      <option value="Barq">Barq</option>
-      <option value="Holouly">Holouly</option>
-      <option value="Tam2go">Tam2go</option>
-      <option value="Hungerstation">Hungerstation</option>
+      <option value="All">الكل</option>
+      <option value="Holouly service">Holouly service</option>
     </select>
   </div>
   <div class="filter-section">
-    <label for="OperatingdetailsFilter"><b>Operating Details</b></label>
-    <select id="OperatingdetailsFilter" onchange="filterBranches()">
-      <option value="All">All</option>
+    <label for="remarksFilter"><b>الملاحظات:</b></label>
+    <select id="remarksFilter" onchange="filterBranches()">
+      <option value="All">الكل</option>
       <option value="Pickup only - Mall">Pickup only - Mall</option>
-      <option value="Pickup only">Pickup only</option>
-      <option value="Mall">Mall</option>
-      <option value="App only">App only</option>
     </select>
   </div>
 </div>
 
-<!-- Branches map -->
 <div id="map"></div>
 
-<!-- Map and Branches script -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  const map = L.map("map").setView([24.7, 46.7], 11);
+  const map = L.map("map").setView([24.7, 46.7], 10);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 
-  const Branches = [
+  const branches = [
     {
-      StoreName: "KR-01", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-01", Status: "Open", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6", Latitude: 24.6850636000001, Longitude: 46.6778853000002
+      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Remarks: "",
+      LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6", Latitude: 24.6850636, Longitude: 46.6778853
     },
     {
       StoreName: "KR-02", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
-      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
+      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Remarks: "",
       LinkLocation: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9", Latitude: 24.70202977, Longitude: 46.69658292
-    },
-    {
-      StoreName: "KR-03", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/Re3Yi1neHt1RCkbd7", Latitude: 24.6850636000001, Longitude: 46.6778853000002
-    },
-    {
-      StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
-      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.7331263055716, Longitude: 46.6781115571678
-    },
-    {
-      StoreName: "KR-05", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.7299943948402, Longitude: 46.7848145964603
-    },
-    {
-      StoreName: "KR-06", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
-      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", Latitude: 24.5937764353634, Longitude: 46.6332205754896
-    },
-    {
-      StoreName: "KR-07", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", Latitude: 24.6626985826866, Longitude: 46.7010481776503
-    },
-    {
-      StoreName: "KR-08", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", Latitude: 24.6963456368794, Longitude: 46.7515047849539
-    },
-    {
-      StoreName: "KR-09", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", Latitude: 24.7431913764908, Longitude: 46.8088182933302
-    },
-    {
-      StoreName: "KR-10", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
-      Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", Latitude: 24.7239820272543, Longitude: 46.6538244999931
-    },
-    {
-      StoreName: "KR-11", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/ora13eiMyEPy55yR6", Latitude: 24.7595151272408, Longitude: 46.7778204810113
-    },
-    {
-      StoreName: "KR-12", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/jsLCcxUJE4RZro1h8", Latitude: 24.598699070287, Longitude: 46.6894283222643
-    },
-    {
-      StoreName: "KR-13", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/bX2iXM244q9EiqMH9", Latitude: 24.6254874313683, Longitude: 46.6891265920741
-    },
-    {
-      StoreName: "KR-14", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "Closed", Sunday: "07:15 AM - 06:45 PM", Monday: "07:15 AM - 06:45 PM", Tuesday: "07:15 AM - 06:45 PM",
-      Wednesday: "07:15 AM - 06:45 PM", Thursday: "07:15 AM - 06:45 PM", Friday: "Closed", Operatingdetails: "Pickup only - Mall",
-      LinkLocation: "https://maps.app.goo.gl/KxynNakKthp6MbRu5", Latitude: 24.7059516366921, Longitude: 46.6794971999949
-    },
-    {
-      StoreName: "AK-01", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/LHVWhsfyVEchRgwU8", Latitude: 24.693814870919, Longitude: 46.7322646950964
-    },
-    {
-      StoreName: "AK-02", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/ABvoJUax48RF1TN47", Latitude: 24.7060825678959, Longitude: 46.8359318269587
-    },
-    {
-      StoreName: "AK-04", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/EXTXoL5xofTAXrat6", Latitude: 24.7240437490245, Longitude: 46.6747060454056
-    },
-    {
-      StoreName: "AK-06", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/BJcqEbhFgF2VWxaa8", Latitude: 24.6627661422275, Longitude: 46.7009782411122
-    },
-    {
-      StoreName: "KF-01", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9", Latitude: 24.5777553293945, Longitude: 46.5803145999949
-    },
-    {
-      StoreName: "KF-05", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A", Latitude: 24.5997626938295, Longitude: 46.7460685650103
-    },
-    {
-      StoreName: "KF-06", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
-      Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
-      Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/1NnAawxGw9bTnsj37", Latitude: 24.7604067061064, Longitude: 46.8127219915571
-     },
-    {   
-      StoreName: "KF-07", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "7:00 AM", LastOrder: "2:45 AM",
-      Saturday: "06:00 AM - 04:00 AM", Sunday: "06:00 AM - 04:00 AM", Monday: "06:00 AM - 04:00 AM", Tuesday: "06:00 AM - 04:00 AM",
-      Wednesday: "06:00 AM - 04:00 AM", Thursday: "06:00 AM - 04:00 AM", Friday: "06:00 AM - 04:00 AM", Operatingdetails: "",
-      LinkLocation: "https://maps.app.goo.gl/iF7eDXcAZBDxdcoQ7", Latitude: 30.974840899324, Longitude: 41.0118080407078
     }
   ];
 
@@ -352,21 +159,21 @@
     const popupContent = `
       <table>
         <tr><th colspan="2">${branch.StoreName}</th></tr>
-        <tr><td>Status</td><td>${branch.Status}</td></tr>
-        <tr><td>Delivery</td><td>${branch.Delivery}</td></tr>
-        <tr><td>Brand</td><td>${branch.Brand}</td></tr>
-        <tr><td>Delivery provider</td><td>${branch.DeliveryService || '-'}</td></tr>
-        <tr><td>First Order</td><td>${branch.FirstOrder || '-'}</td></tr>
-        <tr><td>Last Order</td><td>${branch.LastOrder || '-'}</td></tr>
-        <tr><td>Saturday</td><td>${branch.Saturday}</td></tr>
-        <tr><td>Sunday</td><td>${branch.Sunday}</td></tr>
-        <tr><td>Tuesday</td><td>${branch.Monday}</td></tr>
-        <tr><td>Tuesday</td><td>${branch.Tuesday}</td></tr>
-        <tr><td>Wednesday</td><td>${branch.Wednesday}</td></tr>
-        <tr><td>Thursday</td><td>${branch.Thursday}</td></tr>
-        <tr><td>Friday</td><td>${branch.Friday}</td></tr>
-        <tr><td>Operating details</td><td>${branch.Operatingdetails || '-'}</td></tr>
-        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">Link Location</a></td></tr>
+        <tr><td>الحالة</td><td>${branch.Status}</td></tr>
+        <tr><td>التوصيل</td><td>${branch.Delivery}</td></tr>
+        <tr><td>الماركة</td><td>${branch.Brand}</td></tr>
+        <tr><td>المزود</td><td>${branch.DeliveryService || '-'}</td></tr>
+        <tr><td>أول طلب</td><td>${branch.FirstOrder || '-'}</td></tr>
+        <tr><td>آخر طلب</td><td>${branch.LastOrder || '-'}</td></tr>
+        <tr><td>السبت</td><td>${branch.Saturday}</td></tr>
+        <tr><td>الأحد</td><td>${branch.Sunday}</td></tr>
+        <tr><td>الاثنين</td><td>${branch.Monday}</td></tr>
+        <tr><td>الثلاثاء</td><td>${branch.Tuesday}</td></tr>
+        <tr><td>الأربعاء</td><td>${branch.Wednesday}</td></tr>
+        <tr><td>الخميس</td><td>${branch.Thursday}</td></tr>
+        <tr><td>الجمعة</td><td>${branch.Friday}</td></tr>
+        <tr><td>ملاحظات</td><td>${branch.Remarks || '-'}</td></tr>
+        <tr><td colspan="2"><a href="${branch.LinkLocation}" target="_blank">رابط الموقع</a></td></tr>
       </table>
     `;
 
@@ -392,14 +199,14 @@
     const delivery = document.getElementById("deliveryFilter").value;
     const brand = document.getElementById("brandFilter").value;
     const deliveryService = document.getElementById("deliveryServiceFilter").value;
-    const Operatingdetails = document.getElementById("OperatingdetailsFilter").value;
+    const remarks = document.getElementById("remarksFilter").value;
 
-    const filtered = Branches.filter(branch => {
+    const filtered = branches.filter(branch => {
       if (status !== "All" && branch.Status !== status) return false;
       if (delivery !== "All" && branch.Delivery !== delivery) return false;
       if (brand !== "All" && branch.Brand !== brand) return false;
       if (deliveryService !== "All" && branch.DeliveryService !== deliveryService) return false;
-      if (Operatingdetails !== "All" && branch.Operatingdetails !== Operatingdetails) return false;
+      if (remarks !== "All" && branch.Remarks !== remarks) return false;
       if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
       return true;
     });
@@ -407,8 +214,7 @@
     addMarkers(filtered);
   }
 
-  addMarkers(Branches);
+  addMarkers(branches);
 </script>
-
 </body>
 </html>
