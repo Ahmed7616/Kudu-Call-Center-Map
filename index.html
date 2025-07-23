@@ -169,16 +169,16 @@ th {
     </select>
   </div>
   <div class="filter-section">
-    <label for="deliveryFilter"><b>Delivery Service</b></label>
-    <select id="deliveryFilter" onchange="filterBranches()">
+    <label for="deliveryServiceFilter"><b>Delivery Service</b></label>
+    <select id="deliveryServiceFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Yes">Available</option>
       <option value="No">Unavailable</option>
     </select>
   </div>
   <div class="filter-section">
-    <label for="deliveryServiceFilter"><b>Delivery Provider</b></label>
-    <select id="deliveryServiceFilter" onchange="filterBranches()">
+    <label for="DeliveryProviderFilter"><b>Delivery Provider</b></label>
+    <select id="DeliveryProviderFilter" onchange="filterBranches()">
       <option value="All">All</option>
       <option value="Kudu">Kudu</option>
       <option value="Barq">Barq</option>
@@ -213,129 +213,129 @@ th {
 
   const Branches = [
     {
-      StoreName: "KR-01", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-01", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "Kudu", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/z5qVe8Y2Ecvvdyyq6", Latitude: 24.6850636000001, Longitude: 46.6778853000002
     },
     {
-      StoreName: "KR-02", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
+      StoreName: "KR-02", Status: "Permanently Closed", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "",
       Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/khRU8GrtAtrFUchh9", Latitude: 24.70202977, Longitude: 46.69658292
     },
     {
-      StoreName: "KR-03", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-03", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/Re3Yi1neHt1RCkbd7", Latitude: 24.6850636000001, Longitude: 46.6778853000002
     },
     {
-      StoreName: "KR-04", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
+      StoreName: "KR-04", Status: "Permanently Closed", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "",
       Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/CX3dQbHM1QMtD8cf8", Latitude: 24.7331263055716, Longitude: 46.6781115571678
     },
     {
-      StoreName: "KR-05", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-05", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/Kc8Ddkp19QxRFpDw5", Latitude: 24.7299943948402, Longitude: 46.7848145964603
     },
     {
-      StoreName: "KR-06", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
+      StoreName: "KR-06", Status: "Permanently Closed", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "",
       Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/yjMQxRuU5WDuiPGL8", Latitude: 24.5937764353634, Longitude: 46.6332205754896
     },
     {
-      StoreName: "KR-07", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "KR-07", Status: "Active", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/zzJNSvfHV9A6c5bT8", Latitude: 24.6626985826866, Longitude: 46.7010481776503
     },
     {
-      StoreName: "KR-08", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "KR-08", Status: "Active", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/FCiG9HE46QZwnK5UA", Latitude: 24.6963456368794, Longitude: 46.7515047849539
     },
     {
-      StoreName: "KR-09", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-09", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/FRpEj1XXVK93iLjy6", Latitude: 24.7431913764908, Longitude: 46.8088182933302
     },
     {
-      StoreName: "KR-10", Status: "Permanently Closed", Delivery: "No", Brand: "Kudu", DeliveryService: "",
+      StoreName: "KR-10", Status: "Permanently Closed", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "",
       Saturday: "-", Sunday: "-", Monday: "-", Tuesday: "-", Wednesday: "-", Thursday: "-", Friday: "-", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/6rgXPWUNzyU3yvAs8", Latitude: 24.7239820272543, Longitude: 46.6538244999931
     },
     {
-      StoreName: "KR-11", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-11", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/ora13eiMyEPy55yR6", Latitude: 24.7595151272408, Longitude: 46.7778204810113
     },
     {
-      StoreName: "KR-12", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-12", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/jsLCcxUJE4RZro1h8", Latitude: 24.598699070287, Longitude: 46.6894283222643
     },
     {
-      StoreName: "KR-13", Status: "Active", Delivery: "Yes", Brand: "Kudu", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
+      StoreName: "KR-13", Status: "Active", DeliveryService: "Yes", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "1:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/bX2iXM244q9EiqMH9", Latitude: 24.6254874313683, Longitude: 46.6891265920741
     },
     {
-      StoreName: "KR-14", Status: "Active", Delivery: "No", Brand: "Kudu", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "KR-14", Status: "Active", DeliveryService: "No", Brand: "Kudu", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "Closed", Sunday: "07:15 AM - 06:45 PM", Monday: "07:15 AM - 06:45 PM", Tuesday: "07:15 AM - 06:45 PM",
       Wednesday: "07:15 AM - 06:45 PM", Thursday: "07:15 AM - 06:45 PM", Friday: "Closed", Operatingdetails: "Pickup only - Mall",
       LinkLocation: "https://maps.app.goo.gl/KxynNakKthp6MbRu5", Latitude: 24.7059516366921, Longitude: 46.6794971999949
     },
     {
-      StoreName: "AK-01", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "AK-01", Status: "Active", DeliveryService: "No", Brand: "Al Khafeef", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/LHVWhsfyVEchRgwU8", Latitude: 24.693814870919, Longitude: 46.7322646950964
     },
     {
-      StoreName: "AK-02", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "AK-02", Status: "Active", DeliveryService: "No", Brand: "Al Khafeef", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/ABvoJUax48RF1TN47", Latitude: 24.7060825678959, Longitude: 46.8359318269587
     },
     {
-      StoreName: "AK-04", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "AK-04", Status: "Active", DeliveryService: "No", Brand: "Al Khafeef", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/EXTXoL5xofTAXrat6", Latitude: 24.7240437490245, Longitude: 46.6747060454056
     },
     {
-      StoreName: "AK-06", Status: "Active", Delivery: "No", Brand: "Al Khafeef", DeliveryService: "", FirstOrder: "-", LastOrder: "-",
+      StoreName: "AK-06", Status: "Active", DeliveryService: "No", Brand: "Al Khafeef", DeliveryProvider: "", FirstOrder: "-", LastOrder: "-",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/BJcqEbhFgF2VWxaa8", Latitude: 24.6627661422275, Longitude: 46.7009782411122
     },
     {
-      StoreName: "KF-01", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
+      StoreName: "KF-01", Status: "Active", DeliveryService: "Yes", Brand: "Franchise", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/eD9ZtP7yUbJvUWds9", Latitude: 24.5777553293945, Longitude: 46.5803145999949
     },
     {
-      StoreName: "KF-05", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
+      StoreName: "KF-05", Status: "Active", DeliveryService: "Yes", Brand: "Franchise", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/LSaXgCjm1APkUCS2A", Latitude: 24.5997626938295, Longitude: 46.7460685650103
     },
     {
-      StoreName: "KF-06", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
+      StoreName: "KF-06", Status: "Active", DeliveryService: "Yes", Brand: "Franchise", DeliveryProvider: "", FirstOrder: "6:00 AM", LastOrder: "2:45 AM",
       Saturday: "05:00 AM - 04:00 AM", Sunday: "05:00 AM - 04:00 AM", Monday: "05:00 AM - 04:00 AM", Tuesday: "05:00 AM - 04:00 AM",
       Wednesday: "05:00 AM - 04:00 AM", Thursday: "05:00 AM - 04:00 AM", Friday: "05:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/1NnAawxGw9bTnsj37", Latitude: 24.7604067061064, Longitude: 46.8127219915571
      },
     {   
-      StoreName: "KF-07", Status: "Active", Delivery: "Yes", Brand: "Franchise", DeliveryService: "", FirstOrder: "7:00 AM", LastOrder: "2:45 AM",
+      StoreName: "KF-07", Status: "Active", DeliveryService: "Yes", Brand: "Franchise", DeliveryProvider: "", FirstOrder: "7:00 AM", LastOrder: "2:45 AM",
       Saturday: "06:00 AM - 04:00 AM", Sunday: "06:00 AM - 04:00 AM", Monday: "06:00 AM - 04:00 AM", Tuesday: "06:00 AM - 04:00 AM",
       Wednesday: "06:00 AM - 04:00 AM", Thursday: "06:00 AM - 04:00 AM", Friday: "06:00 AM - 04:00 AM", Operatingdetails: "",
       LinkLocation: "https://maps.app.goo.gl/iF7eDXcAZBDxdcoQ7", Latitude: 30.974840899324, Longitude: 41.0118080407078
