@@ -363,9 +363,9 @@ th {
   <table style="direction: ltr;">
     <tr><th colspan="2">${branch.StoreName}</th></tr>
     <tr><td>Status</td><td>${branch.Status}</td></tr>
-    <tr><td>Delivery</td><td>${branch.Delivery}</td></tr>
+    <tr><td>Delivery Service</td><td>${branch.DeliveryService}</td></tr>
     <tr><td>Brand</td><td>${branch.Brand}</td></tr>
-    <tr><td>Delivery provider</td><td>${branch.DeliveryService || '-'}</td></tr>
+    <tr><td>Delivery provider</td><td>${branch.Deliveryprovider || '-'}</td></tr>
     <tr><td>First Order</td><td>${branch.FirstOrder || '-'}</td></tr>
     <tr><td>Last Order</td><td>${branch.LastOrder || '-'}</td></tr>
     <tr><td>Saturday</td><td>${branch.Saturday}</td></tr>
@@ -400,16 +400,16 @@ th {
   function filterBranches() {
     const searchText = document.getElementById("search").value.trim().toLowerCase();
     const status = document.getElementById("statusFilter").value;
-    const delivery = document.getElementById("deliveryFilter").value;
+    const DeliveryService = document.getElementById("DeliveryServiceFilter").value;
     const brand = document.getElementById("brandFilter").value;
-    const deliveryService = document.getElementById("deliveryServiceFilter").value;
+    const Deliveryprovider = document.getElementById("DeliveryproviderFilter").value;
     const Operatingdetails = document.getElementById("OperatingdetailsFilter").value;
 
     const filtered = Branches.filter(branch => {
       if (status !== "All" && branch.Status !== status) return false;
-      if (delivery !== "All" && branch.Delivery !== delivery) return false;
+      if (DeliveryService !== "All" && branch.DeliveryService !== DeliveryService) return false;
       if (brand !== "All" && branch.Brand !== brand) return false;
-      if (deliveryService !== "All" && branch.DeliveryService !== deliveryService) return false;
+      if (Deliveryprovider !== "All" && branch.Deliveryprovider !== Deliveryprovider) return false;
       if (Operatingdetails !== "All" && branch.Operatingdetails !== Operatingdetails) return false;
       if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
       return true;
