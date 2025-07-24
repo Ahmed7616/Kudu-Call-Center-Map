@@ -405,10 +405,38 @@ th {
     const color = brandColors[branch.Brand] || "gray";
 
     const icon = L.divIcon({
-      html: `<div style="background-color:${color};width:16px;height:16px;border-radius:50%;border:2px solid white;"></div>`,
-      className: "",
-      iconSize: [20, 20],
-      iconAnchor: [10, 10]
+  html: `
+    <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
+      <!-- الاسم فوق -->
+      <div style="
+        position: absolute;
+        bottom: 100%;
+        transform: translateY(-6px);
+        background: white;
+        border: 1px solid #ccc;
+        padding: 2px 6px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: bold;
+        white-space: nowrap;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      ">
+        ${branch.name || ""}
+      </div>
+
+      <!-- النقطة -->
+      <div style="
+        background-color: ${color};
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid white;
+      "></div>
+    </div>
+  `,
+  className: "",
+  iconSize: [20, 30],       // حجم الأيقونة
+  iconAnchor: [10, 10]      // مركز الدائرة = إحداثيات الفرع
     });
 
     const popupContent = `
