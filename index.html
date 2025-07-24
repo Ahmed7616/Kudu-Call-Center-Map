@@ -403,14 +403,14 @@ th {
     const DeliveryService = document.getElementById("DeliveryServiceFilter").value;
     const brand = document.getElementById("brandFilter").value;
     const DeliveryProvider = document.getElementById("DeliveryProviderFilter").value;
-    const Operatingdetails = document.getElementById("OperatingdetailsFilter").value;
+    const OperatingDetails = document.getElementById("OperatingDetailsFilter").value;
 
     const filtered = Branches.filter(branch => {
       if (status !== "All" && branch.Status !== status) return false;
       if (DeliveryService !== "All" && branch.DeliveryService !== DeliveryService) return false;
       if (brand !== "All" && branch.Brand !== brand) return false;
       if (DeliveryProvider !== "All" && branch.DeliveryProvider !== DeliveryProvider) return false;
-      if (Operatingdetails !== "All" && branch.Operatingdetails !== Operatingdetails) return false;
+      if (OperatingDetails !== "All" && branch.OperatingDetails !== OperatingDetails) return false;
       if (searchText && !branch.StoreName.toLowerCase().includes(searchText)) return false;
       return true;
     });
