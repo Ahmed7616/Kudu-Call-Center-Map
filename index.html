@@ -419,7 +419,7 @@ th {
         white-space: nowrap;
         box-shadow: 0 1px 4px rgba(0,0,0,0.2);
       ">
-        ${branch.name}
+        ${branch.name || ""}
       </div>
       <div style="
         background-color: ${color};
@@ -432,7 +432,7 @@ th {
   `,
   className: "",
   iconSize: [100, 40],
-  iconAnchor: [50, 10] // ← يخلي النقطة تكون المركز
+  iconAnchor: [50, 10]
 
     });
 
