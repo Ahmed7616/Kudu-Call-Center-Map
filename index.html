@@ -406,17 +406,21 @@ th {
 
     const icon = L.divIcon({
   html: `
-    <div style="display: flex; flex-direction: column; align-items: center; white-space: nowrap;">
+    <div style="position: relative; width: 30px; height: 40px; display: flex; justify-content: center; align-items: flex-end;">
       <div style="
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-6px);
         background: white;
         border: 1px solid #ccc;
         padding: 2px 6px;
         border-radius: 5px;
         font-size: 12px;
         font-weight: bold;
+        white-space: nowrap;
         box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-        margin-bottom: 6px;
-        text-align: center;
+        pointer-events: none;
       ">
         ${branch.name || ""}
       </div>
@@ -429,9 +433,9 @@ th {
       "></div>
     </div>
   `,
-  className: "",            // مهم: فرغنا الكلاس عشان ما يؤثرش CSS خارجي
-  iconSize: [30, 40],       // خلي العرض أكبر شوية
-  iconAnchor: [15, 40],     // مركز عرض الأيقونة وارتفاع الأساس عند أسفل الدائرة
+  className: "",
+  iconSize: [30, 40],
+  iconAnchor: [15, 40],
 
     });
 
