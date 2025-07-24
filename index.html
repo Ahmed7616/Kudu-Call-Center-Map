@@ -31,6 +31,7 @@
     padding: 2px 4px;
     white-space: nowrap;
     border-radius: 4px;
+    transform: translate(-50%, -10px); /* تم تقريب المربع الأبيض للنقطة */
   }
 
   /* مربع التفاصيل (Popup) */
@@ -435,9 +436,13 @@ th {
 
     const marker = L.marker([branch.Latitude, branch.Longitude], { icon });
     marker.bindPopup(popupContent);
-    marker.bindTooltip(branch.StoreName, { permanent: true, direction: "top" });
+    marker.bindTooltip(branch.StoreName, {
+    permanent: true,
+    direction: "top",
+    offset: [0, -10], // نزّل التولتيب فوق العلامة بشكل أقرب
+    className: "custom-tooltip" // نعطيه كلاس خاص للتعديل الإضافي لو تحتاج
+});
     return marker;
-    transform: translate(-50%, -6px);
   }
 
   function addMarkers(filtered) {
