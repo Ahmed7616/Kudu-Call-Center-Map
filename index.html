@@ -408,6 +408,7 @@ th {
     const icon = L.divIcon({
   html: `
     <div style="display: flex; flex-direction: column; align-items: center;">
+      <!-- اسم الفرع داخل مربع أبيض -->
       <div style="
         background: white;
         border: 1px solid #ccc;
@@ -421,6 +422,8 @@ th {
       ">
         ${branch.name || ""}
       </div>
+
+      <!-- النقطة الدائرية -->
       <div style="
         background-color: ${color};
         width: 16px;
@@ -431,8 +434,8 @@ th {
     </div>
   `,
   className: "",
-  iconSize: [100, 40],
-  iconAnchor: [50, 10]
+  iconSize: [100, 40],      // حجم الأيقونة الكاملة (يشمل الاسم والدائرة)
+  iconAnchor: [50, 10]      // مركز الدائرة يكون على إحداثيات الفرع
 
     });
 
