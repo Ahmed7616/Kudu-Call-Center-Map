@@ -21,23 +21,16 @@
   }
 
   /* اسم الفرع في التولتيب الصغير أعلى العلامة */
-  .leaflet-marker-icon::after {
-  content: attr(data-name);
-  position: absolute;
-  top: -18px; /* ✅ هذه هي القيمة التي تتحكم في المسافة من الأعلى */
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  color: black;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  white-space: nowrap;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
+  .leaflet-tooltip {
+    font-weight: bold;
+    background: white !important; /* خلفية بيضاء */
+    color: black !important;
+    border: 1px solid #ccc !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 10px; /* صغير */
+    padding: 2px 4px;
+    white-space: nowrap;
+    border-radius: 4px;
   }
 
   /* مربع التفاصيل (Popup) */
@@ -444,6 +437,7 @@ th {
     marker.bindPopup(popupContent);
     marker.bindTooltip(branch.StoreName, { permanent: true, direction: "top" });
     return marker;
+    transform: translate(-50%, -6px);
   }
 
   function addMarkers(filtered) {
