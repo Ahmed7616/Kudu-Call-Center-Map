@@ -407,7 +407,6 @@ th {
     const icon = L.divIcon({
   html: `
     <div style="position: relative; display: flex; flex-direction: column; align-items: center;">
-      <!-- الاسم فوق -->
       <div style="
         position: absolute;
         bottom: 100%;
@@ -423,8 +422,6 @@ th {
       ">
         ${branch.name || ""}
       </div>
-
-      <!-- النقطة -->
       <div style="
         background-color: ${color};
         width: 16px;
@@ -435,8 +432,9 @@ th {
     </div>
   `,
   className: "",
-  iconSize: [20, 30],       // حجم الأيقونة
-  iconAnchor: [10, 10]      // مركز الدائرة = إحداثيات الفرع
+  iconSize: [20, 35],       // ارتفاع أكبر لاستيعاب الاسم
+  iconAnchor: [10, 25]      // مركز النقطة على الأسفل (منتصف الدائرة)
+
     });
 
     const popupContent = `
